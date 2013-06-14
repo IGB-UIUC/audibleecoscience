@@ -29,19 +29,22 @@ if (isset($_POST['addUser'])) {
 	$netid = "";
 }
 
+elseif (isset($_POST['cancel'])) {
+	unset($_POST);
+}
 
 include_once 'includes/header.inc.php';
 ?>
-
+<h3>Add User Form</h3>
 <form method='post' enctype='multipart/form-data' action='addUser.php'>
-<p class='subHeader'>Add User Form</p>
 
 <br>NetID: 
 <br><input type='text' name='netid' value='<?php if (isset($netid)) { echo $netid; } ?>'>
 <br>Group Privileges: 
 <br>
 <?php echo $list; ?>
-<br><input type='submit' name='addUser' value='Add User'>
+<br><input class='btn' type='submit' name='addUser' value='Add User'>
+<input class='btn' type='submit' name='cancel' value='Cancel'>
 </form>
 
 

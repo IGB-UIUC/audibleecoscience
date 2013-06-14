@@ -18,24 +18,22 @@
 //include 'includes/settings.inc.php';
 //session_start();
 include_once 'includes/main.inc.php';
-include 'authentication.inc.php';
+include_once 'authentication.inc.php';
+
 session_start();
 if (isset($_SESSION['webpage'])) {
 	$webpage = $_SESSION['webpage'];
 }
 else {
 	$dir = dirname($_SERVER['PHP_SELF']);
-
 	$webpage = $dir . "/admin/index.php";
 }
 
 if (isset($_POST['login'])) {
-	
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	
 	$success = authenticate($username,$password,$authenticationSettings,$db);
-
 	if ($success == "1") {
 		
 		session_destroy();
@@ -56,11 +54,15 @@ if (isset($_POST['login'])) {
 	
 }
 
+//Hit Cancel Button - Redirects to logout.php
+elseif (isset($_POST['cancel'])) {
+        unset($_POST);
+        header('Location: index.php');
 
 
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<?php
+}
+
+
 
 include 'includes/header.inc.php';
 
@@ -68,20 +70,20 @@ include 'includes/header.inc.php';
 <BODY OnLoad="document.login.username.focus();">
 
 
-<p class='subHeader'>Login</p>
-<div id='login'>
-<form action='login.php' method='post' name='login'>
+<h3>Login</h3>
+<div class='row span4 offset3'>
+<form action='login.php' method='post' name='login' class='form-vertical'>
 	<br>NetID:
 	<br><input type='text' name='username' tabindex='1'>
 	<br>Active Directory (AD)  Password:
 	<br><input type='password' name='password' tabindex='2'>
 	<br><a href='https://passwords.cites.uiuc.edu'>Forgot Password</a>
-	<br><input type='submit' value='Login' name='login'>
+	<br><input class='btn' type='submit' value='Login' name='login'>
+	<button type='submit' name='cancel' class='btn'>Cancel</button>
 
 </form>
-
-<?php if (isset($loginMsg)) { echo $loginMsg; } ?>
 </div>
+<?php if (isset($loginMsg)) { echo $loginMsg; } ?>
 <?php
 
 include 'includes/footer.inc.php';

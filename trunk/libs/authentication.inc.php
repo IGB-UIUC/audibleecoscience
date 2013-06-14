@@ -12,10 +12,7 @@
 //////////////////////////////////////////////////
 
 
-include_once 'users.class.inc.php';
-
 function authenticate($username,$password,$authenticationSettings,$db) {
-
 	$ldaphost = $authenticationSettings['host'];
 	$baseDN = $authenticationSettings['baseDN'];	
 	$peopleDN = $authenticationSettings['peopleOU'] . "," . $baseDN;
@@ -42,12 +39,9 @@ function authenticate($username,$password,$authenticationSettings,$db) {
 	$success = 0;
 
 	if (@ldap_bind($connect, $bindDN, $password)) { //search in users table
-
-		$exist = $users->userexists($username);
-		if($exist)
-			$exist = $users->userstatus($username);
-		$success = $exist ;
-		
+		if($users->userExists($username)) {
+			$success = $users->userStatus($username);
+		}
 	}
 	return $success;
 	

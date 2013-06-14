@@ -1,9 +1,10 @@
 <?php
 include_once 'includes/main.inc.php';
-include_once 'functions.inc.php';
-
 
 if (isset($_POST['addPodcast'])) {
+	foreach ($_POST as $var) {
+		$var = trim(rtrim($var));
+	}
 	$source = $_POST['source'];
 	$programName = $_POST['programName'];
 	$showName = $_POST['showName'];
@@ -11,12 +12,6 @@ if (isset($_POST['addPodcast'])) {
 	$url = $_POST['url'];
 	$summary = $_POST['summary'];
 	$category = $_POST['category'];
-	$source = trim(rtrim($source));
-	$programName = trim(rtrim($programName));
-	$showName = trim(rtrim($showName));
-	$year = trim(rtrim($year));
-	$url = trim(rtrim($url));
-	$summary = trim(rtrim($summary));
 	$filename = $_FILES['file']['name'];
 	$tmpFile = $_FILES['file']['tmp_name'];
 	$fileError = $_FILES['file']['error'];
@@ -90,6 +85,12 @@ if (isset($_POST['addPodcast'])) {
 
 }
 
+//Hit Cancel button.  Clears form
+elseif ($_POST['cance']) {
+	unset($_POST);
+}
+
+
 $categories = new categories($db);
 
 $categoryList = $categories->getCategories();
@@ -108,7 +109,7 @@ include_once 'includes/header.inc.php';
 if (isset($success)) { echo $success; }
 ?>
 
-<p class='subHeader'>Add Podcast</p>
+<h3>Add Podcast</h3>
 <form method='post' enctype='multipart/form-data' action='addPodcast.php'>
 <input type='hidden' name='MAX_FILE_SIZE' value='134217728000'>
 <br>Media Source: <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?> 
@@ -130,7 +131,8 @@ if (isset($success)) { echo $success; }
 
 <br>Podcast: <?php if (isset ($fileMsg)) { echo $fileMsg; } ?>
 <br><input type='file' name='file'>
-<br><input type='submit' name='addPodcast' value='Add Podcast'>
+<br><input class='btn' type='submit' name='addPodcast' value='Add Podcast'>
+<input class='btn' type='submit' name='cancel' value='Cancel'>
 </form>
 
 

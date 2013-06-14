@@ -2,9 +2,11 @@
 
 //Sets include path
 set_include_path(get_include_path() . ':../libs');
-include_once 'session.inc.php';
 //Load Settings file
 include_once '../includes/settings.inc.php';
+include_once 'functions.inc.php';
+
+include_once 'session.inc.php';
 //Sets Timezone
 //date_default_timezone_set(__TIMEZONE__);
 

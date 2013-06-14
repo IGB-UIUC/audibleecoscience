@@ -34,9 +34,9 @@ for ($i=0;$i<count($headCategories);$i++) {
 include_once 'includes/header.inc.php';
 ?>
 
-<p class='subHeader'>Categories</p>
-<table>
-	<tr><td>Head Category</td><td>Sub Category</td></tr>
+<h3>Categories</h3>
+<table class='table table-bordered'>
+	<tr><th>Head Category</th><th>Sub Category</th></tr>
 
 <?php echo $categoriesListHtml; ?>
 </table>

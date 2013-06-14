@@ -1,8 +1,8 @@
 <?php
 include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
-include_once 'functions.inc.php';
 
+$podcastsHtml = "";
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 	if (isset($_GET['start']) && is_numeric($_GET['start'])) {
@@ -46,7 +46,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 	$category_name = $categories->getName($category_id);
 
 	$podcasts = $categories->getPodcasts($category_id,$start,$count);
-	$podcastsHtml;
 	for ($i=0;$i<count($podcasts);$i++) {
 		$source = $podcasts[$i]['podcast_source'];
 		$showName = $podcasts[$i]['podcast_showName'];
@@ -72,7 +71,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 ?>
 
-<p class='subHeader'><?php echo $category_name; ?></p>
+<h3><?php echo $category_name; ?></h3>
 
 <?php 
 

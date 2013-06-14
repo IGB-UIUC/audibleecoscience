@@ -85,7 +85,7 @@ class users {
 		$success = '0';
 			//check if user exists first......
 		$safeNetID = mysql_real_escape_string($netid,$this->db->get_link());
-		$exist = $this->userexists($safeNetID);
+		$exist = $this->userExists($safeNetID);
 
 			//if user doesnt exists
 		if (!$exist) { 
@@ -195,18 +195,16 @@ class users {
 		
 	}
 
-	/* userstatus
+	/* userStatus
 		returns 1 if enabled
 		returns 0 if disabled 
 		requires netid         	*/
 	public function userStatus($username) {
-		$result = $this->userexists($safeNetID);
-		if ($result!="1") {
-			$safeUser = mysql_real_escape_string($username,$this->db->get_link());
-			$sql = "Select user_enabled from users WHERE user_name = '" . $safeUser . "' LIMIT 1";
-			$result = $this->db->query($sql); 	
-			return $result[0]['user_enabled'];
-		}	
+		//$result = $this->userExists($username);
+		$safeUser = mysql_real_escape_string($username,$this->db->get_link());
+		$sql = "SELECT user_enabled FROM users WHERE user_name = '" . $safeUser . "' LIMIT 1";
+		$result = $this->db->query($sql); 	
+		return $result[0]['user_enabled'];
 	}
 	
 	

@@ -1,6 +1,5 @@
 <?php
 include_once 'includes/main.inc.php';
-include_once 'functions.inc.php';
 
 $user = new users($db);
 $group = $user->getGroup($username);
@@ -32,15 +31,14 @@ for ($i=0;$i<count($podcasts);$i++) {
 
 include_once 'includes/header.inc.php';
 ?>
-<p class='subHeader'>Unapproved Podcasts</p>
-<table>
+<h3>Unapproved Podcasts</h3>
+<table class='table table-bordered'>
 <thead>
-	<td>Show Name</td>
-	<td>Source</td>
-	<td>Program</td>
-	<td>Time Uploaded</td>
-	<td>Create By</td>
-	<td></td>
+	<th>Show Name</th>
+	<th>Source</th>
+	<th>Program</th>
+	<th>Time Uploaded</th>
+	<th>Create By</th>
 </thead>
 
 

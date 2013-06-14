@@ -43,15 +43,16 @@ include_once 'includes/header.inc.php';
 ?>
 <script type='text/javascript' src='includes/categories.js'></script>
 
-<p class='subHeader'>Add Category</p>
-<form action='addCategory.php' method='post' name='addCategoryForm' id='addCategoryForm'>
-<br>Category Name: <input type='text' name='category' value='<?php if (isset($_POST['category'])) { echo $_POST['category']; } ?>'>
+<h3>Add Category</h3>
+<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='post' name='addCategoryForm' id='addCategoryForm'>
+<br>Category Name: 
+<br><input type='text' name='category' value='<?php if (isset($_POST['category'])) { echo $_POST['category']; } ?>'>
 <br>Sub Category: <input type='checkbox' OnClick='javascript:enableHeadCategories()' name='subCategory' id='subCategory'>
 <br><select name='headCategory' id='headCategory' disabled='true'>
 <?php echo $headCategoriesHtml; ?>
 
 </select>
-<br><input type='submit' name='add_category' value='Add'>
+<br><input class='btn' type='submit' name='add_category' value='Add'>
 </form>
 
 
