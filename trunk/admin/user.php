@@ -4,7 +4,7 @@ include_once 'users.class.inc.php';
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 	$id = $_GET['id'];
-	$user = new users($mysqlSettings);
+	$user = new users($db);
 
 	//Sets current users information
 	$userInfo = $user->getUserInfo($id);

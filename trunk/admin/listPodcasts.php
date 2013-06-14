@@ -12,7 +12,7 @@ else {
 
 $count = 10;
 
-$podcasts = getAllPodcasts($mysqlSettings);
+$podcasts = getAllPodcasts($db);
 
 $numPodcasts = count($podcasts);
 $numPages = getNumPages($numPodcasts,$count);
@@ -39,7 +39,7 @@ if ($currentPage < $numPages) {
 	$pagesHtml .= "</p>";
 
 
-$podcastsHtml;
+$podcastsHtml = "";
 for ($i=0;$i<count($podcasts);$i++) {
 	$approved = $podcasts[$i]['podcast_approved'];
 	if ($approved == 1) { 

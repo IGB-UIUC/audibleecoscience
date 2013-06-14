@@ -2,10 +2,8 @@
 
 include_once 'db.class.inc.php';
 
-function getApprovedPodcasts($mysqlSettings) {
+function getApprovedPodcasts($db) {
 
-	//Connects to database.
-	$db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
 	
 	$sql = "SELECT * FROM podcasts ";
 	$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
@@ -16,10 +14,8 @@ function getApprovedPodcasts($mysqlSettings) {
 
 }
 
-function getRecentPodcasts($mysqlSettings) {
+function getRecentPodcasts($db) {
 
-        //Connects to database.
-        $db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
         
         $sql = "SELECT * FROM podcasts ";
         $sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
@@ -31,9 +27,8 @@ function getRecentPodcasts($mysqlSettings) {
 
 }
 
-function getUnapprovedPodcasts($mysqlSettings) {
+function getUnapprovedPodcasts($db) {
 
-	$db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
 
 	$sql = "SELECT * FROM podcasts ";
 	$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
@@ -47,10 +42,8 @@ function getUnapprovedPodcasts($mysqlSettings) {
 
 
 }
-function getAllPodcasts($mysqlSettings) {
+function getAllPodcasts($db) {
 
-	$db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
-	
 	
 	$sql = "SELECT * FROM podcasts ";
 	$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
@@ -61,9 +54,8 @@ function getAllPodcasts($mysqlSettings) {
 
 }
 
-function getYourPodcasts($username,$mysqlSettings) {
+function getYourPodcasts($username,$db) {
 
-	$db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
 
 	$sql = "SELECT * FROM podcasts ";
 	$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
@@ -74,8 +66,7 @@ function getYourPodcasts($username,$mysqlSettings) {
 	return $db->query($sql);
 
 }
-function addPodcast($mysqlSettings) {
-	$db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
+function addPodcast($db) {
 	$sql = "INSERT INTO podcasts(podcast_enabled) VALUES('1')";
 	return $db->insert_query($sql);
 	
@@ -95,9 +86,8 @@ function getNumPages($numRecords,$count) {
 
 }
 
-function search($search,$mysqlSettings) {
+function search($search,$db) {
 
-	$db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
 
 	$sql = "SELECT * FROM podcasts ";
 	$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
@@ -112,9 +102,6 @@ function search($search,$mysqlSettings) {
 	$sql .= "OR podcast_url LIKE '%" . $search . "%') ";
 	$sql .= "ORDER BY podcast_time DESC";
 	return $db->query($sql);
-
-
-
 
 }
 ?>

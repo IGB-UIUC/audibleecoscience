@@ -3,13 +3,13 @@ include_once 'includes/main.inc.php';
 include_once 'users.class.inc.php';
 include_once 'categories.class.inc.php';
 
-$user = new users($mysqlSettings);
+$user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){header( 'Location: invalid.php' ) ;}
 
 
 
-$categories = new categories($mysqlSettings);
+$categories = new categories($db);
 
 
 
@@ -33,10 +33,10 @@ if (isset($_POST['addCategories'])) {
 $headCategories = $categories->getHeadCategories();
 
 
-$headCategoriesHtml;
-for ($i=0;$i<count($headCategories);$i++) {
-	$category_id = $headCategories[$i]['category_id'];
-	$category_name = $headCategories[$i]['category_name'];
+$headCategoriesHtml = "";
+foreach ($headCategories as $category) {
+	$category_id = $category['category_id'];
+	$category_name = $category['category_name'];
 	$headCategoriesHtml .= "<option value='" . $category_id . "'>" . $category_name . "</option>";
 
 

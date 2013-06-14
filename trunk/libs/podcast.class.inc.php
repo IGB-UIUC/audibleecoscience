@@ -33,14 +33,12 @@ class podcast {
 	private $file;
 	private $category;
 	private $category_id;
-	private $mysqlSettings;
 
 //////////////Public Functions///////////////
 
-	public function __construct($podcast_id,$mysqlSettings) {
+	public function __construct($podcast_id,$db) {
 		
-		$this->db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
-		$this->mysqlSettings = $mysqlSettings;		
+		$this->db = $db;
 		
 		$this->id = $podcast_id;
 		$this->getPodcastInfo();		
@@ -58,7 +56,7 @@ class podcast {
 
 	public function setSource($source) {
 		$source = trim(rtrim($source));
-		$safeSource = mysql_real_escape_string($source,$this->db->getLink());
+		$safeSource = mysql_real_escape_string($source,$this->db->get_link());
                 $sql = "UPDATE podcasts SET podcast_source='" . $safeSource . "' WHERE podcast_id='" . $this->id . "'";
 		$result = $this->db->non_select_query($sql);
                 if ($result) {
@@ -75,7 +73,7 @@ class podcast {
 
 	public function setProgramName($programName) {
 		$programName = trim(rtrim($programName));
-		$safeProgramName = mysql_real_escape_string($programName,$this->db->getLink());
+		$safeProgramName = mysql_real_escape_string($programName,$this->db->get_link());
 		$sql = "UPDATE podcasts SET podcast_programName='" . $safeProgramName . "' WHERE podcast_id='" . $this->id . "'"; 
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
@@ -90,7 +88,7 @@ class podcast {
 	}
 	public function setShowName($showName) {
 		$showName = trim(rtrim($showName));
-		$safeShowName = mysql_real_escape_string($showName,$this->db->getLink());
+		$safeShowName = mysql_real_escape_string($showName,$this->db->get_link());
 		$sql = "UPDATE podcasts SET podcast_showName='" . $safeShowName . "' WHERE podcast_id='" . $this->id . "'";
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
@@ -120,7 +118,7 @@ class podcast {
 
 	public function setSummary($summary) {
 		$summary = trim(rtrim($summary));
-		$safeSummary = mysql_real_escape_string($summary,$this->db->getLink());
+		$safeSummary = mysql_real_escape_string($summary,$this->db->get_link());
 		$sql = "UPDATE podcasts SET podcast_summary='" . $safeSummary . "' WHERE podcast_id='" . $this->id . "'";
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
@@ -137,7 +135,7 @@ class podcast {
 
 	public function setUrl($url) {
 		$url = trim(rtrim($url));
-		$safeUrl = mysql_real_escape_string($url,$this->db->getLink());
+		$safeUrl = mysql_real_escape_string($url,$this->db->get_link());
 		$sql = "UPDATE podcasts SET podcast_url='" . $safeUrl . "' WHERE podcast_id='" . $this->id . "'";
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
@@ -169,7 +167,7 @@ class podcast {
 	}
 
 	public function setCreatedBy($username) {
-		$users = new users($this->mysqlSettings);
+		$users = new users($this->db);
 		$user_id = $users->getUserID($username);
 		$users->__destruct();
 		$sql = "UPDATE podcasts SET podcast_createBy='" . $user_id . "' WHERE podcast_id='" . $this->id . "'";

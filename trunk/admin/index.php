@@ -3,16 +3,16 @@ include 'includes/main.inc.php';
 include 'includes/header.inc.php';
 include 'functions.inc.php';
 
-$podcasts = getYourPodcasts($username,$mysqlSettings);
+$podcasts = getYourPodcasts($username,$db);
 
-$podcastsHtml;
-for ($i=0;$i<count($podcasts);$i++) {
-	$source = $podcasts[$i]['podcast_source'];
-	$showName = $podcasts[$i]['podcast_showName'];
-	$programName = $podcasts[$i]['podcast_programName'];
-	$approved = $podcasts[$i]['podcast_approved'];
-	$podcast_id = $podcasts[$i]['podcast_id'];
-	$time = $podcasts[$i]['podcast_time'];
+$podcastsHtml = "";
+foreach ($podcasts as $podcast) {
+	$source = $podcast['podcast_source'];
+	$showName = $podcast['podcast_showName'];
+	$programName = $podcast['podcast_programName'];
+	$approved = $podcast['podcast_approved'];
+	$podcast_id = $podcast['podcast_id'];
+	$time = $podcast['podcast_time'];
 	$podcastsHtml .= "<tr>";
 	if ($approved == 1) {
 		$podcastsHtml .= "<td>Yes</td>";

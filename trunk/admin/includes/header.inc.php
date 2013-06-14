@@ -3,7 +3,7 @@
 include_once 'users.class.inc.php';
 
 
-$user = new users($mysqlSettings);
+$user = new users($db);
 $group = $user->getGroup($username);
 
 $nopermission = "<div id='error'>You do not have permission to view this page.</div>";

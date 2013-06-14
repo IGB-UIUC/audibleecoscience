@@ -3,7 +3,7 @@ include_once 'includes/main.inc.php';
 include_once 'users.class.inc.php';
 include_once 'categories.class.inc.php';
 
-$user = new users($mysqlSettings);
+$user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){header( 'Location: invalid.php' ) ;}
 
@@ -12,7 +12,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 	$id = $_GET['id'];
 
-	$categories = new categories($mysqlSettings);
+	$categories = new categories($db);
 
 	$categoryName = $categories->getName($id);
 

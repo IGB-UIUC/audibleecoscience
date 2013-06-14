@@ -3,7 +3,7 @@ include_once 'includes/main.inc.php';
 include_once 'authentication.inc.php';
 include_once 'users.class.inc.php';
 
-$user = new users($mysqlSettings);
+$user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){
         header('Location: invalid.php');
@@ -38,7 +38,7 @@ include_once 'includes/header.inc.php';
 <p class='subHeader'>Add User Form</p>
 
 <br>NetID: 
-<br><input type='text' name='netid' value='<?php echo $netid; ?>'>
+<br><input type='text' name='netid' value='<?php if (isset($netid)) { echo $netid; } ?>'>
 <br>Group Privileges: 
 <br>
 <?php echo $list; ?>

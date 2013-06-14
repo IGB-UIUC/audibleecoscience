@@ -3,14 +3,15 @@ include_once 'includes/main.inc.php';
 include_once 'users.class.inc.php';
 include_once 'functions.inc.php';
 
-$user = new users($mysqlSettings);
+$user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){
 	header('Location: invalid.php');
 }
 
 
-$podcasts = getUnapprovedPodcasts($mysqlSettings);
+$podcasts = getUnapprovedPodcasts($db);
+$unapprovedHtml = "";
 for ($i=0;$i<count($podcasts);$i++) {
 
 	$source = $podcasts[$i]['podcast_source'];
