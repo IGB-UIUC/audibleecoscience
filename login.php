@@ -13,11 +13,13 @@
 //						//
 //////////////////////////////////////////////////
 
-set_include_path('libs');
+//set_include_path('libs');
+//include 'authentication.inc.php';
+//include 'includes/settings.inc.php';
+//session_start();
+include_once 'includes/main.inc.php';
 include 'authentication.inc.php';
-include 'includes/settings.inc.php';
 session_start();
-
 if (isset($_SESSION['webpage'])) {
 	$webpage = $_SESSION['webpage'];
 }
@@ -32,7 +34,7 @@ if (isset($_POST['login'])) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	
-	$success = authenticate($username,$password,$authenticationSettings,$mysqlSettings);
+	$success = authenticate($username,$password,$authenticationSettings,$db);
 
 	if ($success == "1") {
 		

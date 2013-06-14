@@ -23,9 +23,9 @@ class users {
 
 //////////////Public Functions///////////////
 
-	public function __construct($mysqlSettings) {
+	public function __construct($db) {
 
-		$this->db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
+		$this->db = $db;
 	}
 	public function __destruct() {
         	
@@ -62,9 +62,15 @@ class users {
 		(to check for enabled user see userstatus function)
 		requires netid		*/
 	public function userExists($username) {
-		$safeUser = mysql_real_escape_string($username,$this->db->getLink());
-              $sql = "SELECT * from users WHERE user_name='" . $safeUser . "'";			 
-		return  $this->db->count_query($sql);
+		$safeUser = mysql_real_escape_string($username,$this->db->get_link());
+              	$sql = "SELECT count(1) as count from users WHERE user_name='" . $safeUser . "'";			 
+		$result = $this->db->query($sql);
+		if ($result[0]['count']) {
+			return true;
+		}
+		else {
+			return false;
+		}
 
 	
 	}
@@ -78,7 +84,7 @@ class users {
 	public function addUser($netid, $admin, $authenticationSettings) {
 		$success = '0';
 			//check if user exists first......
-		$safeNetID = mysql_real_escape_string($netid,$this->db->getLink());
+		$safeNetID = mysql_real_escape_string($netid,$this->db->get_link());
 		$exist = $this->userexists($safeNetID);
 
 			//if user doesnt exists
@@ -175,15 +181,17 @@ class users {
 		return $result;
 	}
 	public function getGroup($username) {
-		$safeUser = mysql_real_escape_string($username,$this->db->getLink());
-		$sql = "Select user_groupsID from users WHERE user_name = '" . $safeUser . "'";
-		return $this->db->single_query($sql); //return 1 for admin
+		$safeUser = mysql_real_escape_string($username,$this->db->get_link());
+		$sql = "Select user_groupsID from users WHERE user_name = '" . $safeUser . "' LIMIT 1";
+		$result = $this->db->query($sql); //return 1 for admin
+		return $result[0]['user_groupsID'];
 		
 	}
 
 	public function lastID() {
-		$sql = "Select max(user_ID) from users";
-		return $this->db->single_query($sql); //return 1 for admin
+		$sql = "Select max(user_ID) as max from users";
+		$result = $this->db->query($sql); //return 1 for admin
+		return $result[0]['max'];
 		
 	}
 
@@ -194,15 +202,16 @@ class users {
 	public function userStatus($username) {
 		$result = $this->userexists($safeNetID);
 		if ($result!="1") {
-			$safeUser = mysql_real_escape_string($username,$this->db->getLink());
-			$sql = "Select user_enabled from users WHERE user_name = '" . $safeUser . "'";
-			return $this->db->single_query($sql); 	
+			$safeUser = mysql_real_escape_string($username,$this->db->get_link());
+			$sql = "Select user_enabled from users WHERE user_name = '" . $safeUser . "' LIMIT 1";
+			$result = $this->db->query($sql); 	
+			return $result[0]['user_enabled'];
 		}	
 	}
 	
 	
 	public function setGroup($username, $group_id) { //dunno if i wanna do this a different way...
-		$safeUser = mysql_real_escape_string($username,$this->db->getLink());
+		$safeUser = mysql_real_escape_string($username,$this->db->get_link());
 			$sql = "UPDATE users SET user_groupsId ='" . $group_id . "' WHERE user_name = '" . $safeUser . "'";
 		$result = $this->db->non_select_query($sql);
 		//return?
@@ -218,7 +227,7 @@ class users {
 		enables a previously created user account 
 		requires netid  		*/
 	public function enableUser($username) { 
-		$safeUser = mysql_real_escape_string($username,$this->db->getLink());
+		$safeUser = mysql_real_escape_string($username,$this->db->get_link());
 			$sql = "UPDATE users SET user_enabled = '1' WHERE user_name = '" . $safeUser . "'";
 		$result = $this->db->non_select_query($sql);
 		//return $result;
@@ -229,7 +238,7 @@ class users {
 		alternative to deleting account
 		requires netid 		*/
 	public function disableUser($username) { 
-		$safeUser = mysql_real_escape_string($username,$this->db->getLink());
+		$safeUser = mysql_real_escape_string($username,$this->db->get_link());
 		$sql = "UPDATE users SET user_enabled = '0' WHERE user_name = '" . $safeUser . "'";
 		$result = $this->db->non_select_query($sql);
 		return $result;
@@ -239,18 +248,20 @@ class users {
 		returns user_id (primary key) given the netid
 		requires netid		*/
 	public function getUserID($username) { 
-		$safeUser = mysql_real_escape_string($username,$this->db->getLink());
-		$sql = "Select user_id from users WHERE user_name = '" . $safeUser . "'";
-		return $this->db->single_query($sql);
+		$safeUser = mysql_real_escape_string($username,$this->db->get_link());
+		$sql = "Select user_id from users WHERE user_name = '" . $safeUser . "' LIMIT 1";
+		$result = $this->db->single_query($sql);
+		return $result[0]['user_id'];
 	}
 		
 	/*  getUserNetID
 		returns user's netid given their user_id
 		requires user_id 		*/
 	public function getUserNetID($userid) { 
-		$safeID = mysql_real_escape_string($userid,$this->db->getLink());
-		$sql = "Select user_name from users WHERE user_id = '" . $safeID . "'";
-		return $this->db->single_query($sql);
+		$safeID = mysql_real_escape_string($userid,$this->db->get_link());
+		$sql = "Select user_name from users WHERE user_id = '" . $safeID . "' LIMIT 1";
+		$result = $this->db->query($sql);
+		return $result[0]['user_name'];
 	}
 
 	public function dropdowngroup(){
@@ -267,7 +278,7 @@ class users {
 		returns link
 		requires letter 		*/
 	public function alphalink($letter) { 
-		$safeID = mysql_real_escape_string($letter,$this->db->getLink());
+		$safeID = mysql_real_escape_string($letter,$this->db->get_link());
 		/*$link = "<a href 'edituser.php?id=" . $letter . "'>" . $letter . "</a>";*/
 		$link = "<a href ='#" . $letter . "'>" . $letter . "</a>";
 		return $link;
@@ -276,7 +287,7 @@ class users {
 
 	public function search($term) {
 		$term = trim(rtrim($term));
-		$safeTerm = mysql_real_escape_string($term,$this->db->getLink());
+		$safeTerm = mysql_real_escape_string($term,$this->db->get_link());
 		$sql = "SELECT users.* FROM users WHERE users.user_enabled='1' ";
 		$sql .= "AND (users.user_name LIKE '%" .$term . "%' ";
 		$sql .= "OR users.user_firstname LIKE '%" . $term . "%' ";

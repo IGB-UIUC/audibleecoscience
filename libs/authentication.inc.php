@@ -14,7 +14,7 @@
 
 include_once 'users.class.inc.php';
 
-function authenticate($username,$password,$authenticationSettings,$mysqlSettings) {
+function authenticate($username,$password,$authenticationSettings,$db) {
 
 	$ldaphost = $authenticationSettings['host'];
 	$baseDN = $authenticationSettings['baseDN'];	
@@ -23,7 +23,7 @@ function authenticate($username,$password,$authenticationSettings,$mysqlSettings
 	$port = $authenticationSettings['port'];
 	$connect;
 
-	$users = new users($mysqlSettings);
+	$users = new users($db);
 	
 	if ($ssl == 1) {
 		$connect = ldap_connect("ldaps://" . $ldaphost,$port);

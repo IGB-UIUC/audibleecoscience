@@ -3,7 +3,7 @@ include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
 include_once 'users.class.inc.php';
 
-$user = new users($mysqlSettings);
+$user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){
         header('Location: invalid.php');
@@ -18,7 +18,7 @@ if (isset($_POST['importUsers'])) {
 	if (($fileName !== "") & ($fileError == '0') && (($fileType == 'txt') || ($fileType == 'csv'))) {
 		$tmpFileLocation = $_FILES['usersFile']['tmp_name'];
 
-		$users = new users($mysqlSettings);
+		$users = new users($db);
 		$result = $users->importUsers($tmpFileLocation,$authenticationSettings);
 
 		$success = 0;

@@ -64,9 +64,9 @@ if (isset($_POST['addPodcast'])) {
 	
 	if ($error == 0) {
 	
-		$id = addPodcast($mysqlSettings);
+		$id = addPodcast($db);
 		$ipAddress = $_SERVER['REMOTE_ADDR'];
-		$podcast = new podcast($id,$mysqlSettings);
+		$podcast = new podcast($id,$db);
 		$podcast->setSource($source);
 		$podcast->setProgramName($programName);
 		$podcast->setShowName($showName);
@@ -92,10 +92,10 @@ if (isset($_POST['addPodcast'])) {
 
 }
 
-$categories = new categories($mysqlSettings);
+$categories = new categories($db);
 
 $categoryList = $categories->getCategories();
-
+$categoriesHtml = "";
 for ($i=0;$i<count($categoryList);$i++) {
 	$category_id = $categoryList[$i]['category_id'];
 	$category_name = $categoryList[$i]['category_name'];

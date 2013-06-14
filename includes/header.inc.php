@@ -1,10 +1,9 @@
 <?php
-include_once 'categories.class.inc.php';
 
-$categories = new categories($mysqlSettings);
+$categories = new categories($db);
 $headCategories = $categories->getHeadCategories();
 
-$categoriesHtml;
+$categoriesHtml = "";
 for ($i=0;$i<count($headCategories);$i++) {
 	$category_id = $headCategories[$i]['category_id'];
 	$category_name = $headCategories[$i]['category_name'];
@@ -37,8 +36,8 @@ $today = date("F j, Y");
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" type="text/css" href="includes/styles.css">
-<link rel="alternate" type="application/rss+xml" title="Andrew Leakey Podcasts RSS Feed" href="rss.php">
-<TITLE>Welcome to Andrew Leakey's Podcasts Webpage</TITLE>
+<link rel="alternate" type="application/rss+xml" title="<?php echo __TITLE__; ?> RSS Feed" href="rss.php">
+<TITLE><?php echo __TITLE__; ?></TITLE>
 
 </HEAD>
 

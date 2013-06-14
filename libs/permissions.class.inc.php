@@ -24,9 +24,9 @@ class permissions {
 
 //////////////Public Functions///////////////
 
-	public function __construct($mysqlSettings) {
+	public function __construct($db) {
 
-		$this->db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
+		$this->db = $db;
 	}
 	public function __destruct() {
         	
@@ -37,8 +37,8 @@ class permissions {
 		returns permission level of given page
 		requires page         	*/
 	public function groupaccess($page) {
-		$safePage = mysql_real_escape_string($page,$this->db->getLink());
-		$safeGroup = mysql_real_escape_string($group,$this->db->getLink());
+		$safePage = mysql_real_escape_string($page,$this->db->get_link());
+		$safeGroup = mysql_real_escape_string($group,$this->db->get_link());
 		$new = substr($safePage,strrpos($safePage,"/")+1);			
 		$sql = "Select permission_group from permissions WHERE permission_site = '" . $new . "'";
 		return $this->db->single_query($sql); 	

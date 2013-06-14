@@ -3,20 +3,20 @@
 include_once 'includes/main.inc.php';
 include_once 'categories.class.inc.php';
 include_once 'users.class.inc.php';
-$user = new users($mysqlSettings);
+$user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){
         header('Location: invalid.php');
 }
 
 
-$categories = new categories($mysqlSettings);
+$categories = new categories($db);
 
 
 $headCategories = $categories->getHeadCategories();
 
 
-$categoriesListHtml;
+$categoriesListHtml = "";
 for ($i=0;$i<count($headCategories);$i++) {
 	$category_id = $headCategories[$i]['category_id'];
 	$category_name = $headCategories[$i]['category_name'];

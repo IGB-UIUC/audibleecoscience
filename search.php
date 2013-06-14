@@ -2,6 +2,8 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
 include_once 'functions.inc.php';
+
+$numPages = 0;
 if (isset($_GET['terms'])) {
 
 
@@ -16,7 +18,7 @@ if (isset($_GET['terms'])) {
 	
 	$terms = $_GET['terms'];
 	$terms = trim(rtrim($terms));
-	$podcasts = search($terms,$mysqlSettings);
+	$podcasts = search($terms,$db);
 	
 	$numPodcasts = count($podcasts);
 	$numPages = getNumPages($numPodcasts,$count);
@@ -52,7 +54,7 @@ if (isset($_GET['terms'])) {
 	else {
 
 		
-		$podcastsHtml;
+		$podcastsHtml = "";
 		for ($i=0;$i<count($podcasts);$i++) {
 
 			$source = $podcasts[$i]['podcast_source'];
@@ -76,7 +78,7 @@ if (isset($_GET['terms'])) {
 ?>
 <p class='subHeader'>Search</p>
 <form method='get' action='search.php'>
-<br><input type='text' name='terms' value='<?php echo $terms; ?>'><input type='submit' name='search' value='Search'>
+<br><input type='text' name='terms' value='<?php if (isset($terms)) { echo $terms; } ?>'><input type='submit' name='search' value='Search'>
 </form>
 <?php if (isset($searchMsg)) { echo $searchMsg; }
 

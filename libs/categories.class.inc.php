@@ -26,14 +26,13 @@ class categories {
 /////////////Public Functions///////////
 
 
-	public function __construct($mysqlSettings) {
+	public function __construct($db) {
 
-		$this->db = new db($mysqlSettings['host'],$mysqlSettings['database'],$mysqlSettings['username'],$mysqlSettings['password']);
+		$this->db = $db;
 	}
 
 
 	public function __destruct() {
-		$this->db->close();
 	}
 
 

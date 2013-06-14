@@ -15,7 +15,7 @@ $uploadErrors = array(
     8 => 'File upload stopped by extension.',
 );
 
-$users = new users($mysqlSettings);
+$users = new users($db);
 if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
 	$id = $_GET['id'];
 	$podcast = new podcast($id,$mysqlSettings);
@@ -39,7 +39,7 @@ if (isset($_POST['removePodcast'])) {
 	$success = "<b class='msg'>Podcast has been successfully removed";
 }
 elseif (isset($_POST['approvePodcast'])) {
-	$users = new users($mysqlSettings);
+	$users = new users($db);
 	$user_id = $users->getUserID($username);
 	$users->__destruct();
 	$podcast->approve($user_id);
@@ -104,7 +104,7 @@ elseif (isset($_POST['editPodcast'])) {
 
 	
 	if ($error == 0) {
-		$podcast = new podcast($id,$mysqlSettings);
+		$podcast = new podcast($id,$db);
 		$podcast->setSource($source);
 		$podcast->setProgramName($programName);
 		$podcast->setShowName($showName);

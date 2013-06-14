@@ -4,7 +4,7 @@ include_once 'includes/header.inc.php';
 include_once 'users.class.inc.php';
 include_once 'functions.inc.php';
 
-$user = new users($mysqlSettings);
+$user = new users($db);
 
 $group = $user->getGroup($username);
 if (!($group==1)){ header( 'Location: invalid.php' ) ;}
@@ -55,7 +55,7 @@ if ($currentPage < $numPages) {
 
 
 
-$usersHtml;
+$usersHtml = "";
 for ($i=0;$i<count($userList);$i++) {
 
 	$user_id = $userList[$i]['user_id'];
@@ -85,7 +85,7 @@ for ($i=0;$i<count($userList);$i++) {
 
 <div id='rightside'>
 	<form method='post' action='listUsers.php'>
-	<input type='text' name='terms' value='<?php echo $terms; ?>'>&nbsp&nbsp<input type='submit' name='search' value='Search'>
+	<input type='text' name='terms' value='<?php if (isset($terms)) { echo $terms; } ?>'>&nbsp&nbsp<input type='submit' name='search' value='Search'>
 	</form>
 	<br>
 </div>
