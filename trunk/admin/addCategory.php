@@ -1,7 +1,5 @@
 <?php
 include_once 'includes/main.inc.php';
-include_once 'users.class.inc.php';
-include_once 'categories.class.inc.php';
 
 $user = new users($db);
 $group = $user->getGroup($username);
@@ -13,12 +11,10 @@ $categories = new categories($db);
 
 
 
-if (isset($_POST['addCategories'])) {
-	$category = $_POST['category'];
+if (isset($_POST['add_category'])) {
 	$subCategory = $_POST['subCategory'];
-	$headCategoryId = $_POST['headCategory'];
 	if ($subCategory == "on") {
-		$categories->addChild($category,$headCategoryId);
+		$categories->addChild($_POST['category'],$_POST['headCategory']);
 
 	}
 	else {
@@ -49,13 +45,13 @@ include_once 'includes/header.inc.php';
 
 <p class='subHeader'>Add Category</p>
 <form action='addCategory.php' method='post' name='addCategoryForm' id='addCategoryForm'>
-<br>Category Name: <input type='text' name='category' value='<?php echo $category; ?>'>
+<br>Category Name: <input type='text' name='category' value='<?php if (isset($_POST['category'])) { echo $_POST['category']; } ?>'>
 <br>Sub Category: <input type='checkbox' OnClick='javascript:enableHeadCategories()' name='subCategory' id='subCategory'>
 <br><select name='headCategory' id='headCategory' disabled='true'>
 <?php echo $headCategoriesHtml; ?>
 
 </select>
-<br><input type='submit' name='addCategories' value='Add'>
+<br><input type='submit' name='add_category' value='Add'>
 </form>
 
 
