@@ -2,7 +2,6 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
 include_once 'functions.inc.php';
-include_once 'categories.class.inc.php';
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 

@@ -1,6 +1,5 @@
 <?php
 include_once 'includes/main.inc.php';
-include_once 'users.class.inc.php';
 include_once 'functions.inc.php';
 
 $user = new users($db);

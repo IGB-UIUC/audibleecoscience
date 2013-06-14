@@ -1,9 +1,6 @@
 <?php
 include_once 'includes/main.inc.php';
 include_once 'functions.inc.php';
-include_once 'podcast.class.inc.php';
-include_once 'categories.class.inc.php';
-include_once 'users.class.inc.php';
 
 $uploadErrors = array(
     1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
