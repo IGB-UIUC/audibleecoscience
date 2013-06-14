@@ -53,17 +53,17 @@ include_once 'includes/header.inc.php';
 
 <script language='JavaScript' src='includes/user.js'></script>
 
-<p class='subHeader'><?php echo $first_name . " " . $last_name; ?></p>
+<h3><?php echo $first_name . " " . $last_name; ?></h3>
 
-<form method='post' action='user.php?id=<?php echo $id; ?>'>
+<form method='post' action='user.php?id=<?php echo $id; ?>' class='form-vertical'>
 <input type='hidden' name='id' value='<?php echo $id; ?>'>
 <br>NetID: <?php echo $user_name; ?>
 <br>Group: <select name='group_id'>
 
 <?php echo $groupHtml; ?>
 </select>
-<br><input type='submit' name='changeGroup' value='Change Group' onClick='return confirmChangeGroup();'>
-<br><input type='submit' name='delete' value='Delete User' onClick='return confirmUserDelete();'>
+<br><input class='btn' type='submit' name='changeGroup' value='Change Group' onClick='return confirmChangeGroup();'>
+<input class='btn' type='submit' name='delete' value='Delete User' onClick='return confirmUserDelete();'>
 </form>
 
 

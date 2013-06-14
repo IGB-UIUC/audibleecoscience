@@ -55,13 +55,13 @@ include_once 'includes/header.inc.php';
 
 ?>
 
-<p class='subHeader'>Import Users</p>
+<h3>Import Users</h3>
 <p>Create a txt file which lists the users netID.  One netID per line.
 <form method='post' action='importUsers.php' enctype='multipart/form-data'>
 <input type='hidden' name='MAX_FILE_SIZE' value='5242880'>
 <br>Users File:
 <br><input type='file' name='usersFile' size='40'>
-<br><input type='submit' name='importUsers' value='Import Users'>
+<br><input class='btn' type='submit' name='importUsers' value='Import Users'>
 <br><?php if (isset($importMsg)) { echo $importMsg; } ?>
 
 <?php 

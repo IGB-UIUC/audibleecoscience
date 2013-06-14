@@ -4,6 +4,8 @@
 set_include_path(get_include_path() . ':./libs');
 //Load Settings file
 include_once 'includes/settings.inc.php';
+include_once 'functions.inc.php';
+
 //Sets Timezone
 //date_default_timezone_set(__TIMEZONE__);
 

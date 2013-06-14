@@ -1,7 +1,6 @@
 <?php
 include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
-include_once 'functions.inc.php';
 
 $user = new users($db);
 
@@ -81,19 +80,20 @@ for ($i=0;$i<count($userList);$i++) {
 
 
 ?>
+<form class='form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
+        <div class='input-append'>
+                <input type='text' name='terms' class='input-long search-query' value='<?php echo $terms; ?>'>
+                <input type='submit' class='btn' name='search' value='Search'>
+        </div>
+</form>
 
-<div id='rightside'>
-	<form method='post' action='listUsers.php'>
-	<input type='text' name='terms' value='<?php if (isset($terms)) { echo $terms; } ?>'>&nbsp&nbsp<input type='submit' name='search' value='Search'>
-	</form>
-	<br>
-</div>
 
 
-<p class='subHeader'>Search Users</p>
+
+<h3>Search Users</h3>
 
 <?php if (isset($msg)) { echo $msg; } ?>
-<table>
+<table class='table table-bordered'>
 
 <?php
 	echo $usersHtml;

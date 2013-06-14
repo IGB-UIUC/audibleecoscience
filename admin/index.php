@@ -1,7 +1,6 @@
 <?php
 include 'includes/main.inc.php';
 include 'includes/header.inc.php';
-include 'functions.inc.php';
 
 $podcasts = getYourPodcasts($username,$db);
 
@@ -33,16 +32,15 @@ foreach ($podcasts as $podcast) {
 }
 
 ?>
-<p class='subHeader'>My Podcasts</p>
+<h3>My Podcasts</h3>
 
-<table>
+<table class='table table-bordered'>
         <tr>
-		<td>Approved</td>
-                <td>Show Name</td>
-                <td>Source</td>
-                <td>Program</td>
-		<td>Time Uploaded</td>
-		<td></td>
+		<th>Approved</th>
+                <th>Show Name</th>
+                <th>Source</th>
+                <th>Program</th>
+		<th>Time Uploaded</th>
         </tr>
 <?php echo $podcastsHtml; ?>
 

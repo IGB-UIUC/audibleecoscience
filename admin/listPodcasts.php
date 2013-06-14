@@ -1,7 +1,6 @@
 <?php
 include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
-include_once 'functions.inc.php';
 
 if (isset($_GET['start']) && is_numeric($_GET['start'])) {
 	$start = $_GET['start'];
@@ -71,16 +70,15 @@ for ($i=0;$i<count($podcasts);$i++) {
 
 ?>
 
-<p class='subHeader'>All Podcasts</p>
-<table>
+<h3>All Podcasts</h3>
+<table class='table table-bordered'>
 	<tr>
-		<td>Approved</td>
-		<td>Show Name</td>
-		<td>Source</td>
-		<td>Program</td>
-		<td>Time Uploaded</td>
-		<td>Create By</td>
-		<td></td>
+		<th>Approved</th>
+		<th>Show Name</th>
+		<th>Source</th>
+		<th>Program</th>
+		<th>Time Uploaded</th>
+		<th>Create By</th>
 	</tr>
 <?php echo $podcastsHtml; ?>
 
