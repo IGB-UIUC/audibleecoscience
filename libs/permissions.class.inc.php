@@ -13,7 +13,6 @@
 //					//
 //////////////////////////////////////////
 
-include_once 'db.class.inc.php';
 
 class permissions {
 

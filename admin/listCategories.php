@@ -2,10 +2,10 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 
-$user = new users($db);
-$group = $user->getGroup($username);
+$user = new user($db,$ldap,$username);
+$admin = $user->is_admin();
 
-if (!($group==1)){
+if (!($admin)){
         header('Location: invalid.php');
 }
 

@@ -1,9 +1,12 @@
 <?php
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
-$user = new users($db);
-$group = $user->getGroup($username);
-if (!($group==1)){header( 'Location: invalid.php' ) ;}
+
+$user = new user($db,$ldap,$username);
+$admin = $user->is_admin();
+if (!($admin)){
+        header('Location: invalid.php');
+}
 
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -19,7 +22,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 	if (isset($_POST['remove'])) {
 		$result = $categories->remove($id);
 		if ($result == 0) {
-			$removeMsg = "<b class='error'>Unable to remove category.  Podcasts or subcategories are still inside this category.</b>";
+			$message = "<b class='error'>Unable to remove category.  Podcasts or subcategories are still inside this category.</b>";
 
 
 		}
@@ -32,7 +35,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 		$newName = trim(rtrim($newName));
 		
 		if ($newName == "") {
-			$updateNameMsg = "<b class='error'>Unable to update category name.  Name is blank.</b>";
+			$message = "<b class='error'>Unable to update category name.  Name is blank.</b>";
 		}	
 		else {
 			$categories->setName($id,$newName);
@@ -52,12 +55,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 include_once 'includes/header.inc.php';
 ?>
 
-<p class='subHeader'>Category - <?php echo $categoryName; ?></p>
+<h3>Category - <?php echo $categoryName; ?></h3>
 <form method='post' action='category.php?id=<?php echo $id; ?>'>
-<br>Name: <input type='text' name='newName' value='<?php echo $categoryName; ?>'><input type='submit' value='Change Name' name='updateName'>
+<br>Name: <input type='text' name='newName' value='<?php echo $categoryName; ?>'>
 
-<br><input type='submit' value='Remove' name='remove'>
-<br><?php if (isset($removeMsg)) { echo $removeMsg; } ?>
+<br><input class='btn btn-primary' type='submit' value='Change Name' name='update_name'>
+<input class='btn btn-danger' type='submit' value='Remove' name='remove'>
+<br><?php if (isset($message)) { echo $message; } ?>
 
 
 

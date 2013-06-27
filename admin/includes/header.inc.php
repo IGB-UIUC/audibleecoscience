@@ -1,7 +1,7 @@
 <?php
 
-$user = new users($db);
-$group = $user->getGroup($username);
+$user = new user($db,$ldap,$username);
+$admin = $user->is_admin();
 
 ?>
 <!DOCTYPE html>
@@ -41,7 +41,7 @@ $group = $user->getGroup($username);
 				<li><a href='index.php'>My Podcasts</a></li>
 				<li><a href='addPodcast.php'>Add Podcast</a></li>
 	                        <li><a href='instructions.php'>Instructions</a></li>
-				<?php if ($group == "1") {
+				<?php if ($user->is_admin()) {
 
 				echo "<li><a href='approve.php'>Unapproved Podcasts</a></li>
 					<li><a href='listPodcasts.php'>List All Podcasts</a></li>

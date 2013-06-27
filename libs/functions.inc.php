@@ -104,4 +104,19 @@ function search($search,$db) {
 	return $db->query($sql);
 
 }
+
+
+function get_users($db) {
+
+
+	$sql = "SELECT users.* FROM users ";
+	$sql .= "WHERE user_enabled='1' ";
+	$sql .= "ORDER BY user_name";
+        return  $db->query($sql);
+
+
+
+
+
+}
 ?>
