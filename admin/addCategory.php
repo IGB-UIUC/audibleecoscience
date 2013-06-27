@@ -1,6 +1,6 @@
 <?php
 include_once 'includes/main.inc.php';
-
+include_once 'includes/session.inc.php';
 $user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){header( 'Location: invalid.php' ) ;}
@@ -41,7 +41,6 @@ foreach ($headCategories as $category) {
 
 include_once 'includes/header.inc.php';
 ?>
-<script type='text/javascript' src='includes/categories.js'></script>
 
 <h3>Add Category</h3>
 <form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='post' name='addCategoryForm' id='addCategoryForm'>

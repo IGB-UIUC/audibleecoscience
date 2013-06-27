@@ -11,17 +11,29 @@
 //	May 2009				//
 //						//
 //////////////////////////////////////////////////
-session_start();
-if (($_SESSION['login']) == 1) {
-	
-	$username = $_SESSION['username'];
+
+include_once 'main.inc.php';
+$session = new session(__SESSION_NAME__);
+
+//If not logged in
+if (!($session->get_var('login'))) {
+	header('Location: logout.php');
 }
+//If session timeout is reach
+elseif (time() > $session->get_var('timeout') + __SESSION_TIMEOUT__) {
+        header('Location: logout.php');
+}
+//If IP address is different
+elseif ($_SERVER['REMOTE_ADDR'] != $session->get_var('ipaddress')) {
+        header('Location: logout.php');
+}
+
 else {
-	session_start();
-	$_SESSION['webpage'] = $_SERVER['REQUEST_URI'];
-	header('Location: ../login.php');
-	exit;
+	$username = $session->get_var('username');
 	
+	//Reset Timeout
+	$session_vars = array('timeout'=>time());
+	$session->set_session($session_vars);
 }
 	
 ?>

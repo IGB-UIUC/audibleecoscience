@@ -27,8 +27,6 @@ for ($i=0;$i<count($headCategories);$i++) {
 	}
 }
 
-
-$today = date("F j, Y");
 ?>
 <!DOCTYPE html>
 <html lang="en">

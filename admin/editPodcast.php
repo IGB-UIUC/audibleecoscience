@@ -1,6 +1,10 @@
 <?php
 include_once 'includes/main.inc.php';
+include_once 'includes/session.inc.php';
+include_once 'includes/header.inc.php';
 
+$user = new users($db);
+$group = $user->getGroup($username);
 $uploadErrors = array(
     1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
     2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
@@ -141,7 +145,6 @@ for ($i=0;$i<count($categoryList);$i++) {
 include_once 'includes/header.inc.php';
 ?>
 
-<script language='JavaScript' src='includes/podcast.js'></script>
 
 <?php
 if (isset($success)) { 

@@ -1,6 +1,10 @@
 <?php
 include_once 'includes/main.inc.php';
-include 'includes/header.inc.php';
+include_once 'includes/session.inc.php';
+include_once 'includes/header.inc.php';
+
+$user = new users($db);
+$group = $user->getGroup($username);
 
 ?>
 <h3>Instructions</h3>

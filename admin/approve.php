@@ -1,6 +1,6 @@
 <?php
 include_once 'includes/main.inc.php';
-
+include_once 'includes/session.inc.php';
 $user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){

@@ -13,14 +13,10 @@
 //						//
 //////////////////////////////////////////////////
 
-//set_include_path('libs');
-//include 'authentication.inc.php';
-//include 'includes/settings.inc.php';
-//session_start();
 include_once 'includes/main.inc.php';
 include_once 'authentication.inc.php';
 
-session_start();
+$session = new session(__SESSION_NAME__);
 if (isset($_SESSION['webpage'])) {
 	$webpage = $_SESSION['webpage'];
 }
@@ -36,11 +32,13 @@ if (isset($_POST['login'])) {
 	$success = authenticate($username,$password,$authenticationSettings,$db);
 	if ($success == "1") {
 		
-		session_destroy();
-		session_start();
+		$session_vars = array('login'=>true,
+			'username'=>$username,
+			'timeout'=>time(),
+			'ipaddress'=>$_SERVER['REMOTE_ADDR']
+		);
+		$session->set_session($session_vars);
 
-		$_SESSION['login'] = 1;		
-		$_SESSION['username'] = $username;
 
 		$location = "http://" . $_SERVER['SERVER_NAME'] . $webpage;
 		header("Location: " . $location);

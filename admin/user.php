@@ -1,9 +1,12 @@
 <?php
 include_once 'includes/main.inc.php';
+include_once 'includes/session.inc.php';
+
+$user = new users($db);
+$group = $user->getGroup($username);
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 	$id = $_GET['id'];
-	$user = new users($db);
 
 	//Sets current users information
 	$userInfo = $user->getUserInfo($id);
@@ -51,7 +54,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 include_once 'includes/header.inc.php';
 ?>
 
-<script language='JavaScript' src='includes/user.js'></script>
 
 <h3><?php echo $first_name . " " . $last_name; ?></h3>
 

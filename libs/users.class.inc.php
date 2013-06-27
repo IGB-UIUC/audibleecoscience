@@ -266,7 +266,7 @@ class users {
 		$grouplist = $this->getGroups();
 		$result = "<select name='group'>";
 		foreach ($grouplist as &$value) {
-			$result .= "<option value=".$value[group_id].">".$value[group_name]."</option>";
+			$result .= "<option value=".$value['group_id'].">".$value['group_name']."</option>";
 		}
 		$result .= "</select>";
 		return $result;
