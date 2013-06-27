@@ -18,7 +18,9 @@ define("__MYSQL_HOST__","127.0.0.1");
 define("__MYSQL_USER__","leakey_user");
 define("__MYSQL_PASSWORD__","9CPqhprMaH7RLpsP");
 define("__MYSQL_DATABASE__","leakey_podcasts");
-
+define("__SESSION_NAME__","leakeylab");
+define("__SESSION_TIMEOUT__",300);
+define("__TIMEZONE__","America/Chicago");
 
 $authenticationSettings = array(
 			'host' => 'AD-DC-P1.ad.uiuc.edu',

@@ -3,13 +3,11 @@
 $user = new users($db);
 $group = $user->getGroup($username);
 
-$nopermission = "<div id='error'>You do not have permission to view this page.</div>";
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script language='JavaScript' src='includes/main.inc.js'></script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="alternate" type="application/rss+xml" title="<?php echo __TITLE__; ?> RSS Feed" href="rss.php">
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">

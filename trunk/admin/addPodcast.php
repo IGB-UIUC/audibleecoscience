@@ -1,5 +1,8 @@
 <?php
 include_once 'includes/main.inc.php';
+include_once 'includes/session.inc.php';
+$user = new users($db);
+$group = $user->getGroup($username);
 
 if (isset($_POST['addPodcast'])) {
 	foreach ($_POST as $var) {
@@ -86,7 +89,7 @@ if (isset($_POST['addPodcast'])) {
 }
 
 //Hit Cancel button.  Clears form
-elseif ($_POST['cance']) {
+elseif (isset($_POST['cancel'])) {
 	unset($_POST);
 }
 

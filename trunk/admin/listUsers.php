@@ -1,12 +1,18 @@
 <?php
 include_once 'includes/main.inc.php';
+include_once 'includes/session.inc.php';
 include_once 'includes/header.inc.php';
 
 $user = new users($db);
-
 $group = $user->getGroup($username);
+
 if (!($group==1)){ header( 'Location: invalid.php' ) ;}
 
+if (isset($_GET['start']) && is_numeric($_GET['start'])) {
+        $start = $_GET['start'];
+}
+else { $start = 0;
+}
 
 if (isset($_POST['search'])) {
 	$terms = $_POST['terms'];
@@ -33,19 +39,19 @@ $currentPage = $start / $count +1;
 $pagesHtml = "<p>";
 if ($currentPage > 1) {
         $startRecord = $start - $count;
-        $pagesHtml .= "<a href='listUsers.php?id=" . $category_id . "&start=" . $startRecord . "'>Back</a> |";
+        $pagesHtml .= "<a href='listUsers.php?start=" . $startRecord . "'>Back</a> |";
 }
 for ($i=0;$i<$numPages;$i++) {
         $pageNumber = $i +1;
         $startRecord = $i * $count;
-        $pagesHtml .= " <a href='listUsers.php?id=" . $category_id . "&start=" . $startRecord . "'>" . $pageNumber . "</a> ";
+        $pagesHtml .= " <a href='listUsers.php?start=" . $startRecord . "'>" . $pageNumber . "</a> ";
         if ($pageNumber != $numPages) {
                 $pagesHtml .= " | ";
         }
 }
 if ($currentPage < $numPages) {
         $startRecord = $start + $count;
-        $pagesHtml .= " | <a href='listUsers.php?id=" . $category_id . "&start=" . $startRecord . "'>Next</a> ";
+        $pagesHtml .= " | <a href='listUsers.php?start=" . $startRecord . "'>Next</a> ";
 }
         $pagesHtml .= "</p>";
 
@@ -82,7 +88,7 @@ for ($i=0;$i<count($userList);$i++) {
 ?>
 <form class='form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
         <div class='input-append'>
-                <input type='text' name='terms' class='input-long search-query' value='<?php echo $terms; ?>'>
+                <input type='text' name='terms' class='input-long search-query' value='<?php if (isset($terms)) { echo $terms; } ?>'>
                 <input type='submit' class='btn' name='search' value='Search'>
         </div>
 </form>

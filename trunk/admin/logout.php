@@ -10,8 +10,9 @@
 //					//
 //////////////////////////////////////////
 
-include 'includes/session.inc.php';
-session_destroy();
+include_once 'includes/main.inc.php';
+$session = new session(__SESSION_NAME__);
+$session->destroy_session();
 header("Location: ../index.php")
 
 ?>

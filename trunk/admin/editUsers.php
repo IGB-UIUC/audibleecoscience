@@ -1,10 +1,11 @@
 <?php
 include_once 'includes/main.inc.php';
+include_once 'includes/session.inc.php';
 include_once 'includes/header.inc.php';
 
 $user = new users($db);
-
 $group = $user->getGroup($username);
+
 if (!($group==1)){header( 'Location: invalid.php' ) ;}
 
 
@@ -71,7 +72,6 @@ if (!($group==1)){header( 'Location: invalid.php' ) ;}
 
 ?>
 
-<script language='JavaScript' src='includes/audio-player.js'></script>
 <form method='post' action='editUsers.php'>
 <div id='rightside'>
 	<input type='text' name='terms'>&nbsp&nbsp<input type='submit' name='search' value='Search'>

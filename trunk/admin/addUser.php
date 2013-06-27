@@ -1,7 +1,7 @@
 <?php
 include_once 'includes/main.inc.php';
+include_once 'includes/session.inc.php';
 include_once 'authentication.inc.php';
-
 $user = new users($db);
 $group = $user->getGroup($username);
 if (!($group==1)){
@@ -26,7 +26,6 @@ if (isset($_POST['addUser'])) {
 
 	}
 	$msg = "<b class='error'>" . $result[1] . "</b>";
-	$netid = "";
 }
 
 elseif (isset($_POST['cancel'])) {
@@ -36,7 +35,7 @@ elseif (isset($_POST['cancel'])) {
 include_once 'includes/header.inc.php';
 ?>
 <h3>Add User Form</h3>
-<form method='post' enctype='multipart/form-data' action='addUser.php'>
+<form method='post' enctype='multipart/form-data' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 
 <br>NetID: 
 <br><input type='text' name='netid' value='<?php if (isset($netid)) { echo $netid; } ?>'>

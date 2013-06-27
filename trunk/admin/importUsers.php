@@ -1,6 +1,8 @@
 <?php
 include_once 'includes/main.inc.php';
+include_once 'includes/session.inc.php';
 include_once 'includes/header.inc.php';
+
 
 $user = new users($db);
 $group = $user->getGroup($username);
@@ -45,8 +47,10 @@ if (isset($_POST['importUsers'])) {
 		$importMsg = "<b class='error'>Error uploading users file. Error: File type must be .txt or .csv</b>";
 
 	}
+}
 
-
+elseif (isset($_POST['cancel'])) {
+	unset($_POST);
 
 
 }
@@ -56,12 +60,13 @@ include_once 'includes/header.inc.php';
 ?>
 
 <h3>Import Users</h3>
-<p>Create a txt file which lists the users netID.  One netID per line.
-<form method='post' action='importUsers.php' enctype='multipart/form-data'>
+<p>Create a text file which lists the users netID.  One netID per line.
+<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' enctype='multipart/form-data'>
 <input type='hidden' name='MAX_FILE_SIZE' value='5242880'>
 <br>Users File:
-<br><input type='file' name='usersFile' size='40'>
-<br><input class='btn' type='submit' name='importUsers' value='Import Users'>
+<br><input class='btn btn-file' type='file' name='usersFile' size='40'>
+<p><input class='btn btn-primary' type='submit' name='importUsers' value='Import Users'>
+<input class='btn btn-warning' type='submit' name='cancel' value='Cancel'></p>
 <br><?php if (isset($importMsg)) { echo $importMsg; } ?>
 
 <?php 
