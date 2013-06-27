@@ -248,7 +248,7 @@ class users {
 	public function getUserID($username) { 
 		$safeUser = mysql_real_escape_string($username,$this->db->get_link());
 		$sql = "Select user_id from users WHERE user_name = '" . $safeUser . "' LIMIT 1";
-		$result = $this->db->single_query($sql);
+		$result = $this->db->query($sql);
 		return $result[0]['user_id'];
 	}
 		

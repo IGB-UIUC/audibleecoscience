@@ -1,7 +1,6 @@
 <?php
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
-include_once 'includes/header.inc.php';
 
 $user = new users($db);
 $group = $user->getGroup($username);
@@ -18,7 +17,7 @@ $uploadErrors = array(
 $users = new users($db);
 if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
 	$id = $_GET['id'];
-	$podcast = new podcast($id,$mysqlSettings);
+	$podcast = new podcast($id,$db);
 	$category_id = $podcast->getCategoryId();
 	$source = $podcast->getSource();
 	$programName = $podcast->getProgramName();
@@ -116,16 +115,19 @@ elseif (isset($_POST['editPodcast'])) {
 		$success = "<b class='msg'>Podcast successfully updated.</b";
 	}
 
+}
 
+elseif (isset($_POST['cancel'])) {
+	unset($_POST);
 
 }
 
 
 
-$categories = new categories($mysqlSettings);
+$categories = new categories($db);
 
 $categoryList = $categories->getCategories();
-
+$categoriesHtml = "";
 for ($i=0;$i<count($categoryList);$i++) {
 	$categoryList_id = $categoryList[$i]['category_id'];
 	$categoryList_name = $categoryList[$i]['category_name'];
@@ -173,7 +175,8 @@ else {
 <br><select name='category'>
 <?php echo $categoriesHtml; ?>
 </select>
-<br><input type='submit' name='editPodcast' value='Edit Podcast'>
+<br><input class='btn btn-primary' type='submit' name='editPodcast' value='Edit Podcast'>
+<input class='btn btn-warning' type='submit' name='cancel' value='Cancel'>
 
 <?php
 
@@ -183,16 +186,16 @@ if ($users->getGroup($username) == 1) {
 	echo "<br>Time Uploaded: " . $time;
 	if ($approved == 1) {
 		echo "<br>Approved By: " . $approvedBy;
-		echo "<br><input type='submit' name='unapprovePodcast' value='Unapprove Podcast' onClick='return confirmUnapprove()'>";
+		echo "<br><input class='btn btn-primary' type='submit' name='unapprovePodcast' value='Unapprove Podcast' onClick='return confirmUnapprove()'>";
 	}
 	elseif ($approved == 0) {
-		echo "<br><input type='submit' name='approvePodcast' value='Approve Podcast' onClick='return confirmApprove()'>";
+		echo "<br><input class='btn btn-primary' type='submit' name='approvePodcast' value='Approve Podcast' onClick='return confirmApprove()'>";
 	}
 }
 
 ?>
 
-<br><input type='submit' name='removePodcast' value='Remove Podcast' onClick='return confirmRemove()'>
+<p><input class='btn btn-danger' type='submit' name='removePodcast' value='Remove Podcast' onClick='return confirmRemove()'></p>
 </form>
 
 

@@ -44,9 +44,9 @@ CREATE TABLE podcasts (
 	podcast_summary MEDIUMTEXT,
 	podcast_acknowledgement BOOLEAN DEFAULT 0,
 	pdocast_permission_review BOOLEAN DEFAULT 0,
-	podcast_approved BOOLEAN,
+	podcast_approved BOOLEAN DEFAULT 0,
 	podcast_approvedBy INT REFERENCES users(user_id),
-	pdocat_quality INT,
+	podcast_quality INT,
 	podcast_enabled BOOLEAN DEFAULT 1,
 	PRIMARY KEY(podcast_id)
 );

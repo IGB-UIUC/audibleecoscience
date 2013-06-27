@@ -3,7 +3,7 @@ include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 $user = new users($db);
 $group = $user->getGroup($username);
-
+$allowed_file_types = explode(",",__FILETYPES__);
 if (isset($_POST['addPodcast'])) {
 	foreach ($_POST as $var) {
 		$var = trim(rtrim($var));
@@ -15,9 +15,19 @@ if (isset($_POST['addPodcast'])) {
 	$url = $_POST['url'];
 	$summary = $_POST['summary'];
 	$category = $_POST['category'];
+
+	$acknowledgement = false;
+	if (isset($_POST['acknowledgement'])) {
+		$acknowlegdgement = $_POST['acknowledgement'];
+	}
+	$review_permission = false;
+	if (isset($_POST['review_permission'])) {
+		$review_permission = $_POST['review_permission'];
+	}
 	$filename = $_FILES['file']['name'];
 	$tmpFile = $_FILES['file']['tmp_name'];
 	$fileError = $_FILES['file']['error'];
+	$allowed_file_types = explode(",",__FILETYPES__);
 	$filetype = strtolower(end(explode(".",$filename)));
 	$error = 0;
 	if ($source == "") {
@@ -47,9 +57,9 @@ if (isset($_POST['addPodcast'])) {
 		$summaryMsg = "<b class='error'>Please enter a summary</b>";
 
 	}
-	if ($fileType != 0) {
+	if (!in_array($filetype,$allowed_file_types)) {
 		$error++;
-		$fileMsg = "<b class='error'>File Type must be Mp3.</b>";
+		$fileMsg = "<b class='error'>Invalid filetype.</b>";
 
 	}
 
@@ -59,7 +69,7 @@ if (isset($_POST['addPodcast'])) {
 	}	
 	
 	if ($error == 0) {
-	
+
 		$id = addPodcast($db);
 		$ipAddress = $_SERVER['REMOTE_ADDR'];
 		$podcast = new podcast($id,$db);
@@ -72,6 +82,8 @@ if (isset($_POST['addPodcast'])) {
 		$podcast->setSummary($summary);	
 		$podcast->setIPAddress($ipAddress);
 		$podcast->setCreateBy($username);
+		$podcast->setReviewPermission($review_permission);
+		$podcast->setAcknowledgement($acknowledgement);
 		$podcast->uploadPodcast($filename,$tmpFile,$absPodcastDirectory);		
 
 		$success = "<b class='msg'>Podcast successfully submitted";
@@ -134,6 +146,8 @@ if (isset($success)) { echo $success; }
 
 <br>Podcast: <?php if (isset ($fileMsg)) { echo $fileMsg; } ?>
 <br><input type='file' name='file'>
+<br><input type='checkbox' name='acknowledgement'>Should review be acknowledge by you
+<br><input type='checkbox' name='review_permission'>Allow your review to be used
 <br><input class='btn' type='submit' name='addPodcast' value='Add Podcast'>
 <input class='btn' type='submit' name='cancel' value='Cancel'>
 </form>

@@ -10,24 +10,18 @@ $group = $user->getGroup($username);
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 	$id = $_GET['id'];
 	$podcast = new podcast($id,$db);
-	$programName = $podcast->getProgramName();
-	$showName = $podcast->getShowName();
-	$year = $podcast->getBroadcastYear();
-	$url = $podcast->getUrl();
-	$summary = $podcast->getSummary();
-	$source = $podcast->getSource();
 	$relFile = $relPodcastDirectory . $podcast->getFile();	
 }
 ?>
 
 <script language='JavaScript' src='../includes/audio-player.js'></script>
 
-<p class='subHeader'><?php echo $showName; ?></p>
-<br>Media Source: <?php echo $source; ?>
-<br>Program Name: <?php echo $programName; ?>
-<br>Broadcast Year: <?php echo $year; ?>
-<br>Original Link: <a href='<?php echo $url; ?>' target='_blank'><?php echo $url; ?></a>
-<br>Summary: <?php echo $summary; ?>
+<h3><?php echo $podcast->getShowName(); ?></h3>
+<br>Media Source: <?php echo $podcast->getSource(); ?>
+<br>Program Name: <?php echo $podcast->getProgramName(); ?>
+<br>Broadcast Year: <?php echo $podcast->getBroadcastYear(); ?>
+<br>Original Link: <a href='<?php echo $podcast->getUrl(); ?>' target='_blank'><?php echo $podcast->getUrl(); ?></a>
+<br>Summary: <?php echo $podcast->getSummary(); ?>
 <br>Play Podcast: 
 <object type='application/x-shockwave-flash' data='../includes/player.swf' id='audioplayer1' height='18' width='200'>
 	<param name='movie' value='../includes/player.swf'>
