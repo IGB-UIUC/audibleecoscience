@@ -43,7 +43,7 @@ CREATE TABLE podcasts (
 	podcast_url VARCHAR(100),
 	podcast_summary MEDIUMTEXT,
 	podcast_acknowledgement BOOLEAN DEFAULT 0,
-	pdocast_permission_review BOOLEAN DEFAULT 0,
+	podcast_permission_review BOOLEAN DEFAULT 0,
 	podcast_approved BOOLEAN DEFAULT 0,
 	podcast_approvedBy INT REFERENCES users(user_id),
 	podcast_quality INT,
