@@ -278,6 +278,33 @@ class podcast {
 
 
 	}
+
+	public function setAcknowledgement($acknowledgement) {
+		$sql = "UPDATE podcasts SET podcast_acknowledgement='" . $acknowledgement . "' ";
+		$sql .= "WHERE podcast_id='" . $this->id . "'";
+		$result = $this->db->non_select_query($sql);
+		return $result;
+
+	}
+
+	public function setReviewPermission($review_permission) {
+		$sql = "UPDATE podcasts SET podcast_review_permission='" . $review_permission . "' ";
+                $sql .= "WHERE podcast_id='" . $this->id . "'";
+                $result = $this->db->non_select_query($sql);
+                return $result;
+
+	}
+
+	public function setCreateBy($username) {
+		$sql = "SELECT user_id FROM users WHERE user_name='" . $username . "' LIMIT 1";
+		$result = $this->db->query($sql);
+		$user_id = $result['user_id'];
+		$sql = "UPDATE podcast SET podcast_createBy='" . $user_id . "' ";
+		$sql .= "WHERE podcast_id='" . $this->id . "'";
+		return $this->db->non_select_query($sql);
+
+	}
+
 ////////////////////////Private Functions/////////////
 
 	private function getPodcastInfo() {

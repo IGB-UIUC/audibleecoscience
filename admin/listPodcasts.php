@@ -25,47 +25,39 @@ $currentPage = $start / $count +1;
 $pagesHtml = "<p>";
 if ($currentPage > 1) {
 	$startRecord = $start - $count;
-	$pagesHtml .= "<a href='listPodcasts.php?id=" . $category_id . "&start=" . $startRecord . "'>Back</a> |";
+	$pagesHtml .= "<a href='listPodcasts.php?start=" . $startRecord . "'>Back</a> |";
 }
 for ($i=0;$i<$numPages;$i++) {
 	$pageNumber = $i +1;
 	$startRecord = $i * $count;
-	$pagesHtml .= " <a href='listPodcasts.php?id=" . $category_id . "&start=" . $startRecord . "'>" . $pageNumber . "</a> ";
+	$pagesHtml .= " <a href='listPodcasts.php?start=" . $startRecord . "'>" . $pageNumber . "</a> ";
 	if ($pageNumber != $numPages) {
 		$pagesHtml .= " | ";
 	}
 }
 if ($currentPage < $numPages) {
 	$startRecord = $start + $count;
-	$pagesHtml .= " | <a href='listPodcasts.php?id=" . $category_id . "&start=" . $startRecord . "'>Next</a> ";
+	$pagesHtml .= " | <a href='listPodcasts.php?start=" . $startRecord . "'>Next</a> ";
 }
 	$pagesHtml .= "</p>";
 
 
 $podcastsHtml = "";
-for ($i=0;$i<count($podcasts);$i++) {
-	$approved = $podcasts[$i]['podcast_approved'];
-	if ($approved == 1) { 
+foreach ($podcasts as $podcast) {
+
+	$approved = "No";
+	if ($podcast['podcast_approved'] == 1) { 
 		$approved = "Yes"; 
 	}
-	elseif ($approved == 0) {
-		$approved = "No";
-	}
 	
-
-	$source = $podcasts[$i]['podcast_source'];
-	$showName = $podcasts[$i]['podcast_showName'];
-	$programName = $podcasts[$i]['podcast_programName'];
-	$time = $podcasts[$i]['podcast_time'];
-	$createdBy = $podcasts[$i]['user_name'];
-	$podcast_id = $podcasts[$i]['podcast_id'];
 	$podcastsHtml .= "<tr><td>" . $approved . "</td>";
-	$podcastsHtml .= "<td><a href='podcast.php?id=" . $podcast_id . "'>" . $showName . "</a></td>";	
-	$podcastsHtml .= "<td>" . $source . "</td>";
-	$podcastsHtml .= "<td>" . $programName . "</td>";
-	$podcastsHtml .= "<td>" . $time . "</td>";
-	$podcastsHtml .= "<td>" . $createdBy . "</td>"; 
-	$podcastsHtml .= "<td><input type='button' value='Edit' onClick=\"window.location.href='editPodcast.php?id=" . $podcast_id . "'\"></td>";
+	$podcastsHtml .= "<td><a href='podcast.php?id=" . $podcast['podcast_id'] . "'>" . $podcast['podcast_showName'] . "</a></td>";	
+	$podcastsHtml .= "<td>" . $podcast['podcast_source'] . "</td>";
+	$podcastsHtml .= "<td>" . $podcast['podcast_programName'] . "</td>";
+	$podcastsHtml .= "<td>" . $podcast['podcast_time'] . "</td>";
+	$podcastsHtml .= "<td>" . $podcast['user_name'] . "</td>"; 
+	$podcastsHtml .= "<td><input type='button' value='Edit' ";
+	$podcastsHtml .= "onClick=\"window.location.href='editPodcast.php?id=" . $podcast['podcast_id'] . "'\"></td>";
 	$podcastsHtml .= "</tr>";
 
 
@@ -83,6 +75,7 @@ for ($i=0;$i<count($podcasts);$i++) {
 		<th>Program</th>
 		<th>Time Uploaded</th>
 		<th>Create By</th>
+		<th></th>
 	</tr>
 <?php echo $podcastsHtml; ?>
 
