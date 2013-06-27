@@ -1,9 +1,10 @@
 <?php
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
-$user = new users($db);
-$group = $user->getGroup($username);
-$allowed_file_types = explode(",",__FILETYPES__);
+
+$user = new user($db,$ldap,$username);
+$admin = $user->is_admin();
+
 if (isset($_POST['addPodcast'])) {
 	foreach ($_POST as $var) {
 		$var = trim(rtrim($var));

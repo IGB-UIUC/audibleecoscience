@@ -2,11 +2,12 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 include_once 'includes/header.inc.php';
+$user = new user($db,$ldap,$username);
+$admin = $user->is_admin();
 
-$user = new users($db);
-$group = $user->getGroup($username);
-
-if (!($group==1)){ header( 'Location: invalid.php' ) ;}
+if (!($admin)){
+        header('Location: invalid.php');
+}
 
 if (isset($_GET['start']) && is_numeric($_GET['start'])) {
         $start = $_GET['start'];
@@ -25,7 +26,7 @@ if (isset($_POST['search'])) {
 
 }
 else {
-	$userList = $user->getUsers();
+	$userList = get_users($db);
 
 }
 
@@ -66,12 +67,13 @@ for ($i=0;$i<count($userList);$i++) {
 	$first_name = $userList[$i]['user_firstname'];
 	$last_name = $userList[$i]['user_lastname'];
 	$user_name = $userList[$i]['user_name'];
-	$groupname = $userList[$i]['group_name'];
+	$is_admin = $userList[$i]['user_admin'];
 	$usersHtml .= "<tr>";
 	$usersHtml .= "<td>" . $first_name . " " . $last_name . "</td>";
 	$usersHtml .= "<td>" . $user_name . "</td>";
-	$usersHtml .= "<td>" . $groupname . "</td>";
-	$usersHtml .= "<td><input type='button' value='Edit' onClick=\"window.location.href='user.php?id=" . $user_id . "'\"></td>";
+	$usersHtml .= "<td>" . $is_admin . "</td>";
+	$usersHtml .= "<td><input type='button' value='Edit' ";
+	$usersHtml .= "onClick=\"window.location.href='user.php?username=" . $userList[$i]['user_name'] . "'\"></td>";
 
 
 
@@ -100,7 +102,12 @@ for ($i=0;$i<count($userList);$i++) {
 
 <?php if (isset($msg)) { echo $msg; } ?>
 <table class='table table-bordered'>
-
+	<tr>
+		<th>Name</th>
+		<th>Username</th>
+		<th>Admin</th>
+		<th></th>
+	</tr>
 <?php
 	echo $usersHtml;
 ?>

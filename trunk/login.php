@@ -14,7 +14,6 @@
 //////////////////////////////////////////////////
 
 include_once 'includes/main.inc.php';
-include_once 'authentication.inc.php';
 
 $session = new session(__SESSION_NAME__);
 if (isset($_SESSION['webpage'])) {
@@ -28,9 +27,11 @@ else {
 if (isset($_POST['login'])) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-	
-	$success = authenticate($username,$password,$authenticationSettings,$db);
-	if ($success == "1") {
+	$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
+	$ldap->bind(__LDAP_BIND_USER__,__LDAP_BIND_PASS__);
+	$user = new user($db,$ldap,$username);	
+	$success = $user->authenticate($password);
+	if ($success) {
 		
 		$session_vars = array('login'=>true,
 			'username'=>$username,
@@ -45,7 +46,7 @@ if (isset($_POST['login'])) {
 	}
 	else {//if ($success != "1") {
 	
-		$loginMsg = "<div id='error'><b class='error'>Invalid Login</b></div>";
+		$message = "<div class='alert alert-error'>Invalid Login</div>";
 		//echo $success;
 	
 	}
@@ -69,7 +70,7 @@ include 'includes/header.inc.php';
 
 
 <h3>Login</h3>
-<div class='row span4 offset3'>
+<div class='row span3 offset3'>
 <form action='login.php' method='post' name='login' class='form-vertical'>
 	<br>NetID:
 	<br><input type='text' name='username' tabindex='1'>
@@ -81,7 +82,9 @@ include 'includes/header.inc.php';
 
 </form>
 </div>
-<?php if (isset($loginMsg)) { echo $loginMsg; } ?>
+<div class='row span9'>
+<?php if (isset($message)) { echo $message; } ?>
+</div>
 <?php
 
 include 'includes/footer.inc.php';

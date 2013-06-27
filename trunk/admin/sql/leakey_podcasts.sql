@@ -3,21 +3,15 @@ CREATE DATABASE leakey_podcasts
 	CHARACTER SET utf8;
 USE leakey_podcasts;
 
-CREATE TABLE groups (
-	group_id INT NOT NULL AUTO_INCREMENT,
-	group_name VARCHAR(30),
-	group_enabled BOOLEAN DEFAULT 1,
-	PRIMARY KEY (group_id)
-
-);
 
 CREATE TABLE users (
 	user_id INT NOT NULL AUTO_INCREMENT,
 	user_name VARCHAR(30),
 	user_firstname VARCHAR(30),
 	user_lastname VARCHAR(30),
-	user_groupsId INT REFERENCES groups(group_id),
+	user_admin BOOLEAN DEFAULT 0,
 	user_enabled BOOLEAN DEFAULT 1,
+	user_time_created DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(user_id)
 );
 
@@ -51,6 +45,4 @@ CREATE TABLE podcasts (
 	PRIMARY KEY(podcast_id)
 );
 
-INSERT INTO groups(group_name) VALUES('admins');
-INSERT INTO groups(group_name) VALUES('users');
 

@@ -12,8 +12,6 @@
 //					//
 //////////////////////////////////////////
 
-include_once 'db.class.inc.php';
-include_once 'users.class.inc.php';
 
 class podcast {
 

@@ -2,8 +2,9 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 
-$user = new users($db);
-$group = $user->getGroup($username);
+$user = new user($db,$ldap,$username);
+$admin = $user->is_admin();
+
 $uploadErrors = array(
     1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
     2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
@@ -14,7 +15,6 @@ $uploadErrors = array(
     8 => 'File upload stopped by extension.',
 );
 
-$users = new users($db);
 if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
 	$id = $_GET['id'];
 	$podcast = new podcast($id,$db);
@@ -38,10 +38,7 @@ if (isset($_POST['removePodcast'])) {
 	$success = "<b class='msg'>Podcast has been successfully removed";
 }
 elseif (isset($_POST['approvePodcast'])) {
-	$users = new users($db);
-	$user_id = $users->getUserID($username);
-	$users->__destruct();
-	$podcast->approve($user_id);
+	$podcast->approve($user->get_user_id());
 	$approved = $podcast->getApproved();
 	$approvedBy = $podcast->getApprovedBy();
 	$success = "<b class='msg'>Podcast has been approved</b>";
@@ -180,7 +177,7 @@ else {
 
 <?php
 
-if ($users->getGroup($username) == 1) {
+if ($user->is_admin()) {
 	echo "<br>Created By: " . $createdBy;
 	echo "<br>IP Address: " . $ip;
 	echo "<br>Time Uploaded: " . $time;

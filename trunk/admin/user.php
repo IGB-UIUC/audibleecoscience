@@ -2,70 +2,50 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 
-$user = new users($db);
-$group = $user->getGroup($username);
+$user = new user($db,$ldap,$username);
+$admin = $user->is_admin();
+if (!($admin)){
+        header('Location: invalid.php');
+}
 
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-	$id = $_GET['id'];
+if (isset($_GET['username'])) {
 
-	//Sets current users information
-	$userInfo = $user->getUserInfo($id);
-	$user_name = $userInfo[0]['user_name'];
-	$first_name = $userInfo[0]['user_firstname'];
-	$last_name = $userInfo[0]['user_lastname'];
-	$group_name = $userInfo[0]['group_name'];
-	$user_groupId = $userInfo[0]['user_groupsId'];
-	
+	$selected_user = new user($db,$ldap,$_GET['username']);	
 	//Delete User
 	if (isset($_POST['delete'])) {
-		$result = $user->disableUser($user_name);
+		$result = $selected_user->disable();
 		header("Location: listUsers.php");
 	}
-	//Change Group Membership
-	if (isset($_POST['changeGroup'])) {
-		$group_id = $_POST['group_id'];
-		$user->setGroup($user_name,$group_id);
-		$msg = "<b class='msg'>Group membership successfully changed.</b>";
-
-
-	}
-	
-	//Gets possible groups and makes a combo box for them with current group selected
-	$groups = $user->getGroups();
-	$groupHtml;
-	for ($i=0;$i<count($groups);$i++) {
-		$group_id = $groups[$i]['group_id'];
-		$group_name = $groups[$i]['group_name'];
-		
-		if ($user_groupId == $group_id) {
-			$groupHtml .= "<option value='" . $group_id . "' selected='selected'>" . $group_name . "</option>";
-
+	//Update admin flag
+	if (isset($_POST['update'])) {
+		$is_admin = 0;
+		if (isset($_POST['admin'])) {
+			$is_admin = 1;
 		}
-		elseif ($user_groupId != $group_id) {
-			$groupHtml .= "<option value='" . $group_id . "'>" . $group_name . "</option>"; 
+		if ($selected_user->set_admin($is_admin)) {
+			$msg = "<b class='msg'>Administrator membership successfully changed.</b>";
 		}
 
-
-
 	}
-
 }
+	
+
+
 
 include_once 'includes/header.inc.php';
 ?>
 
 
-<h3><?php echo $first_name . " " . $last_name; ?></h3>
+<h3><?php echo $selected_user->get_firstname() . " " . $selected_user->get_lastname(); ?></h3>
 
-<form method='post' action='user.php?id=<?php echo $id; ?>' class='form-vertical'>
-<input type='hidden' name='id' value='<?php echo $id; ?>'>
-<br>NetID: <?php echo $user_name; ?>
-<br>Group: <select name='group_id'>
-
-<?php echo $groupHtml; ?>
-</select>
-<br><input class='btn' type='submit' name='changeGroup' value='Change Group' onClick='return confirmChangeGroup();'>
-<input class='btn' type='submit' name='delete' value='Delete User' onClick='return confirmUserDelete();'>
+<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?username=<?php echo $selected_user->get_username(); ?>' 
+	class='form-vertical'>
+<br>NetID: <?php echo $selected_user->get_username(); ?>
+<br>Time Added: <?php echo $selected_user->get_time_created(); ?>
+<br>Is Admin:
+<input type='checkbox' name='admin' <?php if ($selected_user->is_admin()) { echo "checked=checked"; } ?>>
+<br><input class='btn btn-primary' type='submit' name='update' value='Update User'>
+<input class='btn btn-danger' type='submit' name='delete' value='Delete User' onClick='return confirmUserDelete();'>
 </form>
 
 

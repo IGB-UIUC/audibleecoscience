@@ -22,16 +22,14 @@ define("__SESSION_NAME__","leakeylab");
 define("__SESSION_TIMEOUT__",300);
 define("__TIMEZONE__","America/Chicago");
 define("__FILETYPES__","mp3");
-$authenticationSettings = array(
-			'host' => 'AD-DC-P1.ad.uiuc.edu',
-			'baseDN' => 'dc=ad,dc=uiuc,dc=edu',
-			'peopleOU' => 'ou=Campus Accounts',
-			'bind_user' => 'cn=igb_ad,ou=igb,dc=ad,dc=uiuc,dc=edu',
-			'bind_pass' => 'ha2a8aveqazE7rUW',	
-			'ssl' => '0',
-			'port' => '636',
-			'group' => ''
-			);
+
+/////////LDAP settings//////////
+define("__LDAP_HOST__","AD-DC-P1.ad.uiuc.edu");
+define("__LDAP_BASE_DN__","dc=ad,dc=uiuc,dc=edu");
+define("__LDAP_SSL__",FALSE);
+define("__LDAP_PORT__",636);
+define("__LDAP_BIND_USER__","cn=igb_ad,ou=igb,dc=ad,dc=uiuc,dc=edu");
+define("__LDAP_BIND_PASS__","ha2a8aveqazE7rUW");
 
 $relPodcastDirectory = "/leakey/podcasts/";
 $absPodcastDirectory = "/var/www/leakey/podcasts/";
