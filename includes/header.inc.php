@@ -56,13 +56,14 @@ for ($i=0;$i<count($headCategories);$i++) {
                         </div>
                 </div>
         </div>
-	<div class='container'>
+	<div class='container-fluid'>
                 <div class='row-fluid'>
                         <div class='span3 well'>
                                 <div class='sidebar-nav'>
                                         <ul class='nav nav-list'>
 						<li><a href='index.php'>Main</a></li>
 						<li><a href='search.php'>Search</a></li>
+						<li class='nav-header'>Categories</li>
 						<?php echo $categoriesHtml; ?>
 						<li><a href='rss.php'>RSS Feed</a></li>
 						<li><a href='login.php'>Login</a></li>
