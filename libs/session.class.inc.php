@@ -18,7 +18,7 @@ class session {
 
 	public function get_var($name) {
 		$result = false;
-		if ($this->is_session_started()) {
+		if ($this->is_session_started() && (isset($_SESSION[$name]))) {
 			$result = $_SESSION[$name];
 		}
 		return $result;

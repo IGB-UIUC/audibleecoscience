@@ -3,48 +3,33 @@ include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 include_once 'includes/header.inc.php';
 
-$user = new user($db,$ldap,$username);
-$admin = $user->is_admin();
+$valid_file_types = array('txt','csv');
 
-if (!($admin)){
+if (!($login_user->is_admin())){
         header('Location: invalid.php');
 }
-
 
 
 if (isset($_POST['importUsers'])) {
 	$fileName = $_FILES['usersFile']['name'];
 	$fileError = $_FILES['usersFile']['error'];
-	$fileType = strtolower(end(explode(".",$fileName)));
-	if (($fileName !== "") & ($fileError == '0') && (($fileType == 'txt') || ($fileType == 'csv'))) {
+	$filetype = strtolower(end(explode(".",$fileName)));
+	if (($fileName !== "") & ($fileError == '0') && (($filetype == 'txt') || ($fileType == 'csv'))) {
 		$tmpFileLocation = $_FILES['usersFile']['tmp_name'];
 
-		$users = new users($db);
-		$result = $users->importUsers($tmpFileLocation,$authenticationSettings);
-
-		$success = 0;
-	        $failure = 0; 
-        	
-		for ($i=0;$i<count($result);$i++) {
-                	if ($result[$i]['success'] == '0') {
-                        	$failure++;
-                	}
-                	elseif ($result[$i]['success'] == '1') {
-                        	$success++;
-                	}
-                	$resultMsg .=  "<br>" . $result[$i]['user'] . ": " . $result[$i]['message'];
-        	}
-				
+		$result = import_users($db,$ldap,$tmpFileLocation);
+		$message = $result['MESSAGE'];		
 	
 
 
 	}
 	elseif ($fileError !== 0) {
-		$importMsg = "<b class='error'>Error uploading users file. Error: " . $uploadErrors[$fileError];
+		$message = "<div class='alert alert-error'>Error uploading users file. Error: ";
+		$message .= $uploadErrors[$fileError] . "</div>";
 
 	}
 	elseif (($fileName !== '') && ($fileType !== 'txt') && ($fileType !== 'csv')) {
-		$importMsg = "<b class='error'>Error uploading users file. Error: File type must be .txt or .csv</b>";
+		$message = "<div class='alert alert-error'>Error uploading users file. Error: File type must be .txt or .csv</div>";
 
 	}
 }
@@ -71,10 +56,9 @@ include_once 'includes/header.inc.php';
 
 <?php 
 
-if (isset($resultMsg)) {
-	echo "<br>" . $success . " users successfully added.";
-	echo "<br>" . $failure . " users unsuccessfully added.";
-	echo $resultMsg;	
+if (isset($result['RESULT'])) {
+	echo "<div class='alert alert-success>" . $result['SUCCESS'] . " users successfully added</div>";
+	echo "<div class='alert alert-failure'>" . $result['FAILURE'] . " users unsuccessfully added</div>";
 
 
 

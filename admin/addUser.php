@@ -1,12 +1,8 @@
 <?php
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
-include_once 'authentication.inc.php';
 
-$user = new user($db,$ldap,$username);
-$admin = $user->is_admin();
-
-if (!($admin)){
+if (!($login_user->is_admin())){
         header('Location: invalid.php');
 }
 
@@ -17,14 +13,14 @@ if (isset($_POST['add_user'])) {
 		$admin = $_POST['admin'];
 	}
 
-	$add_user = new user($db,$ldap);
-	$result = $user->add($_POST['username'], $admin);
+	$user = new user($db,$ldap,$_POST['username']);
+	$result = $user->add($admin);
 
 	if ($result['RESULT']) {
 		unset($_POST);
 		header('Location: listUsers.php');
 	}
-	$message = $result['MESSAGE'];
+	$messages = $result['MESSAGE'];
 
 }
 elseif (isset($_POST['cancel'])) {
@@ -49,9 +45,10 @@ include_once 'includes/header.inc.php';
 
 <?php
 
-if (isset($msg)) {
-	echo $msg;
-
+if (isset($messages)) {
+	foreach ($messages as $message) {
+		echo "<div class='alert error'>" . $message . "</div>";
+	}
 }
 include 'includes/footer.inc.php';
 ?>

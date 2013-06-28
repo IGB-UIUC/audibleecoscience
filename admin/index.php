@@ -3,10 +3,7 @@ include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 include_once 'includes/header.inc.php';
 
-$user = new user($db,$ldap,$username);
-$admin = $user->is_admin();
-
-$podcasts = getYourPodcasts($username,$db);
+$podcasts = getYourPodcasts($login_user->get_username(),$db);
 
 $podcastsHtml = "";
 foreach ($podcasts as $podcast) {
@@ -28,8 +25,9 @@ foreach ($podcasts as $podcast) {
 	$podcastsHtml .= "<td>" . $programName . "</td>";
 	$podcastsHtml .= "<td>" . $time . "</td>";
 	
-	if ($approved == 0) {
-		$podcastsHtml .= "<td><input type='button' value='Edit' onClick=\"window.location.href='editPodcast.php?id=" . $podcast_id . "'\"></td>";
+	if (!$approved) {
+		$podcastsHtml .= "<td><input type='button' value='Edit' ";
+		$podcastsHtml .= "onClick=\"window.location.href='editPodcast.php?id=" . $podcast_id . "'\"></td>";
 
 	}
 	$podcastsHtml .= "</tr>";
@@ -45,6 +43,7 @@ foreach ($podcasts as $podcast) {
                 <th>Source</th>
                 <th>Program</th>
 		<th>Time Uploaded</th>
+		<th></th>
         </tr>
 <?php echo $podcastsHtml; ?>
 

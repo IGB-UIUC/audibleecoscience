@@ -19,7 +19,7 @@ define("__MYSQL_USER__","leakey_user");
 define("__MYSQL_PASSWORD__","9CPqhprMaH7RLpsP");
 define("__MYSQL_DATABASE__","leakey_podcasts");
 define("__SESSION_NAME__","leakeylab");
-define("__SESSION_TIMEOUT__",300);
+define("__SESSION_TIMEOUT__",600);
 define("__TIMEZONE__","America/Chicago");
 define("__FILETYPES__","mp3");
 
@@ -30,11 +30,9 @@ define("__LDAP_SSL__",FALSE);
 define("__LDAP_PORT__",636);
 define("__LDAP_BIND_USER__","cn=igb_ad,ou=igb,dc=ad,dc=uiuc,dc=edu");
 define("__LDAP_BIND_PASS__","ha2a8aveqazE7rUW");
-
-$relPodcastDirectory = "/leakey/podcasts/";
-$absPodcastDirectory = "/var/www/leakey/podcasts/";
-$version = "0.9";
-$webaddress = "http://dslater-lnx.igb.uiuc.edu/leakey/";
+define("__PODCAST_DIR__","/var/www/eclipse/leakeylab/podcasts");
+define("__PODCAST_WEB_DIR__","/eclipse/leakeylab/podcasts");
+$webaddress = "http://dslater-lnx.igb.uiuc.edu/eclipse/leakeylab";
 
 //Possible errors when you upload a file
 $uploadErrors = array(

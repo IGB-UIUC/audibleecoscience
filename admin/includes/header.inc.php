@@ -1,9 +1,3 @@
-<?php
-
-$user = new user($db,$ldap,$username);
-$admin = $user->is_admin();
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +35,7 @@ $admin = $user->is_admin();
 				<li><a href='index.php'>My Podcasts</a></li>
 				<li><a href='addPodcast.php'>Add Podcast</a></li>
 	                        <li><a href='instructions.php'>Instructions</a></li>
-				<?php if ($user->is_admin()) {
+				<?php if ($login_user->is_admin()) {
 
 				echo "<li><a href='approve.php'>Unapproved Podcasts</a></li>
 					<li><a href='listPodcasts.php'>List All Podcasts</a></li>

@@ -12,6 +12,7 @@ class user {
 	private $admin;
 	private $enabled;
 	private $time_created;
+	private $in_database = false;
 	//////////////Public Functions///////////////
 
         public function __construct($db,$ldap,$username = "") {
@@ -29,20 +30,47 @@ class user {
         public function __destruct() {
         }
 
-	public function add($username,$admin) {
-		$filter = "(CN=" . $username . ")";
-		$attributes = array('sn','givenname');
-		$result = $this->ldap->search($filter,$ou,$attributes);
+	public function add($admin) {
+		$message_array = array();
+		$success = false;
+		if (($this->is_in_database()) && ($this->is_enabled())) {
+			array_push($message_array,"User " . $this->get_username() . " is already in database");
+			$success = false;
+		}
+		elseif (($this->is_in_database()) && (!$this->is_enabled())) {
+			$this->enable;
+			array_push($message_array,"User Successfully Added");
+			$success = true;
+		}
+		else {
+	                $filter = "(CN=" . $this->get_username() . ")";
+	                $attributes = array('sn','givenname');
+			$ou = "";
+			$result = $this->ldap->search($filter,$ou,$attributes);
+			print_r($result);
+			if ($result['count']) {
+				$firstname = $result[0]['givenname'][0];
+	                        $lastname = $result[0]['sn'][0];
+				$insert_array = array('user_firstname'=>$firstname,
+                                'user_lastname'=>$lastname,
+                                'user_name'=>$this->get_username(),
+                                'user_admin'=>$admin);
+		                $result = $this->db->build_insert("users",$insert_array);
+				if ($result) {
+					$success = true;
+				}
 
-		$firstname = $result[0]['givenname'][0];
-		$lastlast = $result[0]['sn'][0];
+			}
+			else {
+				array_push($message_array,"User " . $this->get_username() .
+					" does not exist in the Active Directory"); 
 
-		$insert_array = array('user_firstname'=>$firstname,
-				'user_lastname'=>$lastname,
-				'user_name'=>$username,
-				'user_admin'=>$admin);
-		$result = $this->db->build_insert("users",$insert_array);
-		return $result;
+			}
+
+
+		}
+		return array('RESULT'=>$success,'MESSAGE'=>$message_array);	
+
 	}
 	public function get_user_id() { return $this->user_id; }
 	public function get_username() { return $this->username; }
@@ -50,6 +78,7 @@ class user {
 	public function get_lastname() { return $this->lastname; }
 	public function is_admin() { return $this->admin; }
 	public function is_enabled() { return $this->enabled; }	
+	public function is_in_database() { return $this->in_database; }
 	public function get_time_created() { return $this->time_created; }
 	public function authenticate($password) {
 		$result = false;
@@ -115,6 +144,10 @@ class user {
 			$this->admin = $result[0]['user_admin'];
 			$this->enabled = $result[0]['user_enabled'];
 			$this->time_created = $result[0]['user_time_created'];
+			$this->in_database = true;
+		}
+		else {
+			$this->in_database = false;
 
 		}
 
