@@ -1,7 +1,52 @@
 <?php
 
-include_once 'db.class.inc.php';
 
+function get_podcasts($db,$search = "") {
+        $search = strtolower(trim(rtrim($search)));
+        $where_sql = array();
+
+	$sql = "SELECT podcasts.*,users.user_name,categories.category_name ";
+	$sql .= "FROM podcasts ";
+        $sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
+        $sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
+        $sql .= "WHERE podcasts.podcast_approved='1' AND podcasts.podcast_enabled='1' ";
+        
+
+	if ($search != "" ) {
+                $terms = explode(" ",$search);
+                foreach ($terms as $term) {
+                        $search_sql = "(LOWER(categories.category_name) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(podcast_source) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(podcast_programName) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(podcast_showName) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(podcast_year) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(podcast_url) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(podcast_summary) LIKE '%" . $term . "%') ";
+                        array_push($where_sql,$search_sql);
+                }
+
+        }
+
+	$num_where = count($where_sql);
+        if ($num_where) {
+                $sql .= "WHERE ";
+                $i = 0;
+                foreach ($where_sql as $where) {
+                        $sql .= $where;
+                        if ($i<$num_where-1) {
+                                $sql .= "AND ";
+                        }
+                        $i++;
+                }
+
+        }
+        $sql .= "ORDER BY podcasts.podcast_time DESC ";
+        $result = $db->query($sql);
+        return $result;
+
+
+
+}
 function getApprovedPodcasts($db) {
 
 
@@ -166,5 +211,58 @@ function get_max_upload_size($units = "megabytes") {
 
 
 } 
+
+
+//get_pages_html()
+//$url - url of page
+//$num_records - number of items
+//$start - start index of items
+//$count - number of items per page
+//returns pagenation to navigate between pages of devices
+function get_pages_html($url,$num_records,$start,$count) {
+
+        $num_pages = ceil($num_records/$count);
+        $current_page = $start / $count + 1;
+        if (strpos($url,"?")) {
+                $url .= "&start=";
+        }
+        else {
+                $url .= "?start=";
+
+        }
+
+        $pages_html = "<div class='pagination pagination-centered'><ul>";
+
+        if ($current_page > 1) {
+                $start_record = $start - $count;
+                $pages_html .= "<li><a href='" . $url . $start_record . "'>&laquo;</a></li> ";
+        }
+        else {
+                $pages_html .= "<li class='disabled'><a href='#'>&laquo;</a></li>";
+        }
+
+        for ($i=0; $i<$num_pages; $i++) {
+                $start_record = $count * $i;
+                if ($i == $current_page - 1) {
+                        $pages_html .= "<li class='disabled'>";
+                }
+                else {
+                        $pages_html .= "<li>";
+                }
+                $page_number = $i + 1;
+                $pages_html .= "<a href='" . $url . $start_record . "'>" . $page_number . "</a></li>";
+        }
+
+        if ($current_page < $num_pages) {
+                $start_record = $start + $count;
+                $pages_html .= "<li><a href='" . $url . $start_record . "'>&raquo;</a></li> ";
+        }
+        else {
+                $pages_html .= "<li class='disabled'><a href='#'>&raquo;</a></li>";
+        }
+        $pages_html .= "</ul></div>";
+        return $pages_html;
+
+}
 
 ?>
