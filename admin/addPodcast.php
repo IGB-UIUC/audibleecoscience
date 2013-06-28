@@ -122,8 +122,8 @@ include_once 'includes/header.inc.php';
 ?>
 
 <h3>Add Podcast</h3>
-<form method='post' enctype='multipart/form-data' action='addPodcast.php'>
-<input type='hidden' name='MAX_FILE_SIZE' value='134217728000'>
+<form method='post' enctype='multipart/form-data' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
+<input type='hidden' name='MAX_FILE_SIZE' value='<?php echo get_max_upload_size('bytes'); ?>'>
 <br>Media Source: <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?> 
 <br><input type='text' name='source' size='40' value='<?php if (isset($source)) { echo $source; } ?>'>
 <br>Program Name: <?php if (isset($programMsg)) { echo $programMsg; } ?>
@@ -141,7 +141,7 @@ include_once 'includes/header.inc.php';
 <?php echo $categoriesHtml; ?>
 </select>
 
-<br>Podcast (Max Size: <?php echo ini_get('upload_max_filesize'); ?>): <?php if (isset ($fileMsg)) { echo $fileMsg; } ?>
+<br>Podcast (Max Size: <?php echo get_max_upload_size(); ?> MB): <?php if (isset ($fileMsg)) { echo $fileMsg; } ?>
 <br><input type='file' name='file'>
 <br><input type='checkbox' name='acknowledgement'>Should review be acknowledge by you
 <br><input type='checkbox' name='review_permission'>Allow your review to be used
