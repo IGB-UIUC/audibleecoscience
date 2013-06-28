@@ -24,13 +24,13 @@ if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
 if (isset($_POST['removePodcast'])) {
 
 	$podcast->remove();
-	$success = "<b class='msg'>Podcast has been successfully removed";
+	$message = "Podcast has been successfully removed";
 }
 elseif (isset($_POST['approvePodcast'])) {
 	$podcast->approve($login_user->get_user_id());
 	$approved = $podcast->getApproved();
 	$approvedBy = $podcast->getApprovedBy();
-	$success = "<b class='msg'>Podcast has been approved</b>";
+	$message = "Podcast has been approved";
 
 }
 
@@ -39,11 +39,14 @@ elseif (isset($_POST['unapprovePodcast'])) {
 	$podcast->unapprove();
 	$approved = $podcast->getApproved();
 	$approvedBy = $podcast->getApprovedBy();
-	$success = "<b class='msg'>Podcast has been unapproved</b>";
+	$message = "Podcast has been unapproved";
 
 
 }
 elseif (isset($_POST['editPodcast'])) {
+	foreach ($_POST as $var) {
+		$var = trim(rtrim($var));
+	}
 	$source = $_POST['source'];
 	$programName = $_POST['programName'];
 	$showName = $_POST['showName'];
@@ -52,12 +55,6 @@ elseif (isset($_POST['editPodcast'])) {
 	$summary = $_POST['summary'];
 	$category = $_POST['category'];
 	
-	$source = trim(rtrim($source));
-	$programName = trim(rtrim($programName));
-	$showName = trim(rtrim($showName));
-	$year = trim(rtrim($year));
-	$url = trim(rtrim($url));
-	$summary = trim(rtrim($summary));
 	$error = 0;
 	if ($source == "") {
 		$error++;
@@ -98,7 +95,7 @@ elseif (isset($_POST['editPodcast'])) {
 		$podcast->setCategory($category);
 		$podcast->setSummary($summary);	
 
-		$success = "<b class='msg'>Podcast successfully updated.</b";
+		$message = "Podcast successfully updated";
 	}
 
 }
@@ -134,16 +131,7 @@ include_once 'includes/header.inc.php';
 ?>
 
 
-<?php
-if (isset($success)) { 
-	echo $success; 
-} 
-else {
-
-?>
-
-<form method='post' enctype='multipart/form-data' action='editPodcast.php?id=<?php echo $id; ?>'>
-<input type='hidden' name='MAX_FILE_SIZE' value='134217728000'>
+<form class='form-vertical' method='post' enctype='multipart/form-data' action='editPodcast.php?id=<?php echo $id; ?>'>
 <input type='hidden' name='id' value='<?php echo $id; ?>'>
 <br>Media Source: <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?> 
 <br><input type='text' name='source' size='40' value='<?php echo $source; ?>'>
@@ -183,12 +171,15 @@ if ($login_user->is_admin()) {
 
 ?>
 
-<p><input class='btn btn-danger' type='submit' name='removePodcast' value='Remove Podcast' onClick='return confirmRemove()'></p>
+<br><input class='btn btn-danger' type='submit' name='removePodcast' value='Remove Podcast' onClick='return confirmRemove()'></p>
 </form>
 
+<?php if (isset($message)) {
+	echo "<div class='alert'>" . $message . "</div>";
+} 
+?>
 
 <?php
-}
 
-include 'includes/footer.inc.php';
+include_once 'includes/footer.inc.php';
 ?>
