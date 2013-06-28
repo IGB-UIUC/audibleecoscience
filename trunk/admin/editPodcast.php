@@ -2,18 +2,7 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 
-$user = new user($db,$ldap,$username);
-$admin = $user->is_admin();
 
-$uploadErrors = array(
-    1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
-    2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
-    3 => 'The uploaded file was only partially uploaded.',
-    4 => 'No file was uploaded.',
-    6 => 'Missing a temporary folder.',
-    7 => 'Failed to write file to disk.',
-    8 => 'File upload stopped by extension.',
-);
 
 if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
 	$id = $_GET['id'];
@@ -38,7 +27,7 @@ if (isset($_POST['removePodcast'])) {
 	$success = "<b class='msg'>Podcast has been successfully removed";
 }
 elseif (isset($_POST['approvePodcast'])) {
-	$podcast->approve($user->get_user_id());
+	$podcast->approve($login_user->get_user_id());
 	$approved = $podcast->getApproved();
 	$approvedBy = $podcast->getApprovedBy();
 	$success = "<b class='msg'>Podcast has been approved</b>";
@@ -177,15 +166,17 @@ else {
 
 <?php
 
-if ($user->is_admin()) {
+if ($login_user->is_admin()) {
 	echo "<br>Created By: " . $createdBy;
 	echo "<br>IP Address: " . $ip;
 	echo "<br>Time Uploaded: " . $time;
-	if ($approved == 1) {
+	echo "<br>Review Acknowledgement Allowed: " . $podcast->getAcknowledgement();
+	echo "<br>Review Permission: " . $podcast->getReviewPermission();
+	if ($approved) {
 		echo "<br>Approved By: " . $approvedBy;
 		echo "<br><input class='btn btn-primary' type='submit' name='unapprovePodcast' value='Unapprove Podcast' onClick='return confirmUnapprove()'>";
 	}
-	elseif ($approved == 0) {
+	elseif (!$approved) {
 		echo "<br><input class='btn btn-primary' type='submit' name='approvePodcast' value='Approve Podcast' onClick='return confirmApprove()'>";
 	}
 }

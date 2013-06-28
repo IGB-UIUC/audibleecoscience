@@ -31,7 +31,9 @@ class podcast {
 	private $file;
 	private $category;
 	private $category_id;
-
+	private $filesize;
+	private $review_permission;
+	private $acknowledgement;
 //////////////Public Functions///////////////
 
 	public function __construct($podcast_id,$db) {
@@ -48,9 +50,19 @@ class podcast {
         }
 
 
-	public function getSource() {
-		return $this->source;
-	}
+	public function getSource() { return $this->source; }
+	public function getProgramName() { return $this->programName; }
+	public function getShowName() { return $this->showName; }
+	public function getBroadcastYear() { return $this->year; }
+	public function getSummary() { return $this->summary; }
+	public function getUrl() { return $this->url; }
+	public function getIPAddress() { return $this->ipaddress; }
+        public function getCreatedBy() { return $this->createdBy; }
+        public function getFile() { return $this->file; }
+        public function getFileType() { return end(explode(".",$this->file)); }
+        public function getFileSize() { return $this->fileSize; }
+	public function getAcknowledgement() { return $this->acknowledgement; }
+	public function getReviewPermission() { return $this->review_permission; }
 
 	public function setSource($source) {
 		$source = trim(rtrim($source));
@@ -65,9 +77,6 @@ class podcast {
 
 	}
 
-	public function getProgramName() {
-		return $this->programName;
-	}
 
 	public function setProgramName($programName) {
 		$programName = trim(rtrim($programName));
@@ -80,10 +89,6 @@ class podcast {
 		return $result;
 	}
 
-	public function getShowName() {
-		return $this->showName;
-
-	}
 	public function setShowName($showName) {
 		$showName = trim(rtrim($showName));
 		$safeShowName = mysql_real_escape_string($showName,$this->db->get_link());
@@ -95,10 +100,6 @@ class podcast {
 		return $result;
 	}
 
-	public function getBroadcastYear() {
-		return $this->year;
-
-	}
 
 	public function setBroadcastYear($year) {
 		$year = trim(rtrim($year));
@@ -110,9 +111,6 @@ class podcast {
 		return $result;
 	}
 	
-	public function getSummary() {
-		return $this->summary;
-	}
 
 	public function setSummary($summary) {
 		$summary = trim(rtrim($summary));
@@ -126,10 +124,6 @@ class podcast {
 
 	}
 
-	public function getUrl() {
-		return $this->url;
-
-	}
 
 	public function setUrl($url) {
 		$url = trim(rtrim($url));
@@ -143,10 +137,6 @@ class podcast {
 
 	}
 
-	public function getIPAddress() {
-		return $this->ipaddress;
-
-	}
 	public function setIPAddress($ipaddress) {
 		$sql = "UPDATE podcasts SET podcast_ipaddress='" . $ipaddress . "' WHERE podcast_id='" . $this->id . "'";
 		$result = $this->db->non_select_query($sql);
@@ -159,16 +149,11 @@ class podcast {
 	}
 
 
-	public function getCreatedBy() {
-		return $this->createdBy;
 
-	}
+	public function setCreatedBy($user_id) {
 
-	public function setCreatedBy($username) {
-		$users = new users($this->db);
-		$user_id = $users->getUserID($username);
-		$users->__destruct();
-		$sql = "UPDATE podcasts SET podcast_createBy='" . $user_id . "' WHERE podcast_id='" . $this->id . "'";
+		$sql = "UPDATE podcasts SET podcast_createBy='" . $user_id . "' ";
+		$sql .= "WHERE podcast_id='" . $this->id . "' LIMIT 1";
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
 			$this->createdBy = $user_id;
@@ -176,19 +161,11 @@ class podcast {
 		return $result;
 	}
 
-	public function getFile() {
-		return $this->file;
-
-	}
-
-	public function getFileType() {
-		return end(explode(".",$this->file));
-	}
 	public function downloadPodcast($podcastDirectory) {
 
 			
         	//creates the link to the stored file
-        	$linkToFile = $podcastDirectory . $this->file;
+        	$linkToFile = $podcastDirectory . "/" . $this->file;
 	        $fileType = end(explode(".",$this->file));
 		$filename = $this->getShowName() . "." . $fileType;
 		//creates the html header that is used to download the file.
@@ -202,19 +179,16 @@ class podcast {
 	
 	}
 	
-	public function uploadPodcast($filename,$tmpfile,$directory) {
-		$fileType = end(explode(".",$filename));
-		$tmpPodcastPath = $this->movePodcast($fileType,$tmpfile,$directory);
-		$podcastFileName = $this->id . "." . $fileType;		
-		$podcastPath = $directory . "/" . $podcastFileName;
-		if (file_exists($podcastPath)) {
-			unlink($podcastPath);
-		}
-
-		$sql = "UPDATE podcasts SET podcast_file='" . $podcastFileName . "' WHERE podcast_id='" . $this->id . "'";
-		$this->db->non_select_query($sql);
-
-		rename($tmpPodcastPath,$podcastPath);
+	public function uploadPodcast($filename,$tmpfile,$podcast_dir) {
+		$filetype = end(explode(".",$filename));
+		$podcastFileName = $this->id . "." . $filetype;
+		$podcastPath = $podcast_dir . "/" . $podcastFileName;
+		echo "podcast path is " . $podcastPath;
+		move_uploaded_file($tmpfile,$podcastPath);
+		$sql = "UPDATE podcasts SET podcast_file='" . $podcastFileName . "' ";
+		$sql .= "WHERE podcast_id='" . $this->id . "'";
+		$result = $this->db->non_select_query($sql);
+		return $result;
 
 
 	}
@@ -312,40 +286,31 @@ class podcast {
 		$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
 		$sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
 		$sql .= "LEFT JOIN users AS approved ON podcasts.podcast_approvedBy=approved.user_id ";
-		$sql .= "WHERE podcast_id='" . $this->id . "'";
+		$sql .= "WHERE podcast_id='" . $this->id . "' LIMIT 1";
 		$result = $this->db->query($sql); 
-		$this->time = $result[0]['podcast_time'];
-		$this->ipaddress = $result[0]['podcast_ipaddress'];
-		$this->source = stripslashes($result[0]['podcast_source']);
-		$this->programName = stripslashes($result[0]['podcast_programName']);
-		$this->showName = stripslashes($result[0]['podcast_showName']);
-		$this->year = $result[0]['podcast_year'];
-		$this->url = stripslashes($result[0]['podcast_url']);
-		$this->approved = $result[0]['podcast_approved'];
-		$this->createdBy = $result[0]['createdBy'];
-		$this->category = $result[0]['category_name'];
-		$this->category_id = $result[0]['category_id'];
-		$this->file = $result[0]['podcast_file'];
-		$this->summary = stripslashes($result[0]['podcast_summary']);
-		$this->approvedBy = $result[0]['approvedBy'];
+		if (count($result)) {
+			$this->time = $result[0]['podcast_time'];
+			$this->ipaddress = $result[0]['podcast_ipaddress'];
+			$this->source = stripslashes($result[0]['podcast_source']);
+			$this->programName = stripslashes($result[0]['podcast_programName']);
+			$this->showName = stripslashes($result[0]['podcast_showName']);
+			$this->year = $result[0]['podcast_year'];
+			$this->url = $result[0]['podcast_url'];
+			$this->approved = $result[0]['podcast_approved'];
+			$this->createdBy = $result[0]['createdBy'];
+			$this->category = $result[0]['category_name'];
+			$this->category_id = $result[0]['category_id'];
+			$this->file = $result[0]['podcast_file'];
+			$this->summary = stripslashes($result[0]['podcast_summary']);
+			$this->approvedBy = $result[0]['approvedBy'];
+			$this->acknowledgement = $result[0]['podcast_acknowledgement'];
+			$this->review_permission = $result[0]['podcast_review_permission'];
+		}
 	}
 
 
 
-	private function movePodcast($fileType,$tmpfile,$directory) {
 
-                $tmpFilename = "tmp_" . mt_rand(100000000,999999999) . "." . $fileType;
-                $targetPath = $directory . "/" . $tmpFilename;
-                move_uploaded_file($tmpfile,$targetPath);
-                return $targetPath;
-
-
-
-	}
-
-
-	
-	
 
 }
 

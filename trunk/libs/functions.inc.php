@@ -113,10 +113,40 @@ function get_users($db) {
 	$sql .= "WHERE user_enabled='1' ";
 	$sql .= "ORDER BY user_name";
         return  $db->query($sql);
-
-
-
-
-
 }
+
+function import_users($db,$ldap,$file) {
+                $handle = fopen($file, "r");
+                $row = 0;
+                $result;
+		$success = 0;
+		$failures = 0;
+		$message_array = array();
+                while (($data = fgetcsv($handle)) !== FALSE) {
+			$username = $data[0];
+                        $username = strtolower(trim(rtrim($username)));
+                        if (preg_match("/(A-Za-z0-9]+/", $username)) {
+				$add_user = new user($db,$ldap,$username);
+				$admin = 0;
+				$result = $add_user->add($admin);
+				$message_array = array_merge($message_array,$result['MESSAGE']);
+				$success++;
+                        }
+			else {
+				array_push($message_array,"User " . $username . " is invalid");
+				$failures++;
+			}
+				
+                        $row++;
+
+
+                }
+
+                fclose($handle);
+                return array('RESULT'=>true,
+			'MESSAGE'=>$message_array,
+			'SUCCESS'=>$success,
+			'FAILURES'=>$failures);
+        }
+
 ?>

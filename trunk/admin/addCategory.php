@@ -2,9 +2,7 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 
-$user = new user($db,$ldap,$username);
-$admin = $user->is_admin();
-if (!($admin)){
+if (!($login_user->is_admin())){
         header('Location: invalid.php');
 }
 
@@ -15,18 +13,27 @@ $categories = new categories($db);
 
 
 if (isset($_POST['add_category'])) {
-	$subCategory = $_POST['subCategory'];
-	if ($subCategory == "on") {
-		$categories->addChild($_POST['category'],$_POST['headCategory']);
+	if (isset($_POST['subCategory'])) {
+		$result = $categories->addChild($_POST['category'],$_POST['headCategory']);
 
 	}
 	else {
-		$categories->add($category);
+		$result = $categories->add($_POST['category']);
+		$message = $result['MESSAGE'];
+		if ($result['RESULT']) {
+			unset($_POST);
+		}
 	}
-	header("Location:categories.php");
+	if ($result['RESULT']) {
+		unset($_POST);
+	}
+	$message = $result['MESSAGE'];
 
 }
-
+elseif (isset($_POST['cancel'])) {
+	unset($_POST);
+	
+}
 
 
 $headCategories = $categories->getHeadCategories();
@@ -46,7 +53,7 @@ include_once 'includes/header.inc.php';
 ?>
 
 <h3>Add Category</h3>
-<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='post' name='addCategoryForm' id='addCategoryForm'>
+<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='post' class='form-vertical' name='addCategoryForm'>
 <br>Category Name: 
 <br><input type='text' name='category' value='<?php if (isset($_POST['category'])) { echo $_POST['category']; } ?>'>
 <br>Sub Category: <input type='checkbox' OnClick='javascript:enableHeadCategories()' name='subCategory' id='subCategory'>
@@ -54,10 +61,16 @@ include_once 'includes/header.inc.php';
 <?php echo $headCategoriesHtml; ?>
 
 </select>
-<br><input class='btn' type='submit' name='add_category' value='Add'>
+<br><input class='btn btn-primary' type='submit' name='add_category' value='Add'>
+<input class='btn btn-warning' type='submit' name=cancel' value='Cancel'>
 </form>
 
+<?php 
+if (isset($message)) { 
+	echo "<div class='alert'>" . $message . "</div>"; 
+} 
 
+?>
 <?php
 
 include 'includes/footer.inc.php';

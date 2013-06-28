@@ -2,8 +2,6 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 
-$user = new user($db,$ldap,$username);
-$admin = $user->is_admin();
 
 if (isset($_POST['addPodcast'])) {
 	foreach ($_POST as $var) {
@@ -19,11 +17,11 @@ if (isset($_POST['addPodcast'])) {
 
 	$acknowledgement = false;
 	if (isset($_POST['acknowledgement'])) {
-		$acknowlegdgement = $_POST['acknowledgement'];
+		$acknowledgement = true;
 	}
 	$review_permission = false;
 	if (isset($_POST['review_permission'])) {
-		$review_permission = $_POST['review_permission'];
+		$review_permission = true;
 	}
 	$filename = $_FILES['file']['name'];
 	$tmpFile = $_FILES['file']['tmp_name'];
@@ -82,12 +80,12 @@ if (isset($_POST['addPodcast'])) {
 		$podcast->setCategory($category);
 		$podcast->setSummary($summary);	
 		$podcast->setIPAddress($ipAddress);
-		$podcast->setCreateBy($username);
+		$podcast->setCreatedBy($login_user->get_user_id());
 		$podcast->setReviewPermission($review_permission);
 		$podcast->setAcknowledgement($acknowledgement);
-		$podcast->uploadPodcast($filename,$tmpFile,$absPodcastDirectory);		
+		$podcast->uploadPodcast($filename,$tmpFile,__PODCAST_DIR__);		
 
-		$success = "<b class='msg'>Podcast successfully submitted";
+		$message = "<b class='msg'>Podcast successfully submitted";
 		$source = "";
 		$programName = "";
 		$showName = "";
@@ -106,7 +104,6 @@ elseif (isset($_POST['cancel'])) {
 	unset($_POST);
 }
 
-
 $categories = new categories($db);
 
 $categoryList = $categories->getCategories();
@@ -122,7 +119,6 @@ for ($i=0;$i<count($categoryList);$i++) {
 }
 
 include_once 'includes/header.inc.php';
-if (isset($success)) { echo $success; }
 ?>
 
 <h3>Add Podcast</h3>
@@ -145,7 +141,7 @@ if (isset($success)) { echo $success; }
 <?php echo $categoriesHtml; ?>
 </select>
 
-<br>Podcast: <?php if (isset ($fileMsg)) { echo $fileMsg; } ?>
+<br>Podcast (Max Size: <?php echo ini_get('upload_max_filesize'); ?>): <?php if (isset ($fileMsg)) { echo $fileMsg; } ?>
 <br><input type='file' name='file'>
 <br><input type='checkbox' name='acknowledgement'>Should review be acknowledge by you
 <br><input type='checkbox' name='review_permission'>Allow your review to be used
@@ -153,6 +149,11 @@ if (isset($success)) { echo $success; }
 <input class='btn' type='submit' name='cancel' value='Cancel'>
 </form>
 
+<?php if (isset($message)) { 
+	echo "<div class='alert'>" . $message . "</div>";
+}
+
+?>
 
 <?php
 
