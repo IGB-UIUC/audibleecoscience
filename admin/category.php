@@ -16,6 +16,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 	if (isset($_POST['remove'])) {
 		$result = $categories->remove($id);
+		$message = $result['MESSAGE'];
 		if ($result['RESULT']) {
 			header("Location: listCategories.php");
 		}
@@ -38,20 +39,16 @@ include_once 'includes/header.inc.php';
 
 <h3>Category - <?php echo $categoryName; ?></h3>
 <form method='post' action='category.php?id=<?php echo $id; ?>'>
-<br>Name: <input type='text' name='category_name' value='<?php echo $categoryName; ?>'>
+<br>Name: <input type='text' name='category_name' maxlength='30' value='<?php echo $categoryName; ?>'>
 
 <br><input class='btn btn-primary' type='submit' value='Change Name' name='update'>
 <input class='btn btn-danger' type='submit' value='Remove' name='remove'>
-<br><?php if (isset($message)) { 
-	echo "<div class='alert'>" . $message . "</div>"; } ?>
-
-
-
-
-
 </form>
 
-<?php
 
-include 'includes/footer.inc.php';
+<?php if (isset($message)) { 
+	echo "<div class='alert'>" . $message . "</div>";
+}
+
 ?>
+<?php include_once 'includes/footer.inc.php'; ?>

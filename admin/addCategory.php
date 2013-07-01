@@ -55,7 +55,7 @@ include_once 'includes/header.inc.php';
 <h3>Add Category</h3>
 <form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='post' class='form-vertical' name='addCategoryForm'>
 <br>Category Name: 
-<br><input type='text' name='category' value='<?php if (isset($_POST['category'])) { echo $_POST['category']; } ?>'>
+<br><input type='text' name='category' maxlength='30' value='<?php if (isset($_POST['category'])) { echo $_POST['category']; } ?>'>
 <br>Sub Category: <input type='checkbox' OnClick='javascript:enableHeadCategories()' name='subCategory' id='subCategory'>
 <br><select name='headCategory' id='headCategory' disabled='true'>
 <?php echo $headCategoriesHtml; ?>

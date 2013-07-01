@@ -36,6 +36,9 @@ for ($i=0;$i<count($headCategories);$i++) {
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
         href="includes/bootstrap/css/bootstrap.min.css">
+<script src="includes/johndyer-mediaelement-2601db5/build/jquery.js"></script>
+<script src="includes/johndyer-mediaelement-2601db5/build/mediaelement-and-player.min.js"></script>
+<link rel="stylesheet" href="includes/johndyer-mediaelement-2601db5/build/mediaelementplayer.css" />
 <TITLE><?php echo __TITLE__; ?></TITLE>
 
 </head>
@@ -57,8 +60,8 @@ for ($i=0;$i<count($headCategories);$i++) {
                 </div>
         </div>
 	<div class='container-fluid'>
-                <div class='row-fluid'>
-                        <div class='span3 well'>
+                <div class='row'>
+                        <div class='span2 well'>
                                 <div class='sidebar-nav'>
                                         <ul class='nav nav-list'>
 						<li><a href='index.php'>Main</a></li>

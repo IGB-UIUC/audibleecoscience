@@ -133,8 +133,7 @@ class categories {
 
 	}
 	public function remove($category_id) {
-		$sql = "SELECT 1 FROM podcasts WHERE podcast_categoryId='" . $category_id ."'";
-		if (count($this->db->query($sql))) {
+		if ($this->exists($category_id)) {
 			return array('RESULT'=>false,
 				'MESSAGE'=>"Unable to remove, category does not exist");
 		}
@@ -209,7 +208,7 @@ class categories {
 
 	}
 
-/////////////Private Functions////////////
+	/////////////Private Functions////////////
 
 
 

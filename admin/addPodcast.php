@@ -125,17 +125,17 @@ include_once 'includes/header.inc.php';
 <form method='post' enctype='multipart/form-data' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <input type='hidden' name='MAX_FILE_SIZE' value='<?php echo get_max_upload_size('bytes'); ?>'>
 <br>Media Source: <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?> 
-<br><input type='text' name='source' size='40' value='<?php if (isset($source)) { echo $source; } ?>'>
+<br><input type='text' name='source' maxlength='100' value='<?php if (isset($source)) { echo $source; } ?>'>
 <br>Program Name: <?php if (isset($programMsg)) { echo $programMsg; } ?>
-<br><input type='text' name='programName' size='40' value='<?php if (isset($programName)) { echo $programName; } ?>'>
+<br><input type='text' name='programName' maxlength='100' value='<?php if (isset($programName)) { echo $programName; } ?>'>
 <br>Show Name: <?php if (isset($showMsg)) { echo $showMsg; } ?>
-<br><input type='text' name='showName' size='40' value='<?php if (isset($showName)) { echo $showName; }?>'>
+<br><input type='text' name='showName' maxlength='100' value='<?php if (isset($showName)) { echo $showName; }?>'>
 <br>Broadcast Year: <?php if (isset($yearMsg)) { echo $yearMsg; } ?>
-<br><input type='text' name='year' size='4' maxlength='4' value='<?php if (isset($year)) { echo $year; } ?>'>
+<br><input type='text' name='year' maxlength='4' value='<?php if (isset($year)) { echo $year; } ?>'>
 <br>URL: <?php if (isset($urlMsg)) { echo $urlMsg; } ?>
-<br><input type='text' name='url' size='40' value='<?php if (isset($url)) { echo $url; } ?>'>
+<br><input type='text' name='url' maxlength='100' value='<?php if (isset($url)) { echo $url; } ?>'>
 <br>Summary: <?php if (isset($summaryMsg)) { echo $summaryMsg; } ?>
-<br><textarea name='summary' rows='10' cols='60'><?php if (isset($summar)) { echo $summary; } ?></textarea>
+<br><textarea name='summary' rows='10' class='field span7'><?php if (isset($summar)) { echo $summary; } ?></textarea>
 <br>Category: <?php if (isset($categoryMsg)) { echo $categoryMsg; } ?>
 <br><select name='category'>
 <?php echo $categoriesHtml; ?>
