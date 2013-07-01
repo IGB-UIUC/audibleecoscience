@@ -12,7 +12,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 }
 ?>
 
-<script language='JavaScript' src='../includes/audio-player.js'></script>
 
 <h3><?php echo $podcast->getShowName(); ?></h3>
 <br>Media Source: <?php echo $podcast->getSource(); ?>
@@ -21,13 +20,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 <br>Original Link: <a href='<?php echo $podcast->getUrl(); ?>' target='_blank'><?php echo $podcast->getUrl(); ?></a>
 <br>Summary: <?php echo $podcast->getSummary(); ?>
 <br>Play Podcast: 
-<object type='application/x-shockwave-flash' data='../includes/player.swf' id='audioplayer1' height='18' width='200'>
-	<param name='movie' value='../includes/player.swf'>
-	<param name='FlashVars' value='playerID=1&amp;soundFile=<?php echo $relFile; ?>'>
-	<param name='quality' value='high'>
-	<param name='menu' value='false'>
-	<param name='wmode' value='transparent'>
-</object>
+<audio id='player' type="audio/mp3" controls="controls" src='<?php echo $relFile; ?>'>
+</audio>
+
+<script>
+$('audio,video').mediaelementplayer();
+</script>
+
 <br><a href='../download.php?id=<?php echo $id; ?>'>Download Podcast</a>
 
 
