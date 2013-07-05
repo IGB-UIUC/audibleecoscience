@@ -24,11 +24,13 @@ define("__TIMEZONE__","America/Chicago");
 define("__FILETYPES__","mp3");
 
 /////////LDAP settings//////////
-define("__LDAP_HOST__","AD-DC-P1.ad.uiuc.edu");
-define("__LDAP_BASE_DN__","dc=ad,dc=uiuc,dc=edu");
-define("__LDAP_SSL__",FALSE);
+//define("__LDAP_HOST__","AD-DC-P1.ad.uiuc.edu");
+define("__LDAP_HOST__","ad.uillinois.edu");
+define("__LDAP_BASE_DN__","dc=ad,dc=uillinois,dc=edu");
+define("__LDAP_SSL__",TRUE);
 define("__LDAP_PORT__",636);
-define("__LDAP_BIND_USER__","cn=igb_ad,ou=igb,dc=ad,dc=uiuc,dc=edu");
+//define("__LDAP_BIND_USER__","cn=igb_ad,ou=igb,dc=ad,dc=uiuc,dc=edu");
+define("__LDAP_BIND_USER__","CN=igb-ad,OU=IGB,OU=Urbana,DC=ad,DC=uillinois,DC=edu");
 define("__LDAP_BIND_PASS__","ha2a8aveqazE7rUW");
 define("__PODCAST_DIR__","/var/www/eclipse/leakeylab/podcasts");
 define("__PODCAST_WEB_DIR__","/eclipse/leakeylab/podcasts");
