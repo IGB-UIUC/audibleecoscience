@@ -10,18 +10,18 @@ for ($i=0;$i<count($headCategories);$i++) {
 
 	$children = $categories->getChildren($category_id);
 	if (count($children) > 0) {
-		$categoriesHtml .= "<li><a href='listPodcasts.php?id=" . $category_id . "'>" . $category_name . "</a><ul>";
+		$categoriesHtml .= "<li><a href='index.php?category=" . $category_id . "'>" . $category_name . "</a><ul>";
 		for ($j=0;$j<count($children);$j++) { 
 			$children_id = $children[$j]['category_id'];
 			$children_name = $children[$j]['category_name'];
-			$categoriesHtml .= "<li><a href='listPodcasts.php?id=" . $children_id . "'>" . $children_name . "</a></li>";
+			$categoriesHtml .= "<li><a href='index.php?category=" . $children_id . "'>" . $children_name . "</a></li>";
 			
 		}
 		$categoriesHtml .= "</ul></li>";
 
 	}
 	elseif (count($children) == 0) {
-		$categoriesHtml .= "<li><a href='listPodcasts.php?id=" . $category_id . "'>" . $category_name . "</a><li>";
+		$categoriesHtml .= "<li><a href='index.php?category=" . $category_id . "'>" . $category_name . "</a><li>";
 
 
 	}
@@ -65,7 +65,6 @@ for ($i=0;$i<count($headCategories);$i++) {
                                 <div class='sidebar-nav'>
                                         <ul class='nav nav-list'>
 						<li><a href='index.php'>Main</a></li>
-						<li><a href='search.php'>Search</a></li>
 						<li class='nav-header'>Categories</li>
 						<?php echo $categoriesHtml; ?>
 						<li><a href='rss.php'>RSS Feed</a></li>
