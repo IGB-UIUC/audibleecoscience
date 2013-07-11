@@ -2,8 +2,18 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
 
+$category_id = 0;
+if (isset($_GET['category']) && (is_numeric($_GET['category']))) {
+	$category_id = $_GET['category'];
+}
+$search = "";
+if (isset($_GET['search'])) {
+	$search = $_GET['search'];
+}
 
-$podcasts = getRecentPodcasts($db);
+$podcasts = get_podcasts($db,$category_id,$search);
+
+//$podcasts = getRecentPodcasts($db);
 $podcasts_html = "";
 foreach ($podcasts as $podcast) {
                 $summary = substr($podcast['podcast_summary'],0,200);

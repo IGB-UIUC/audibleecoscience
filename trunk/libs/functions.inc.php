@@ -1,7 +1,7 @@
 <?php
 
 
-function get_podcasts($db,$search = "") {
+function get_podcasts($db,$category_id = 0,$search = "") {
         $search = strtolower(trim(rtrim($search)));
         $where_sql = array();
 
@@ -9,9 +9,14 @@ function get_podcasts($db,$search = "") {
 	$sql .= "FROM podcasts ";
         $sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
         $sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
-        $sql .= "WHERE podcasts.podcast_approved='1' AND podcasts.podcast_enabled='1' ";
-        
+       
+	array_push($where_sql,"podcasts.podcast_approved='1'");
+	array_push($where_sql,"podcasts.podcast_enabled='1'"); 
+	if ($category_id) {
+		$category_sql = "podcasts.podcast_categoryId='" . $category_id . "' ";
+		array_push($where_sql,$category_sql);
 
+	}
 	if ($search != "" ) {
                 $terms = explode(" ",$search);
                 foreach ($terms as $term) {
@@ -26,7 +31,7 @@ function get_podcasts($db,$search = "") {
                 }
 
         }
-
+	
 	$num_where = count($where_sql);
         if ($num_where) {
                 $sql .= "WHERE ";
