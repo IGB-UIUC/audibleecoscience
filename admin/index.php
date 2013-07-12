@@ -30,6 +30,9 @@ foreach ($podcasts as $podcast) {
 		$podcastsHtml .= "onClick=\"window.location.href='editPodcast.php?id=" . $podcast_id . "'\"></td>";
 
 	}
+	else {
+		$podcastsHtml .= "<td>&nbsp</td>";
+	}
 	$podcastsHtml .= "</tr>";
 }
 
@@ -43,7 +46,7 @@ foreach ($podcasts as $podcast) {
                 <th>Source</th>
                 <th>Program</th>
 		<th>Time Uploaded</th>
-		<th></th>
+		<th>Edit</th>
         </tr>
 <?php echo $podcastsHtml; ?>
 

@@ -19,16 +19,16 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 <br>Broadcast Year: <?php echo $podcast->getBroadcastYear(); ?>
 <br>Original Link: <a href='<?php echo $podcast->getUrl(); ?>' target='_blank'><?php echo $podcast->getUrl(); ?></a>
 <br>Summary: <?php echo $podcast->getSummary(); ?>
-<br>Play Podcast: 
-<audio id='player' type="audio/mp3" controls="controls" src='<?php echo $relFile; ?>'>
-</audio>
+<?php if ($podcast->getFile() != "") {
+	echo "<br>Play Podcast:";
+	echo "<audio id='player' type='audio/mp3' controls='controls' src='" . $relFile . "'></audio>";
 
-<script>
-$('audio,video').mediaelementplayer();
-</script>
+	echo "<script>";
+	echo "$('audio,video').mediaelementplayer();";
+	echo "</script>";
 
-<br><a href='../download.php?id=<?php echo $id; ?>'>Download Podcast</a>
-
+	echo "<br><a href='../download.php?id=" . $id . "'>Download Podcast</a>";
+} ?>
 
 <?php
 

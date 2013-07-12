@@ -10,7 +10,7 @@ if (!($login_user->is_admin())){
 if (isset($_POST['add_user'])) {
 	$admin = 0;
 	if (isset($_POST['admin'])) { 
-		$admin = $_POST['admin'];
+		$admin = 1;
 	}
 
 	$user = new user($db,$ldap,$_POST['username']);

@@ -7,61 +7,62 @@ if (!($login_user->is_admin())){
         header('Location: invalid.php');
 }
 
-if (isset($_GET['start']) && is_numeric($_GET['start'])) {
-	$start = $_GET['start'];
+if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
+        $start_date = $_GET['start_date'];
+        $end_date = $_GET['end_date'];
 }
 else {
-	$start = 0;
+        $start_date = date('Ym') . "01";
+        $end_date = date('Ymd',strtotime('-1 second',strtotime('+1 month',strtotime($start_date))));
 }
 
-$count = 10;
+$month_name = date('F',strtotime($start_date));
+$year = date('Y',strtotime($start_date));
+$previous_end_date = date('Ymd',strtotime('-1 second', strtotime($start_date)));
+$previous_start_date = substr($previous_end_date,0,4) . substr($previous_end_date,4,2) . "01";
+$next_start_date = date('Ymd',strtotime('+1 day', strtotime($end_date)));
+$next_end_date = date('Ymd',strtotime('-1 second',strtotime('+1 month',strtotime($next_start_date))));
+$back_url = $_SERVER['PHP_SELF'] . "?start_date=" . $previous_start_date . "&end_date=" . $previous_end_date;
+$forward_url = $_SERVER['PHP_SELF'] . "?start_date=" . $next_start_date . "&end_date=" . $next_end_date;
+
+
+$start = 0;
+if (isset($_GET['start']) && is_numeric($_GET['start'])) {
+        $start = $_GET['start'];
+}
+
+$count = __COUNT__;
 
 $podcasts = getAllPodcasts($db);
 
 $numPodcasts = count($podcasts);
-$numPages = getNumPages($numPodcasts,$count);
 $currentPage = $start / $count +1;
-
-//Number of pages
-$pagesHtml = "<p>";
-if ($currentPage > 1) {
-	$startRecord = $start - $count;
-	$pagesHtml .= "<a href='listPodcasts.php?start=" . $startRecord . "'>Back</a> |";
-}
-for ($i=0;$i<$numPages;$i++) {
-	$pageNumber = $i +1;
-	$startRecord = $i * $count;
-	$pagesHtml .= " <a href='listPodcasts.php?start=" . $startRecord . "'>" . $pageNumber . "</a> ";
-	if ($pageNumber != $numPages) {
-		$pagesHtml .= " | ";
-	}
-}
-if ($currentPage < $numPages) {
-	$startRecord = $start + $count;
-	$pagesHtml .= " | <a href='listPodcasts.php?start=" . $startRecord . "'>Next</a> ";
-}
-	$pagesHtml .= "</p>";
+$pages_url = $_SERVER['PHP_SELF'];
+$pages_html = get_pages_html($pages_url,$numPodcasts,$start,$count);
 
 
 $podcastsHtml = "";
-foreach ($podcasts as $podcast) {
 
-	$approved = "No";
-	if ($podcast['podcast_approved'] == 1) { 
-		$approved = "Yes"; 
-	}
+for ($i=$start;$i<$start+$count;$i++) {
+	if (array_key_exists($i,$podcasts)) {
+		$approved = "No";
+		if ($podcasts[$i]['podcast_approved'] == 1) { 
+			$approved = "Yes"; 
+		}
 	
-	$podcastsHtml .= "<tr><td>" . $approved . "</td>";
-	$podcastsHtml .= "<td><a href='podcast.php?id=" . $podcast['podcast_id'] . "'>" . $podcast['podcast_showName'] . "</a></td>";	
-	$podcastsHtml .= "<td>" . $podcast['podcast_source'] . "</td>";
-	$podcastsHtml .= "<td>" . $podcast['podcast_programName'] . "</td>";
-	$podcastsHtml .= "<td>" . $podcast['podcast_time'] . "</td>";
-	$podcastsHtml .= "<td>" . $podcast['user_name'] . "</td>"; 
-	$podcastsHtml .= "<td><input type='button' value='Edit' ";
-	$podcastsHtml .= "onClick=\"window.location.href='editPodcast.php?id=" . $podcast['podcast_id'] . "'\"></td>";
-	$podcastsHtml .= "</tr>";
-
-
+		$podcastsHtml .= "<tr><td>" . $approved . "</td>";
+		$podcastsHtml .= "<td><a href='podcast.php?id=" . $podcasts[$i]['podcast_id'] . "'>";
+		$podcastsHtml .= $podcasts[$i]['podcast_showName'] . "</a></td>";	
+		$podcastsHtml .= "<td>" . $podcasts[$i]['podcast_source'] . "</td>";
+		$podcastsHtml .= "<td>" . $podcasts[$i]['podcast_programName'] . "</td>";
+		$podcastsHtml .= "<td>" . $podcasts[$i]['podcast_time'] . "</td>";
+		$podcastsHtml .= "<td>" . $podcasts[$i]['user_name'] . "</td>"; 
+		$podcastsHtml .= "<td>" . $podcasts[$i]['podcast_quality'] . "</td>";
+		$podcastsHtml .= "<td><input type='button' value='Edit' ";
+		$podcastsHtml .= "onClick=\"window.location.href='editPodcast.php?id=";
+		$podcastsHtml .= $podcasts[$i]['podcast_id'] . "'\"></td>";
+		$podcastsHtml .= "</tr>";
+	}
 }
 
 
@@ -70,19 +71,30 @@ foreach ($podcasts as $podcast) {
 <h3>All Podcasts</h3>
 <table class='table table-bordered'>
 	<tr>
+		<th colspan='4'><a href='<?php echo $back_url; ?>'>Previous Month</a></th>
+                <th colspan='4' style='text-align:right;'><a href='<?php echo $forward_url; ?>'>Next Month</a></th>
+	</tr>
+
+	<tr>
 		<th>Approved</th>
 		<th>Show Name</th>
 		<th>Source</th>
 		<th>Program</th>
 		<th>Time Uploaded</th>
 		<th>Create By</th>
-		<th></th>
+		<th>Quality</th>
+		<th>Edit</th>
 	</tr>
 <?php echo $podcastsHtml; ?>
 
 </table>
+<form method='post' action='report.php'>
+<input type='hidden' name='test'>
+<input type='submit' class='btn btn-primary' name='podcast_report' value='Download Report'>
+</form>
 <?php
-if ($numPages > 1) { echo $pagesHtml; }
 
-include 'includes/footer.inc.php';
+echo $pages_html;
+
+include_once 'includes/footer.inc.php';
 ?>

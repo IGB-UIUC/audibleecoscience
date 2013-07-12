@@ -31,7 +31,7 @@ include_once 'includes/header.inc.php';
         <th>Source</th>
         <th>Program</th>
         <th>Time Uploaded</th>
-	<th>Create By</th>
+	<th>Created By</th>
         <th></th>
 	</tr>
 

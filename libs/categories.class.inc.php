@@ -36,7 +36,7 @@ class categories {
 
 
 	public function getCategories() {
-		$sql = "SELECT * FROM categories WHERE category_enabled=1";
+		$sql = "SELECT * FROM categories WHERE category_enabled=1 ORDER BY category_name ASC";
 		return $this->db->query($sql);
 
 	
