@@ -40,7 +40,7 @@ CREATE TABLE podcasts (
 	podcast_review_permission BOOLEAN DEFAULT 0,
 	podcast_approved BOOLEAN DEFAULT 0,
 	podcast_approvedBy INT REFERENCES users(user_id),
-	podcast_quality INT,
+	podcast_quality INT DEFAULT 1,
 	podcast_enabled BOOLEAN DEFAULT 1,
 	PRIMARY KEY(podcast_id)
 );

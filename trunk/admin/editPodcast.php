@@ -19,6 +19,7 @@ if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
 	$time = $podcast->getUploadTime();
 	$approved = $podcast->getApproved();
 	$approvedBy = $podcast->getApprovedBy();
+	$quality = $podcast->getQuality();
 }
 
 if (isset($_POST['removePodcast'])) {
@@ -54,7 +55,11 @@ elseif (isset($_POST['editPodcast'])) {
 	$url = $_POST['url'];
 	$summary = $_POST['summary'];
 	$category = $_POST['category'];
-	
+
+	if ($login_user->is_admin() && isset($_POST['quality'])) {
+		$quality = $_POST['quality'];
+
+	}	
 	$error = 0;
 	if ($source == "") {
 		$error++;
@@ -94,7 +99,7 @@ elseif (isset($_POST['editPodcast'])) {
 		$podcast->setUrl($url);
 		$podcast->setCategory($category);
 		$podcast->setSummary($summary);	
-
+		$podcast->setQuality($quality);	
 		$message = "Podcast successfully updated";
 	}
 
@@ -126,6 +131,17 @@ for ($i=0;$i<count($categoryList);$i++) {
 
 }
 
+$radio_html = "";
+for ($i=1;$i<=10;$i++) {
+	if ($i == $quality) {
+		$radio_html .= "<input type='radio' name='quality' checked='checked' value='" . $i . "'>" . $i;
+	}
+	else {
+		$radio_html .= "<input type='radio' name='quality' value='" . $i . "'>" . $i;
+	}
+
+
+}
 
 include_once 'includes/header.inc.php';
 ?>
@@ -134,22 +150,30 @@ include_once 'includes/header.inc.php';
 <form class='form-vertical' method='post' enctype='multipart/form-data' action='editPodcast.php?id=<?php echo $id; ?>'>
 <input type='hidden' name='id' value='<?php echo $id; ?>'>
 <br>Media Source: <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?> 
-<br><input type='text' name='source' size='40' value='<?php echo $source; ?>'>
+<br><input class='input-xlarge' type='text' name='source' size='40' value='<?php echo $source; ?>'>
 <br>Program Name: <?php if (isset($programMsg)) { echo $programMsg; } ?>
-<br><input type='text' name='programName' size='40' value='<?php echo $programName; ?>'>
+<br><input class='input-xlarge' type='text' name='programName' size='40' value='<?php echo $programName; ?>'>
 <br>Show Name: <?php if (isset($showMsg)) { echo $showMsg; } ?>
-<br><input type='text' name='showName' size='40' value='<?php echo $showName; ?>'>
+<br><input class='input-xlarge' type='text' name='showName' size='40' value='<?php echo $showName; ?>'>
 <br>Broadcast Year: <?php if (isset($yearMsg)) { echo $yearMsg; } ?>
-<br><input type='text' name='year' size='4' maxlength='4' value='<?php echo $year; ?>'>
+<br><input class='input-xlarge' type='text' name='year' size='4' maxlength='4' value='<?php echo $year; ?>'>
 <br>URL: <?php if (isset($urlMsg)) { echo $urlMsg; } ?>
-<br><input type='text' name='url' size='40' value='<?php echo $url; ?>'>
+<br><input class='input-xlarge' type='text' name='url' size='40' value='<?php echo $url; ?>'>
 <br>Summary: <?php if (isset($summaryMsg)) { echo $summaryMsg; } ?>
-<br><textarea name='summary' rows='10' cols='60'><?php echo $summary; ?></textarea>
+<br><textarea name='summary' rows='10' class='field span7'><?php echo $summary; ?></textarea>
 <br>Category: <?php if (isset($categoryMsg)) { echo $categoryMsg; } ?>
 <br><select name='category'>
 <?php echo $categoriesHtml; ?>
 </select>
-<br><input class='btn btn-primary' type='submit' name='editPodcast' value='Edit Podcast'>
+<?php if ($login_user->is_admin()) {
+
+	echo "<br>Quality:" . $radio_html;
+	
+
+
+
+}?>
+<p><br><input class='btn btn-primary' type='submit' name='editPodcast' value='Edit Podcast'>
 <input class='btn btn-warning' type='submit' name='cancel' value='Cancel'>
 
 <?php

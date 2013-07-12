@@ -34,6 +34,7 @@ class podcast {
 	private $filesize;
 	private $review_permission;
 	private $acknowledgement;
+	private $quality;
 //////////////Public Functions///////////////
 
 	public function __construct($podcast_id,$db) {
@@ -63,7 +64,18 @@ class podcast {
         public function getFileSize() { return $this->fileSize; }
 	public function getAcknowledgement() { return $this->acknowledgement; }
 	public function getReviewPermission() { return $this->review_permission; }
+	public function getQuality() { return $this->quality; }
 
+	public function setQuality($quality) {
+		$sql = "UPDATE podcasts SET podcast_quality='" . $quality . "' WHERE podcast_id='" . $this->id . "'";
+		$result = $this->db->non_select_query($sql);
+		if ($result) {
+			$this->quality = $quality;
+		}
+		return $result;
+
+
+	}
 	public function setSource($source) {
 		$source = trim(rtrim($source));
 		$safeSource = mysql_real_escape_string($source,$this->db->get_link());
@@ -183,7 +195,6 @@ class podcast {
 		$filetype = end(explode(".",$filename));
 		$podcastFileName = $this->id . "." . $filetype;
 		$podcastPath = $podcast_dir . "/" . $podcastFileName;
-		echo "podcast path is " . $podcastPath;
 		move_uploaded_file($tmpfile,$podcastPath);
 		$sql = "UPDATE podcasts SET podcast_file='" . $podcastFileName . "' ";
 		$sql .= "WHERE podcast_id='" . $this->id . "'";
@@ -305,6 +316,7 @@ class podcast {
 			$this->approvedBy = $result[0]['approvedBy'];
 			$this->acknowledgement = $result[0]['podcast_acknowledgement'];
 			$this->review_permission = $result[0]['podcast_review_permission'];
+			$this->quality = $result[0]['podcast_quality'];
 		}
 	}
 

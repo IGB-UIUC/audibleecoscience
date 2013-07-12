@@ -53,3 +53,14 @@ function enableHeadCategories() {
 
 }
 
+function enablePodcastUpload() {
+	if (document.addPodcastForm.upload_file.checked == true) {
+		document.addPodcastForm.file.disabled = false;
+	}
+	else {
+		document.addPodcastForm.file.disabled = true;
+	}
+
+
+
+}

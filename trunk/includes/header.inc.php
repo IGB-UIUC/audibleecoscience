@@ -40,7 +40,7 @@ for ($i=0;$i<count($headCategories);$i++) {
 <script src="includes/johndyer-mediaelement-2601db5/build/mediaelement-and-player.min.js"></script>
 <link rel="stylesheet" href="includes/johndyer-mediaelement-2601db5/build/mediaelementplayer.css" />
 <TITLE><?php echo __TITLE__; ?></TITLE>
-
+<script type='text/javascript' src='includes/main.inc.js'></script>
 </head>
 
 <body>
