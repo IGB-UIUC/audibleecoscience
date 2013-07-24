@@ -104,6 +104,7 @@ class db {
 		$sql = $sql . $columns_sql . " " . $values_sql;
 		return $this->insert_query($sql);
 	}
+	
 
 	//non_select_query()
 	//$sql - sql string to run on the database

@@ -1,7 +1,7 @@
 <?php
 
 
-function get_podcasts($db,$category_id = 0,$search = "") {
+function get_podcasts($db,$start_date = 0,$end_date = 0,$approved = 1,$category_id = 0,$search = "") {
         $search = strtolower(trim(rtrim($search)));
         $where_sql = array();
 
@@ -9,8 +9,10 @@ function get_podcasts($db,$category_id = 0,$search = "") {
 	$sql .= "FROM podcasts ";
         $sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
         $sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
-       
-	array_push($where_sql,"podcasts.podcast_approved='1'");
+	
+	if ($approved) {
+		array_push($where_sql,"podcasts.podcast_approved='1'");
+	}
 	array_push($where_sql,"podcasts.podcast_enabled='1'"); 
 	if ($category_id) {
 		$category_sql = "podcasts.podcast_categoryId='" . $category_id . "' ";
@@ -31,6 +33,11 @@ function get_podcasts($db,$category_id = 0,$search = "") {
                 }
 
         }
+	if (($start_date != 0) && ($end_date != 0)) {
+		$date_sql = "((DATE(podcast_time) >= DATE('" . $start_date . "')) AND (DATE(podcast_time) <= DATE('" . $end_date . "'))) ";
+                array_push($where_sql,$date_sql);
+
+        }
 	
 	$num_where = count($where_sql);
         if ($num_where) {
@@ -48,6 +55,32 @@ function get_podcasts($db,$category_id = 0,$search = "") {
         $sql .= "ORDER BY podcasts.podcast_time DESC ";
         $result = $db->query($sql);
         return $result;
+
+
+
+}
+
+function get_podcast_report($db,$month,$year) {
+
+
+	$sql = "SELECT users.user_name as 'User', categories.category_name as 'Category', ";
+	$sql .= "podcast_time as 'Time Created', podcast_source as 'Source', ";
+	$sql .= "podcast_programName as 'Program Name', podcast_showName as 'Show', ";
+	$sql .= "podcast_year as 'Year', podcast_url as 'URL', podcast_short_summary as 'Short Summary', ";
+	$sql .= "podcast_acknowledgement as 'Acknowledgement', podcast_review_permission as 'Review Permission', ";
+	$sql .= "podcast_approved as 'Approved', podcast_quality as 'Quality'";
+        $sql .= "FROM podcasts ";
+        $sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
+        $sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
+	$sql .= "WHERE podcast_enabled='1' AND ";
+	$sql .= "(YEAR(podcasts.podcast_time)='" . $year . "' ";
+        $sql .= "AND month(podcasts.podcast_time)='" . $month . "') ";
+	$result = $db->query($sql);
+	return $result;
+
+
+
+
 
 
 
@@ -156,13 +189,43 @@ function search($search,$db) {
 }
 
 
-function get_users($db) {
-
+function get_users($db,$search = "") {
+	$search = strtolower(trim(rtrim($search)));
+        $where_sql = array();
 
 	$sql = "SELECT users.* FROM users ";
-	$sql .= "WHERE user_enabled='1' ";
-	$sql .= "ORDER BY user_name";
-	return  $db->query($sql);
+	array_push($where_sql,"users.user_enabled='1'");
+
+	if ($search != "" ) {
+                $terms = explode(" ",$search);
+                foreach ($terms as $term) {
+                        $search_sql = "(LOWER(users.user_name) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(users.user_firstname) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(users.user_lastname) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(users.user_class) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(users.user_section) LIKE '%" . $term . "%' OR ";
+                        $search_sql .= "LOWER(users.user_ta) LIKE '%" . $term . "%') ";
+                        array_push($where_sql,$search_sql);
+                }
+
+        }
+	$num_where = count($where_sql);
+        if ($num_where) {
+                $sql .= "WHERE ";
+                $i = 0;
+                foreach ($where_sql as $where) {
+                        $sql .= $where;
+                        if ($i<$num_where-1) {
+                                $sql .= "AND ";
+                        }
+                        $i++;
+                }
+
+        }
+        $sql .= "ORDER BY users.user_name ASC ";
+        $result = $db->query($sql);
+        return $result;
+
 }
 
 function import_users($db,$ldap,$file) {
@@ -174,16 +237,24 @@ function import_users($db,$ldap,$file) {
 	$message_array = array();
 	while (($data = fgetcsv($handle)) !== FALSE) {
 		$username = $data[0];
+		$admin = $data[1];
+		$school_class = $data[2];
+		$section = $data[3];
+		$ta = $data[4];
 		$username = strtolower(trim(rtrim($username)));
-		if (preg_match("/(A-Za-z0-9]+/", $username)) {
-			$add_user = new user($db,$ldap,$username);
-			$admin = 0;
+		$add_user = new user($db,$ldap,$username);
+		if ($admin) {
 			$result = $add_user->add($admin);
-			$message_array = array_merge($message_array,$result['MESSAGE']);
+		}
+		else {
+			$result = $add_user->add($admin,$school_class,$section,$ta);
+		}
+		$message_array = array_merge($message_array,$result['MESSAGE']);
+
+		if ($result['RESULT']) {
 			$success++;
 		}
 		else {
-			array_push($message_array,"User " . $username . " is invalid");
 			$failures++;
 		}
 

@@ -24,6 +24,7 @@ class podcast {
 	private $programName;
 	private $showName;
 	private $url;
+	private $short_summary;
 	private $summary;
 	private $approved;
 	private $approvedBy;
@@ -55,6 +56,7 @@ class podcast {
 	public function getProgramName() { return $this->programName; }
 	public function getShowName() { return $this->showName; }
 	public function getBroadcastYear() { return $this->year; }
+	public function getShortSummary() { return $this->short_summary; }
 	public function getSummary() { return $this->summary; }
 	public function getUrl() { return $this->url; }
 	public function getIPAddress() { return $this->ipaddress; }
@@ -123,7 +125,17 @@ class podcast {
 		return $result;
 	}
 	
-
+	public function setShortSummary($short_summary) {
+		$short_summary = trim(rtrim($short_summary));
+		$safe_short_summary = mysql_real_escape_string($short_summary,$this->db->get_link());
+		$sql = "UPDATE podcasts SET podcast_short_summary='" .  $safe_short_summary . "' ";
+		$sql .= "WHERE podcast_id='" . $this->id . "'";
+		$result = $this->db->non_select_query($sql);
+		if ($result) {
+			$this->summary = stripslashes($short_summary);
+		}
+		return $result;
+	}
 	public function setSummary($summary) {
 		$summary = trim(rtrim($summary));
 		$safeSummary = mysql_real_escape_string($summary,$this->db->get_link());
@@ -312,6 +324,7 @@ class podcast {
 			$this->category = $result[0]['category_name'];
 			$this->category_id = $result[0]['category_id'];
 			$this->file = $result[0]['podcast_file'];
+			$this->short_summary = stripslashes($result[0]['podcast_short_summary']);
 			$this->summary = stripslashes($result[0]['podcast_summary']);
 			$this->approvedBy = $result[0]['approvedBy'];
 			$this->acknowledgement = $result[0]['podcast_acknowledgement'];
