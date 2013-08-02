@@ -43,12 +43,6 @@ for ($i=$start;$i<$start+$count;$i++) {
 		$usersHtml .= "onClick=\"window.location.href='user.php?username=" . $userList[$i]['user_name'] . "'\"></td>";
 	}
 
-
-
-
-
-
-
 }
 
 
