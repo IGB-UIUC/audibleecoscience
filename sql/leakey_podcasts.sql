@@ -21,6 +21,7 @@ CREATE TABLE users (
 CREATE TABLE categories (
 	category_id INT NOT NULL AUTO_INCREMENT,
 	category_name VARCHAR(30),
+	category_pic MEDIUMBLOB,
 	category_parent INT REFERENCES categories(category_id),
 	category_enabled BOOLEAN DEFAULT 1,
 	PRIMARY KEY(category_id)

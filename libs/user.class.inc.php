@@ -171,6 +171,17 @@ class user {
 
         }
 
+
+	public function is_ta() {
+		$sql = "COUNT(1) as count FROM users ";
+		$sql .= "WHERE user_ta='" . $this->get_username() . "'";
+		$result = $this->db->query($sql);
+		if ($result[0]['count']) {
+			return true;
+		}
+		return false;
+
+	}
 	/////////////////////Private Functions/////////////
 
 

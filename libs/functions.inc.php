@@ -1,7 +1,7 @@
 <?php
 
 
-function get_podcasts($db,$start_date = 0,$end_date = 0,$approved = 1,$category_id = 0,$search = "") {
+function get_podcasts($db,$start_date = 0,$end_date = 0,$approved = 1,$category_id = 0,$search = "",$order_by = "podcast_time") {
         $search = strtolower(trim(rtrim($search)));
         $where_sql = array();
 
@@ -52,7 +52,8 @@ function get_podcasts($db,$start_date = 0,$end_date = 0,$approved = 1,$category_
                 }
 
         }
-        $sql .= "ORDER BY podcasts.podcast_time DESC ";
+
+        $sql .= "ORDER BY podcasts." . $order_by . " DESC ";
         $result = $db->query($sql);
         return $result;
 
@@ -110,13 +111,18 @@ function getRecentPodcasts($db) {
 
 }
 
-function getUnapprovedPodcasts($db) {
-
+function getUnapprovedPodcasts($db,$ta = "") {
 
 	$sql = "SELECT * FROM podcasts ";
 	$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
 	$sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
-	$sql .= "WHERE podcasts.podcast_approved=0 AND podcasts.podcast_enabled=1 ORDER BY podcasts.podcast_time DESC";
+	$sql .= "WHERE podcasts.podcast_approved=0 AND podcasts.podcast_enabled=1 ";
+	
+	if ($ta != "") {
+		$sql = " AND users.user_ta='" . $ta . "' ";
+
+	}
+	$sql .= "ORDER BY podcasts.podcast_time DESC";
 	return $db->query($sql);
 
 

@@ -3,6 +3,7 @@
 include_once 'includes/main.inc.php';
 include_once 'rss.inc.php';
 
+$webaddress = "http://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']);
 $rssData = getRss($db,$webaddress);
 
 $output = "<?xml version='1.0' encoding='ISO-8859-1' ?>";

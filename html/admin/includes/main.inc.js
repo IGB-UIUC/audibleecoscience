@@ -63,14 +63,14 @@ function enablePodcastUpload() {
 }
 
 function enableUserForm() {
-	if (document.addUserForm.admin.checked == false) {
-                document.addUserForm.school_class.disabled = false;
-                document.addUserForm.section.disabled = false;
-                document.addUserForm.ta.disabled = false;
-	} else if (document.addUserForm.admin.checked == true) {
-                document.addUserForm.school_class.disabled = true;
-                document.addUserForm.section.disabled = true;
-                document.addUserForm.ta.disabled = true;
+	if (document.userForm.admin.checked == false) {
+                document.userForm.school_class.disabled = false;
+                document.userForm.section.disabled = false;
+                document.userForm.ta.disabled = false;
+	} else if (document.userForm.admin.checked == true) {
+                document.userForm.school_class.disabled = true;
+                document.userForm.section.disabled = true;
+                document.userForm.ta.disabled = true;
         }
 
 }

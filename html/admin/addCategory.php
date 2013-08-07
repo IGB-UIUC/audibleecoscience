@@ -53,7 +53,10 @@ include_once 'includes/header.inc.php';
 ?>
 
 <h3>Add Category</h3>
-<form action='<?php echo $_SERVER['PHP_SELF']; ?>' method='post' class='form-vertical' name='addCategoryForm'>
+<form action='<?php echo $_SERVER['PHP_SELF']; ?>' 
+	method='post' class='form-vertical' name='addCategoryForm' 
+	enctype='multipart/form-data'>
+<input type='hidden' name='MAX_FILE_SIZE' value='16777215'>
 <br>Category Name: 
 <br><input type='text' name='category' maxlength='30' value='<?php if (isset($_POST['category'])) { echo $_POST['category']; } ?>'>
 <br>Sub Category: <input type='checkbox' OnClick='javascript:enableHeadCategories()' name='subCategory' id='subCategory'>
@@ -61,7 +64,9 @@ include_once 'includes/header.inc.php';
 <?php echo $headCategoriesHtml; ?>
 
 </select>
-<br><input class='btn btn-primary' type='submit' name='add_category' value='Add'>
+<br>Category Picture:
+<br><input class='btn btn-file' type='file' name='category_pic' size='40'>
+<p><input class='btn btn-primary' type='submit' name='add_category' value='Add'>
 <input class='btn btn-warning' type='submit' name=cancel' value='Cancel'>
 </form>
 

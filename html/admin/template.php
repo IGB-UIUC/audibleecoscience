@@ -13,5 +13,5 @@ if (!($login_user->is_admin())){
 
 <?php
 
-include 'includes/footer.inc.php';
+include_once 'includes/footer.inc.php';
 ?>

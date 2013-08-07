@@ -1,7 +1,6 @@
 <?
 include_once 'includes/main.inc.php';
 include_once 'includes/header.inc.php';
-
 $count = __COUNT__;
 $start = 0;
 $get_array = array();
@@ -64,5 +63,6 @@ for ($i=$start;$i<$start+$count;$i++) {
 <?php echo $podcasts_html; ?>
 <?php echo $pages_html; ?>
 <?php
-include 'includes/footer.inc.php';
+
+include_once 'includes/footer.inc.php';
 ?>
