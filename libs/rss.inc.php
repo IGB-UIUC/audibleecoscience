@@ -16,7 +16,7 @@ function getRSS($db,$webaddress) {
 		$shortDescription = htmlspecialchars(strip_tags(stripslashes($shortDescription)));
 		$time = strtotime($podcast['podcast_time']);
 		$time = date("D, d M Y H:i:s O",$time);
-		$link = $webaddress . "podcast.php?id=" . $id;
+		$link = $webaddress . "/podcast.php?id=" . $id;
 		$rssData .= "<item>";
 		$rssData .= "<title>" . $title . "</title>";
 		$rssData .= "<description>" . $shortDescription . "...</description>";

@@ -9,19 +9,24 @@ if (!($login_user->is_admin())){
 
 $podcasts = getUnapprovedPodcasts($db);
 $unapprovedHtml = "";
-foreach ($podcasts as $podcast) {
+if (count($podcasts)) {
+	foreach ($podcasts as $podcast) {
 
-	$unapprovedHtml .= "<tr><td><a href='podcast.php?id=" . $podcast['podcast_id'] . "'>" . $podcast['podcast_showName'] . "</td>";
-	$unapprovedHtml .= "<td>" . $podcast['podcast_source'] . "</td>";
-	$unapprovedHtml .= "<td>" . $podcast['podcast_programName'] . "</td>";
-	$unapprovedHtml .= "<td>" . $podcast['podcast_time'] . "</td>";
-	$unapprovedHtml .= "<td>" . $podcast['user_name'] . "</td>";
-	$unapprovedHtml .= "<td><input type='button' value='Edit' ";
-	$unapprovedHtml .= "onClick=\"window.location.href='editPodcast.php?id=" . $podcast['podcast_id'] . "'\"></td>";
-	$unapprovedHtml .= "</tr>";
+		$unapprovedHtml .= "<tr><td><a href='podcast.php?id=" . $podcast['podcast_id'] . "'>" . $podcast['podcast_showName'] . "</td>";
+		$unapprovedHtml .= "<td>" . $podcast['podcast_source'] . "</td>";
+		$unapprovedHtml .= "<td>" . $podcast['podcast_programName'] . "</td>";
+		$unapprovedHtml .= "<td>" . $podcast['podcast_time'] . "</td>";
+		$unapprovedHtml .= "<td>" . $podcast['user_name'] . "</td>";
+		$unapprovedHtml .= "<td><input type='button' value='Edit' ";
+		$unapprovedHtml .= "onClick=\"window.location.href='editPodcast.php?id=" . $podcast['podcast_id'] . "'\"></td>";
+		$unapprovedHtml .= "</tr>";
+
+	}
+}
+else {
+	$unapprovedHtml = "<tr><td colspan='6'>None</td></tr>";
 
 }
-
 include_once 'includes/header.inc.php';
 ?>
 <h3>Unapproved Podcasts</h3>
@@ -32,7 +37,7 @@ include_once 'includes/header.inc.php';
         <th>Program</th>
         <th>Time Uploaded</th>
 	<th>Created By</th>
-        <th></th>
+        <th>Edit</th>
 	</tr>
 
 
