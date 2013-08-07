@@ -36,7 +36,7 @@ elseif (isset($_POST['cancel'])) {
 include_once 'includes/header.inc.php';
 ?>
 <h3>Add User Form</h3>
-<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' class='form-vertical' name='addUserForm'>
+<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' class='form-vertical' name='userForm'>
 
 <br>NetID: 
 <br><input type='text' name='username' value='<?php if (isset($_POST['username'])) { echo $_POST['username']; } ?>'>

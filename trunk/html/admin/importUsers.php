@@ -55,7 +55,7 @@ include_once 'includes/header.inc.php';
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' enctype='multipart/form-data'>
 <input type='hidden' name='MAX_FILE_SIZE' value='5242880'>
 <br>Users File:
-<br><input class='btn btn-file' type='file' name='usersFile' size='40'>
+<p><input class='btn btn-file' type='file' name='usersFile' size='40'>
 <p><input class='btn btn-primary' type='submit' name='importUsers' value='Import Users'>
 <input class='btn btn-warning' type='submit' name='cancel' value='Cancel'></p>
 <br><?php if (isset($importMsg)) { echo $importMsg; } ?>
