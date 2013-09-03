@@ -6,7 +6,21 @@ include_once 'includes/header.inc.php';
 if (!($login_user->is_admin())){
         header('Location: invalid.php');
 }
+$message;
+if (isset($_POST['delete_users'])) {
+	foreach ($_POST as $key=>$var) {
+		if (strpos($key,'user_id_') !== FALSE) {
+			$user = new user($db,$ldap,$var);
+			$result = $user->disable();
+			if ($result['RESULT']) {
+				$message .= "<div class='alert alert-success'>" . $result['MESSAGE'] . "</div>";
+			}
+		}
+	}
 
+
+
+}
 $get_array = array();
 $count = 30;
 $start = 0;
@@ -33,6 +47,8 @@ $usersHtml = "";
 for ($i=$start;$i<$start+$count;$i++) {
 	if (array_key_exists($i,$userList)) {
 		$usersHtml .= "<tr>";
+		$usersHtml .= "<td><input type='checkbox' name='user_id_" . $userList[$i]['user_id'] . "' ";
+		$usersHtml .= "value='" . $userList[$i]['user_name'] . "'></td>";
 		$usersHtml .= "<td>" . $userList[$i]['user_firstname'] . " " . $userList[$i]['user_lastname'] . "</td>";
 		$usersHtml .= "<td>" . $userList[$i]['user_name'] . "</td>";
 		$usersHtml .= "<td>" . $userList[$i]['user_class'] . "</td>";
@@ -61,9 +77,10 @@ for ($i=$start;$i<$start+$count;$i++) {
 
 <h3>Users</h3>
 
-<?php if (isset($msg)) { echo $msg; } ?>
+<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
 <table class='table table-bordered'>
 	<tr>
+		<th>&nbsp</th>
 		<th>Name</th>
 		<th>Username</th>
 		<th>Class</th>
@@ -77,9 +94,11 @@ for ($i=$start;$i<$start+$count;$i++) {
 ?>
 
 </table>
-
+<input type='submit' class='btn btn-primary' name='delete_users' value='Delete Users' onClick='confirmDeleteUsers();'>
+</form>
 <?php
 echo $pages_html;
 
+if (isset($message)) { echo $message; }
 include_once 'includes/footer.inc.php';
 ?>

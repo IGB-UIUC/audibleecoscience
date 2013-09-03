@@ -113,19 +113,16 @@ elseif (isset($_POST['cancel'])) {
 
 
 
-$categories = new categories($db);
+$categories = get_categories($db);
 
-$categoryList = $categories->getCategories();
 $categoriesHtml = "";
-for ($i=0;$i<count($categoryList);$i++) {
-	$categoryList_id = $categoryList[$i]['category_id'];
-	$categoryList_name = $categoryList[$i]['category_name'];
+foreach ($categories as $category) {
 
-	if ($categoryList_id == $category_id) {
-		$categoriesHtml .= "<option selected value='" . $categoryList_id . "'>" . $categoryList_name . "</option>";
+	if ($category['category_id'] == $category_id) {
+		$categoriesHtml .= "<option selected value='" . $category['category_id'] . "'>" . $category['category_name'] . "</option>";
 	}
 	else {
-		$categoriesHtml .= "<option value='" . $categoryList_id . "'>" . $categoryList_name . "</option>";
+		$categoriesHtml .= "<option value='" . $category['category_id'] . "'>" . $category['category_name'] . "</option>";
 	}
 
 

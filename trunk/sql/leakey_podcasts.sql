@@ -14,16 +14,17 @@ CREATE TABLE users (
 	user_ta VARCHAR(20),
 	user_admin BOOLEAN DEFAULT 0,
 	user_enabled BOOLEAN DEFAULT 1,
-	user_time_created DEFAULT CURRENT_TIMESTAMP,
+	user_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(user_id)
 );
 
 CREATE TABLE categories (
 	category_id INT NOT NULL AUTO_INCREMENT,
 	category_name VARCHAR(30),
-	category_pic MEDIUMBLOB,
-	category_parent INT REFERENCES categories(category_id),
+	category_filename VARCHAR(30),
+	category_nav_filename VARCHAR(30),
 	category_enabled BOOLEAN DEFAULT 1,
+	category_time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(category_id)
 );
 

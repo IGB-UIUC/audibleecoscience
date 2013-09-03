@@ -1,5 +1,6 @@
 <?php
 
+
 //Sets include path
 set_include_path(get_include_path() . ':../../libs');
 //Load Settings file
@@ -8,6 +9,7 @@ include_once 'functions.inc.php';
 
 //Sets Timezone
 date_default_timezone_set(__TIMEZONE__);
+
 
 //Function to autoload needed classes
 function __autoload($class_name) {
