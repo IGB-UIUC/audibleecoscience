@@ -1,9 +1,3 @@
-DROP DATABASE IF EXISTS leakey_podcasts;
-CREATE DATABASE leakey_podcasts
-	CHARACTER SET utf8;
-USE leakey_podcasts;
-
-
 CREATE TABLE users (
 	user_id INT NOT NULL AUTO_INCREMENT,
 	user_name VARCHAR(30),
