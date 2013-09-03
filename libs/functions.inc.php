@@ -5,7 +5,7 @@ function get_podcasts($db,$start_date = 0,$end_date = 0,$approved = 1,$category_
         $search = strtolower(trim(rtrim($search)));
         $where_sql = array();
 
-	$sql = "SELECT podcasts.*,users.user_name,categories.category_name ";
+	$sql = "SELECT podcasts.*,users.user_name,categories.* ";
 	$sql .= "FROM podcasts ";
         $sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
         $sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
@@ -98,19 +98,30 @@ function getApprovedPodcasts($db) {
 
 }
 
-function getRecentPodcasts($db) {
+function getRecentPodcasts($db,$count = 10) {
 
 
-	$sql = "SELECT * FROM podcasts ";
+	$sql = "SELECT podcasts.*,categories.* FROM podcasts ";
 	$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
 	$sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
 	$sql .= "WHERE podcasts.podcast_approved=1 AND podcasts.podcast_enabled=1 ORDER BY podcasts.podcast_time DESC ";
-	$sql .= "LIMIT 0,10";
+	$sql .= "LIMIT 0," . $count;
 
 	return $db->query($sql);
 
 }
 
+function getTopPodcasts($db) {
+        $sql = "SELECT * FROM podcasts ";
+        $sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
+        $sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
+        $sql .= "WHERE podcasts.podcast_approved=1 AND podcasts.podcast_enabled=1 ORDER BY podcasts.podcast_quality DESC ";
+        $sql .= "LIMIT 0,10";
+        return $db->query($sql);
+
+
+
+}
 function getUnapprovedPodcasts($db,$ta = "") {
 
 	$sql = "SELECT * FROM podcasts ";
@@ -294,7 +305,6 @@ function get_max_upload_size($units = "megabytes") {
 
 } 
 
-
 //get_pages_html()
 //$url - url of page
 //$num_records - number of items
@@ -346,5 +356,13 @@ function get_pages_html($url,$num_records,$start,$count) {
         return $pages_html;
 
 }
+
+
+function get_categories($db) {
+                $sql = "SELECT * FROM categories WHERE category_enabled=1 ORDER BY category_name ASC";
+                return $db->query($sql);
+
+
+        }
 
 ?>

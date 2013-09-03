@@ -14,7 +14,7 @@
 
 include_once 'main.inc.php';
 $session = new session(__SESSION_NAME__);
-
+$login_user = "";
 //If not logged in
 if (!($session->get_var('login'))) {
 	header('Location: logout.php');
