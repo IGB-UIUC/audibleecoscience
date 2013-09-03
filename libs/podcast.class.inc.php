@@ -215,7 +215,7 @@ class podcast {
 
 
 	}
-	public function getCatagory() {
+	public function getCategory() {
 		return $this->category;
 
 	}
@@ -225,7 +225,8 @@ class podcast {
 	}
 
 	public function setCategory($category_id) {
-		$sql = "UPDATE podcasts SET podcast_categoryId='" . $category_id . "' WHERE podcast_id='" . $this->id . "'";
+		$sql = "UPDATE podcasts SET podcast_categoryId='" . $category_id . "' ";
+		$sql .= "WHERE podcast_id='" . $this->id . "' LIMIT 1";
 		$result = $this->db->non_select_query($sql);
 		if ($result) {
 			$this->category_id = $category_id;

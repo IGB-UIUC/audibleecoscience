@@ -6,25 +6,17 @@ if (!($login_user->is_admin())){
         header('Location: invalid.php');
 }
 
-$categories = new categories($db);
+$categories = get_categories($db);
 
 
-$headCategories = $categories->getHeadCategories();
 
 
 $categoriesListHtml = "";
-for ($i=0;$i<count($headCategories);$i++) {
-	$category_id = $headCategories[$i]['category_id'];
-	$category_name = $headCategories[$i]['category_name'];
-
-	$categoriesListHtml .= "<tr><td><a href='category.php?id=" . $category_id . "'>" . $category_name . "</a></td><td></td></tr>";
-	$childCategories = $categories->getChildren($category_id);
-	for ($j=0;$j<count($childCategories);$j++) {
-		$child_name = $childCategories[$j]['category_name'];
-		$child_id = $childCategories[$j]['category_id'];
-		$categoriesListHtml .= "<tr><td></td>";
-		$categoriesListHtml .= "<td><a href='category.php?id=" . $child_id . "'>" . $child_name . "</a></td></tr>";
-	}
+foreach ($categories as $category) {
+	$url_data = array('id'=>$category['category_id']);
+	$categoriesListHtml .= "<tr><td><img src='" . __PICTURE_WEB_DIR__ . "/" . $category['category_nav_filename'] . "'></td>";
+	$categoriesListHtml .= "<td><a href='category.php?" . http_build_query($url_data) . "'>" . $category['category_name'];
+	$categoriesListHtml .= "</a></td></tr>";
 
 }
 
@@ -33,7 +25,7 @@ include_once 'includes/header.inc.php';
 
 <h3>Categories</h3>
 <table class='table table-bordered'>
-	<tr><th>Head Category</th><th>Sub Category</th></tr>
+	<tr><th></th><th>Category</th></tr>
 
 <?php echo $categoriesListHtml; ?>
 </table>

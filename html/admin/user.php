@@ -19,11 +19,13 @@ if (isset($_GET['username'])) {
 		$is_admin = 0;
 		if (isset($_POST['admin'])) {
 			$is_admin = 1;
-		}
-		if ($user->set_admin($is_admin)) {
-			$msg = "<b class='msg'>Administrator membership successfully changed.</b>";
+			$_POST['school_class'] = "";
+			$_POST['section'] = "";
+			$_POST['ta'] = "";
 		}
 
+		$result = $user->update($is_admin,$_POST['school_class'],$_POST['section'],$_POST['ta']);
+		$message = $result['MESSAGE'];
 	}
 }
 	
@@ -38,10 +40,8 @@ include_once 'includes/header.inc.php';
 
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?username=<?php echo $user->get_username(); ?>' 
 	class='form-vertical' name='userForm'>
-<br>NetID: 
-<br><?php echo $user->get_username(); ?>
-<br>Is Admin:
-<br><input type='checkbox' name='admin' <?php if ($user->is_admin()) { echo "checked=checked"; } ?> onClick='enableUserForm();'>
+<br>NetID: <?php echo $user->get_username(); ?>
+<br>Is Admin: <input type='checkbox' name='admin' <?php if ($user->is_admin()) { echo "checked=checked"; } ?> onClick='enableUserForm();'>
 <br>Class:
 <br><input type='text' name='school_class' value='<?php echo $user->get_school_class(); ?>'>
 <br>Section:
@@ -60,7 +60,7 @@ enableUserForm();
 
 <?php
 
-if (isset($msg)) { echo $msg; } 
+if (isset($message)) { echo "<div class='alert'>" . $message . "</div>"; } 
 
 
 include 'includes/footer.inc.php';

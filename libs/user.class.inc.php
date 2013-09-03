@@ -155,7 +155,14 @@ class user {
 		$sql .= "WHERE user_id='" . $this->get_user_id() . "' LIMIT 1";
 		$result = $this->db->non_select_query($sql);
                 $this->get_user();
-                return $result;
+		if ($result) {
+			return array('RESULT'=>true,
+				'MESSAGE'=>"User " . $this->get_username() . " successfully removed");
+		}
+		else {
+			return array('RESULT'=>false,
+				'MESSAGE'=>"Error removing user " . $this->get_username());
+		}
 
 
 	}
@@ -180,6 +187,32 @@ class user {
 			return true;
 		}
 		return false;
+
+	}
+
+	public function update($admin,$school_class = "",$section = "",$ta = "") {
+		if ($admin) {
+			$school_class = "";
+			$section = "";
+			$ta = "";
+		}
+
+		$sql = "UPDATE users SET user_class='" . $school_class . "', ";
+		$sql .= "user_section='" . $section . "', ";
+		$sql .= "user_ta='" . $ta . "', ";
+		$sql .= "user_admin='" . $admin . "' ";
+		$sql .= "WHERE user_id='" . $this->get_user_id() . "' LIMIT 1";
+		$result = $this->db->non_select_query($sql);
+		if ($result) {
+			return array('RESULT'=>true,
+				'MESSAGE'=>"User " . $this->get_username() . " successfully updated.");
+			$this->get_user();
+		}
+		else {
+			return array('RESULT'=>false,
+                                'MESSAGE'=>"User " . $this->get_username() . " not successfully updated.");
+		}
+
 
 	}
 	/////////////////////Private Functions/////////////

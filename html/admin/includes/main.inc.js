@@ -43,6 +43,15 @@ function confirmUnapprove() {
 
 }
 
+function confirmDeleteUsers() {
+        var agree = confirm("Are you sure you wish to remove these users?");
+        if (agree)
+                return true;
+        else
+                return false;
+
+
+}
 function enableHeadCategories() {
         if (document.addCategoryForm.subCategory.checked == true) {
                 document.addCategoryForm.headCategory.disabled = false;

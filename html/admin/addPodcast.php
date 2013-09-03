@@ -59,11 +59,18 @@ if (isset($_POST['addPodcast'])) {
 		$summaryMsg = "<b class='error'>Please enter a summary</b>";
 
 	}
-	if ($short_summary == "") {
+	elseif (count(explode(" ",$summary)) > __MAX_SUMMARY_WORDS__) {
 		$error++;
-		$short_summary_msg = "<div class='alert'>Please enter a short summary</div>";
+		$summaryMsg = "<b class='error'>Summary can not have more than " . __MAX_SUMMARY_WORDS__ . " words";
 
 	}
+	if ((strlen($short_summary) == 0) || (strlen($short_summary) > __MAX_SHORT_SUMMARY_CHARS__)) {
+		$error++;
+		$short_summary_msg = "<div class='alert'>Please enter a short summary.  ";
+		$short_summary_msg .= "Maximum length is " . __MAX_SHORT_SUMMARY_CHARS__ . " characters</div>";
+
+	}
+
 	if (!in_array($filetype,$allowed_file_types) && isset($_POST['upload_file'])) {
 		$error++;
 		$fileMsg = "<b class='error'>Invalid filetype.</b>";
@@ -115,14 +122,11 @@ elseif (isset($_POST['cancel'])) {
 	unset($_POST);
 }
 
-$categories = new categories($db);
+$categories = get_categories($db);
 
-$categoryList = $categories->getCategories();
 $categoriesHtml = "";
-for ($i=0;$i<count($categoryList);$i++) {
-	$category_id = $categoryList[$i]['category_id'];
-	$category_name = $categoryList[$i]['category_name'];
-	$categoriesHtml .= "<option value='" . $category_id . "'>" . $category_name . "</option>";
+foreach ($categories as $category) {
+	$categoriesHtml .= "<option value='" . $category['category_id'] . "'>" . $category['category_name'] . "</option>";
 	
 
 
@@ -145,10 +149,10 @@ include_once 'includes/header.inc.php';
 <br><input class='input-xlarge' type='text' name='year' maxlength='4' value='<?php if (isset($year)) { echo $year; } ?>'>
 <br>URL: <?php if (isset($urlMsg)) { echo $urlMsg; } ?>
 <br><input class='input-xlarge' type='text' name='url' maxlength='100' value='<?php if (isset($url)) { echo $url; } ?>'>
-<br>Short Summary (Max 200 Characters): <?php if (isset($short_summary_msg)) { echo $short_summary_msg; } ?>
+<br>Short Summary (Max <?php echo __MAX_SHORT_SUMMARY_CHARS__; ?> Characters): <?php if (isset($short_summary_msg)) { echo $short_summary_msg; } ?>
 <br><textarea name='short_summary' rows='2' spellcheck='true' class='filed span7'>
 <?php if (isset($short_summary)) { echo $short_summary; } ?></textarea>
-<br>Summary (Max 200 Words): <?php if (isset($summaryMsg)) { echo $summaryMsg; } ?>
+<br>Summary (Max <?php echo __MAX_SUMMARY_WORDS__; ?> Words): <?php if (isset($summaryMsg)) { echo $summaryMsg; } ?>
 <br><textarea name='summary' rows='10' spellcheck='true' class='field span7'>
 <?php if (isset($summary)) { echo $summary; } ?></textarea>
 <br>Category: <?php if (isset($categoryMsg)) { echo $categoryMsg; } ?>
