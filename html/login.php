@@ -21,7 +21,7 @@ if (isset($_SESSION['webpage'])) {
 }
 else {
 	$dir = dirname($_SERVER['PHP_SELF']);
-	$webpage = $dir . "admin/index.php";
+	$webpage = $dir . "/admin/index.php";
 }
 
 if (isset($_POST['login'])) {

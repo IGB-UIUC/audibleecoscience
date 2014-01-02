@@ -16,7 +16,7 @@ if ($login_user->is_ta()) {
         $unapprovedHtml .= "<td>" . $podcast['podcast_programName'] . "</td>";
         $unapprovedHtml .= "<td>" . $podcast['podcast_time'] . "</td>";
         $unapprovedHtml .= "<td>" . $podcast['user_name'] . "</td>";
-        $unapprovedHtml .= "<td><input type='button' value='Edit' ";
+        $unapprovedHtml .= "<td><input type='button' value='Edit' class='btn btn-primary' ";
         $unapprovedHtml .= "onClick=\"window.location.href='editPodcast.php?id=" . $podcast['podcast_id'] . "'\"></td>";
         $unapprovedHtml .= "</tr>";
 

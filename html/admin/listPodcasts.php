@@ -58,8 +58,8 @@ for ($i=$start;$i<$start+$count;$i++) {
 		$podcastsHtml .= "<td>" . $podcasts[$i]['podcast_programName'] . "</td>";
 		$podcastsHtml .= "<td>" . $podcasts[$i]['podcast_time'] . "</td>";
 		$podcastsHtml .= "<td>" . $podcasts[$i]['user_name'] . "</td>"; 
-		$podcastsHtml .= "<td>" . $podcasts[$i]['podcast_quality'] . "</td>";
-		$podcastsHtml .= "<td><input type='button' value='Edit' ";
+		$podcastsHtml .= "<td><span class='label " . get_rating_label($podcasts[$i]['podcast_quality']) . "'>" . $podcasts[$i]['podcast_quality'] . "</span></td>";
+		$podcastsHtml .= "<td><input type='button' class='btn btn-primary btn-small' value='Edit' ";
 		$podcastsHtml .= "onClick=\"window.location.href='editPodcast.php?id=";
 		$podcastsHtml .= $podcasts[$i]['podcast_id'] . "'\"></td>";
 		$podcastsHtml .= "</tr>";
@@ -70,11 +70,21 @@ for ($i=$start;$i<$start+$count;$i++) {
 ?>
 
 <h3>All Podcasts: <?php echo $month_name . " - " . $year; ?></h3>
-<table class='table table-bordered'>
-	<tr>
-		<th colspan='4'><a href='<?php echo $back_url; ?>'>Previous Month</a></th>
-                <th colspan='4' style='text-align:right;'><a href='<?php echo $forward_url; ?>'>Next Month</a></th>
-	</tr>
+<ul class='pager'>
+	<li class='previous'><a href='<?php echo $back_url; ?>'>Previous Month</a></li>
+
+	<?php
+		$next_month = strtotime('+1 day', strtotime($end_date));
+		$today = mktime(0,0,0,date('m'),date('d'),date('y'));
+		if ($next_month > $today) {
+			echo "<li class='next disabled'><a href='#'>Next Month</a></li>";
+		}
+		else {
+			echo "<li class='next'><a href='" . $forward_url . "'>Next Month</a></li>";
+		}
+	?>
+</ul>
+<table class='table table-bordered table-condensed table-striped'>
 
 	<tr>
 		<th>Approved</th>
