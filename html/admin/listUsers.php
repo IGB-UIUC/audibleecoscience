@@ -54,9 +54,16 @@ for ($i=$start;$i<$start+$count;$i++) {
 		$usersHtml .= "<td>" . $userList[$i]['user_class'] . "</td>";
 		$usersHtml .= "<td>" . $userList[$i]['user_section'] . "</td>";
 		$usersHtml .= "<td>" . $userList[$i]['user_ta'] . "</td>";
-		$usersHtml .= "<td>" . $userList[$i]['user_admin'] . "</td>";
+		$usersHtml .= "<td>";
+		if ($userList[$i]['user_admin']) {
+			$usersHtml .= "<i class='icon-ok'></i>"; 
+		}
+		else {
+			$usersHtml .= "<i class='icon-remove'></i>";	
+		}
+		$usersHtml .= "</td>";
 		$usersHtml .= "<td>" . $userList[$i]['podcast_time'] . "</td>";
-		$usersHtml .= "<td><input type='button' value='Edit' ";
+		$usersHtml .= "<td><input type='button' value='Edit' class='btn btn-primary btn-small' ";
 		$usersHtml .= "onClick=\"window.location.href='user.php?username=" . $userList[$i]['user_name'] . "'\"></td>";
 	}
 
@@ -79,7 +86,7 @@ for ($i=$start;$i<$start+$count;$i++) {
 <h3>Users</h3>
 
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
-<table class='table table-bordered'>
+<table class='table table-bordered table-condensed table-striped'>
 	<tr>
 		<th>&nbsp</th>
 		<th>Name</th>

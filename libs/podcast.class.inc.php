@@ -373,8 +373,102 @@ class podcast {
 	}
 
 
+	private function validate_source($source) {
+		$source = trim(rtrim($source));
+		$valid = true;
+
+		if ($source == "") {
+			$valid = false;
+		}
+		return $valid;	
+		
+	}
+	private function validate_program_name($program_name) {
+		$program_name = trim(rtrim($program_name));
+		$valid = true;
+
+		if ($program_name == "") {
+			$valid = false;
+		}
+		return $valid;
+	}
+	private function validate_show_name($show_name) {
+		$show_name = trim(rtrim($show_name));
+		$valid = true;
+		if ($show_name == "") {
+			$valid = false;
+		}
+		return $valid;
+	}
+	private function validate_short_summary($short_summary) {
+		$short_summary = trim(rtrim($short_summary));
+		$valid = true;
+		if ($short_summary = "") {
+			$valid = false;
+
+		}
+		return $valid;
+	}
+	private function validate_summary($summary) {
+		$summary = trim(rtrim($summary));
+		$valid = true;
+
+		if ($summary == "") {
+			$valid = false;
+		}
+		return $valid;
+	}
+	private function validate_year($year) {
+		$year = trim(rtrim($year));
+		$valid = true;
+		if ($year == "") {
+			$valid = false;
+		}
+		elseif (!is_numeric($year)) {
+			$valid = false;
+		}
+		return $valid;
+	}
+	private function validate_url($url) {
+		$url = trim(rtrim($url));
+		$valid = true;
+		if ($url == "") {
+			$valid = false;
+		}
+		if (!$this->url_exists($url)) {
+			$valid = false;
+		}
+		return $valid;
+	}
+
+	private function url_exists($url) {
+		$ch = curl_init($url);
+		url_setopt($ch, CURLOPT_TIMEOUT, 5);  
+	        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  
+        	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
+	        $data = curl_exec($ch);  
+        	$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
+	        curl_close($ch);  
+		if($httpcode>=200 && $httpcode<300){  
+			return true;  
+		} 
+		else {  
+			return false;  
+		}  
 
 
+	}
+
+	private function url_exists_in_database($url) {
+		$sql = "SELECT count(1) as count FROM podcasts ";
+		$sql .= "WHERE podcast_url='" . $url . "'";
+		$result = $this->db->query($sql);
+		if ($result[0]['count']) {
+			return true;
+		}
+		return false;
+
+	}
 
 }
 

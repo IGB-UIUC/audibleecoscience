@@ -59,7 +59,7 @@ elseif (isset($_POST['editPodcast'])) {
 	$year = $_POST['year'];
 	$url = $_POST['url'];
 	$summary = $_POST['summary'];
-	$category = $_POST['category'];
+	$category_id = $_POST['category'];
 	$contain_video = $_POST['contain_video'];
 	$short_summary = $_POST['short_summary'];
 	
@@ -71,44 +71,49 @@ elseif (isset($_POST['editPodcast'])) {
 	$error = 0;
 	if ($source == "") {
 		$error++;
-		$sourceMsg = "<b class='error'>Please fill in the source</b>";
+		$sourceMsg = "<b style='color:red;font-size:large'>Please fill in the source.</b>";
 	}
 	if ($programName == "") {
 		$error++;
-		$programMsg = "<b class='error'>Please fill in the program name</b>";
+		$programMsg = "<b style='color:red;font-size:large'>Please fill in the program name.</b>";
 	}
 	if ($showName == "") {
 		$error++;
-		$showMsg = "<b class='error'>Please fill in the show name</b>";
+		$showMsg = "<b style='color:red;font-size:large'>Please fill in the show name.</b>";
 	}	
 
 	if (($year == "") || (!is_numeric($year))) {
 		$error++;
-		$yearMsg = "<b class='error'>Please fill in the broadcast year</b>";
+		$yearMsg = "<b style='color:red;font-size:large'>Please fill in the broadcast year.</b>";
 	}
-	if ($url == "") {
+	$url_result = verify_url($db,$url);
+	if (!$url_result['RESULT']) {
 		$error++;
-		$urlMsg = "<b class='error'>Please fill in the original web address</b>";
+		$urlMsg = "<b style='color:red;font-size:large'>" . $url_result['MESSAGE'] . "</b>";
 
 	}
 
-	if ($summary == "") {
+	if (($summary == "") || (!verify_spelling($summary))) {
                 $error++;
-                $summaryMsg = "<b class='error'>Please enter a summary</b>";
+                $summaryMsg = "<b style='color:red;font-size:large'>Please verify the spelling of the summary</b>";
 
         }
         elseif (count(explode(" ",$summary)) > __MAX_SUMMARY_WORDS__) {
                 $error++;
-                $summaryMsg = "<b class='error'>Summary can not have more than " . __MAX_SUMMARY_WORDS__ . " words";
+                $summaryMsg = "<b style='color:red;font-size:large'>Summary can not have more than " . __MAX_SUMMARY_WORDS__ . " words.</b>";
 
         }
 
 	if ((strlen($test_short_summary) == 0) || (strlen($test_short_summary) > __MAX_SHORT_SUMMARY_CHARS__)) {
                 $error++;
-                $short_summary_msg = "<b>Please enter a short summary.  ";
-                $short_summary_msg .= "Maximum length is " . __MAX_SHORT_SUMMARY_CHARS__ . " characters</b>";
+                $short_summary_msg = "<b style='color:red;font-size:large'>Please enter a short summary.  ";
+                $short_summary_msg .= "Maximum length is " . __MAX_SHORT_SUMMARY_CHARS__ . " characters.</b>";
 
         }
+	if (!verify_spelling($short_summary)) {
+		$error++;
+		$short_summary_msg .= "<b style='color:red;font-size:large'>Please verify the spelling of the short summary.</b>";
+	}
 	
 	if ($error == 0) {
 		$podcast = new podcast($id,$db);
@@ -117,7 +122,7 @@ elseif (isset($_POST['editPodcast'])) {
 		$podcast->setShowName($showName);
 		$podcast->setBroadcastYear($year);
 		$podcast->setUrl($url);
-		$podcast->setCategory($category);
+		$podcast->setCategory($category_id);
 		$podcast->setSummary($summary);	
 		$podcast->setShortSummary($short_summary);
 		$podcast->setQuality($quality);	
@@ -138,77 +143,108 @@ $categories = get_categories($db);
 
 $categoriesHtml = "";
 foreach ($categories as $category) {
-
+	$categoriesHtml .= "<label class='control-label' for='inlineOption" . $category['category_id'] . "'>";
 	if ($category['category_id'] == $category_id) {
-		$categoriesHtml .= "<option selected value='" . $category['category_id'] . "'>" . $category['category_name'] . "</option>";
+		$categoriesHtml .= "<option selected='selected' id='inlineOption" . $category['category_id'] . "' value='" . $category['category_id'] . "'>" . $category['category_name'];
 	}
 	else {
-		$categoriesHtml .= "<option value='" . $category['category_id'] . "'>" . $category['category_name'] . "</option>";
+		$categoriesHtml .= "<option id='inlineOption" . $category['category_id'] . "' value='" . $category['category_id'] . "'>" . $category['category_name'];
 	}
-
-
+	$categoriesHtml .= "</label>";
 
 }
 
 $radio_html = "";
+
 for ($i=1;$i<=10;$i++) {
+	$radio_html .= "<label class='radio inline'>";
 	if ($i == $quality) {
-		$radio_html .= "<input type='radio' name='quality' checked='checked' value='" . $i . "'>" . $i;
+		$radio_html .= "<input id='inputQuality' type='radio' name='quality' checked='checked' value='" . $i . "'>" . $i;
 	}
 	else {
-		$radio_html .= "<input type='radio' name='quality' value='" . $i . "'>" . $i;
+		$radio_html .= "<input id='inputQuality' type='radio' name='quality' value='" . $i . "'>" . $i;
 	}
+	$radio_html .= "</label>";
 
 
 }
 
 include_once 'includes/header.inc.php';
 ?>
-
-<table class='table'>
-	<tr>
-		<td>
-		<?php if ($previous_podcast) {
-			echo "<a href='editPodcast.php?id=" . $previous_podcast . "'>Previous Podcast</a>";
-		}
-		else {
-			echo "Previous Podcast";
-		}
-		?>
-		</td>
-		<td>
-		<?php if ($next_podcast) {
-			echo "<a href='editPodcast.php?id=" . $next_podcast . "'>Next Podcast</a>";
-		}
-		else {
-			echo "Next Podcast";
-		}
-		?>
-		</td>
-	</tr>
-</table>
-<form class='form-vertical' method='post' enctype='multipart/form-data' action='editPodcast.php?id=<?php echo $id; ?>'>
+<ul class='pager'>
+	
+<?php 
+	if ($previous_podcast) {
+		echo "<li class='previous'><a href='editPodcast.php?id=" . $previous_podcast . "'>Previous Podcast</a></li>";
+	}
+	else {
+		echo "<li class='previous disabled'><a href='#'>Previous Podcast</a></li>";
+	}
+	if ($next_podcast) {
+		echo "<li class='next'><a href='editPodcast.php?id=" . $next_podcast . "'>Next Podcast</a></li>";
+	}
+	else {
+		echo "<li class='next disabled'><a href='#'>Next Podcast</a></li>";
+	}
+?>
+</ul>
+<form class='form-vertical' method='post' enctype='multipart/form-data' action='<?php echo $_SERVER['PHP_SELF'] . "?id=" . $id; ?>'>
 <input type='hidden' name='id' value='<?php echo $id; ?>'>
-<br>Media Source: <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?> 
-<br><input class='span12' type='text' name='source' size='40' value='<?php echo $source; ?>'>
-<br>Program Name: <?php if (isset($programMsg)) { echo $programMsg; } ?>
-<br><input class='span12' type='text' name='programName' size='40' value='<?php echo $programName; ?>'>
-<br>Show Name: <?php if (isset($showMsg)) { echo $showMsg; } ?>
-<br><input class='span12' type='text' name='showName' size='40' value='<?php echo $showName; ?>'>
-<br>Broadcast Year: <?php if (isset($yearMsg)) { echo $yearMsg; } ?>
-<br><input class='span12' type='text' name='year' size='4' maxlength='4' value='<?php echo $year; ?>'>
-<br>URL: <?php if (isset($urlMsg)) { echo $urlMsg; } ?>
-<br><input class='span12' type='text' name='url' size='40' value='<?php echo $url; ?>'>
-<br>Short Summary (Max 200 Characters): <?php if (isset($short_summary_msg)) { echo $short_summary_msg; } ?>
-<br><textarea name='short_summary' rows='2' spellcheck='true' class='filed span12'>
-<?php if (isset($short_summary)) { echo $short_summary; } ?></textarea>
-
-<br>Summary: <?php if (isset($summaryMsg)) { echo $summaryMsg; } ?>
-<br><textarea name='summary' rows='10' class='field span12'><?php echo $summary; ?></textarea>
-<br>Category: <?php if (isset($categoryMsg)) { echo $categoryMsg; } ?>
-<br><select name='category'>
-<?php echo $categoriesHtml; ?>
-</select>
+<fieldset>
+<div class='control-group <?php if (isset($sourceMsg)) { echo "error"; } ?>'>
+	<label class='control-label' for='inputSource'>Media Source: <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?><label>
+	<div class='controls'>
+		<input class='span12' id='inputSource' type='text' name='source' value='<?php echo $source; ?>' maxlength='100'>
+	</div>
+</div>
+<div class='control-group <?php if (isset($programMsg)) { echo "error"; }  ?>'>
+	<label class='control-label' for='inputProgram'>Program Name: <?php if (isset($programMsg)) { echo $programMsg; } ?></label>
+	<div class='controls'>
+		<input class='span12' id='inputProgram' type='text' name='programName' value='<?php echo $programName; ?>' maxlength='100'>
+	</div>
+</div>
+<div class='control-group <?php if (isset($showMsg)) { echo "error"; } ?>'>
+	<label class='control-label' for='inputShow'>Show Name: <?php if (isset($showMsg)) { echo $showMsg; } ?></label>
+	<div class='controls'>
+		<input class='span12' id='inputShow' type='text' name='showName' value='<?php echo $showName; ?>' maxlength='100'>
+	</div>
+</div>
+<div class='control-group <?php if (isset($yearMsg)) { echo "error"; } ?>'>
+	<label class='control-label' for='inputYear'>Broadcast Year: <?php if (isset($yearMsg)) { echo $yearMsg; } ?></label>
+	<div class='controls'>
+		<input class='span12' id='inputYear' type='text' name='year' maxlength='4' value='<?php echo $year; ?>'>
+	</div>
+	
+</div>
+<div class='control-group <?php if (isset($urlMsg)) { echo "error"; } ?>'>
+	<label class='control-label' for='inputUrl'>URL: <?php if (isset($urlMsg)) { echo $urlMsg; } ?></label>
+	<div class='controls'>
+		<input class='span12' id='inputUrl' type='text' name='url' value='<?php echo $url; ?>' maxlength='100'>
+	</div>
+</div>
+<div class='control-group <?php if (isset($short_summary_msg)) { echo "error"; } ?>'>
+	<label class='control-label' for='inputShortSummary'>Short Summary (Max <?php echo __MAX_SHORT_SUMMARY_CHARS__; ?> Characters):
+	<?php if (isset($short_summary_msg)) { echo $short_summary_msg; } ?>
+	</label>
+	<div class='controls'>
+		<textarea lang='en' name='short_summary' id='inputShortSummary' rows='2' spellcheck='true' class='filed span12'><?php 
+		if (isset($short_summary)) { echo $short_summary; } ?></textarea>
+	</div>
+</div>
+<div class='control-group <?php if (isset($summaryMsg)) { echo "error"; } ?>'>
+	<label class='control-label' for='inputSummary'>Summary (Max <?php echo __MAX_SUMMARY_WORDS__; ?> Words): <?php if (isset($summaryMsg)) { echo $summaryMsg; } ?></label>
+	<div class='controls'>
+		<textarea name='summary' spellcheck='true' lang='en' id='inputSummary' rows='10' class='field span12'><?php if (isset($summary)) { echo $summary; } ?></textarea>
+	</div>
+</div>
+<div class='control-group <?php if (isset($categoryMsg)) { echo "error"; } ?>'>
+	<label class='control-label' for='inputCategory'>Category: <?php if (isset($categoryMsg)) { echo $categoryMsg; } ?></label>
+	<div class='controls'>
+		<select name='category' id='inputCategory'>
+		<?php echo $categoriesHtml; ?>
+		</select>
+	</div>
+</div>
 <div class='control-group'>
         <div class='controls'>
                 <label class='radio'>
@@ -222,20 +258,28 @@ include_once 'includes/header.inc.php';
 
 <?php if ($login_user->is_admin()) {
 
-	echo "<br>Quality:" . $radio_html;
+	echo "<div class='control-group'>";
+	echo "<label class='control-label' for='inputQuality'>Quality:</label>";
+	echo "<div class='controls'>" . $radio_html;
+	echo "</div></div>";
 	
 
 
 
 }?>
-<p><br><input class='btn btn-primary' type='submit' name='editPodcast' value='Edit Podcast'>
-<input class='btn btn-danger' type='submit' name='removePodcast' value='Remove Podcast' onClick='return confirmRemove()'>
-<input class='btn btn-warning' type='submit' name='cancel' value='Cancel'></p>
+<div class='control-group'>
+	<div class='controls'>
+		<input class='btn btn-primary' type='submit' name='editPodcast' value='Edit Podcast'>
+		<input class='btn btn-danger' type='submit' name='removePodcast' value='Remove Podcast' onClick='return confirmRemove()'>
+		<input class='btn btn-warning' type='submit' name='cancel' value='Cancel'>
+	</div>
+</div>
+</fieldset>
 <?php
 
 if ($login_user->is_admin()) {
 	echo "<hr>";
-	echo "<table class='table'>";
+	echo "<table class='table table-bordered table-condensed'>";
 	echo "<tr><td>Created By:</td><td>" . $createdBy . "</td></tr>";
 	echo "<tr><td>IP Address:</td><td>" . $ip . "</td></tr>";
 	echo "<tr><td>Time Uploaded:</td><td>" . $time . "</td></tr>";
@@ -256,18 +300,17 @@ if ($login_user->is_admin()) {
 	echo "<tr><td>Review Permission:</td><td>" . $permission . "</td></tr>";
 	if ($approved) {
 		echo "<tr><td>Approved By:</td><td>" . $approvedBy . "</td></tr>";
-		echo "<tr><td><input class='btn btn-primary' type='submit' ";
-		echo "name='unapprovePodcast' value='Unapprove Podcast' onClick='return confirmUnapprove()'></td><td></td></tr>";
+		echo "<tr><td colspan='2'><input class='btn btn-primary' type='submit' ";
+		echo "name='unapprovePodcast' value='Unapprove Podcast' onClick='return confirmUnapprove()'></td></tr>";
 	}
 	elseif (!$approved) {
-		echo "<tr><td><input class='btn btn-primary' type='submit' name='approvePodcast' ";
-		echo "value='Approve Podcast' onClick='return confirmApprove()'></td><td></td></tr>";
+		echo "<tr><td colspan='2'><input class='btn btn-primary' type='submit' name='approvePodcast' ";
+		echo "value='Approve Podcast' onClick='return confirmApprove()'></td></tr>";
 	}
 	echo "</table>";
 }
 
 ?>
-
 </form>
 
 <?php if (isset($message)) {
