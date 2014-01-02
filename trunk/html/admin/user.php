@@ -43,8 +43,7 @@ if (isset($_GET['username'])) {
 	                $podcasts_html .= "<td>" . $podcast['podcast_source'] . "</td>";
         	        $podcasts_html .= "<td>" . $podcast['podcast_programName'] . "</td>";
                 	$podcasts_html .= "<td>" . $podcast['podcast_time'] . "</td>";
-	                $podcasts_html .= "<td>" . $podcast['user_name'] . "</td>";
-        	        $podcasts_html .= "<td>" . $podcast['podcast_quality'] . "</td>";
+			$podcasts_html .= "<td><span class='badge " . get_rating_label($podcast['podcast_quality']) . "'>" . $podcast['podcast_quality'] . "</span></td>";
                 	$podcasts_html .= "<td><input type='button' value='Edit' ";
 	                $podcasts_html .= "onClick=\"window.location.href='editPodcast.php?id=";
         	        $podcasts_html .= $podcast['podcast_id'] . "'\"></td>";
@@ -71,18 +70,49 @@ include_once 'includes/header.inc.php';
 
 <form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?username=<?php echo $user->get_username(); ?>' 
 	class='form-vertical' name='userForm'>
-<br>NetID: <?php echo $user->get_username(); ?>
-<br>Is Admin: <input type='checkbox' name='admin' <?php if ($user->is_admin()) { echo "checked=checked"; } ?> onClick='enableUserForm();'>
-<br>Class:
-<br><input type='text' name='school_class' value='<?php echo $user->get_school_class(); ?>'>
-<br>Section:
-<br><input type='text' name='section' value='<?php echo $user->get_section(); ?>'>
-<br>TA (netID):
-<br><input type='text' name='ta' value='<?php echo $user->get_ta(); ?>'>
-
-<br>Time Added: <?php echo $user->get_time_created(); ?>
-<br><input class='btn btn-primary' type='submit' name='update' value='Update User'>
-<input class='btn btn-danger' type='submit' name='delete' value='Delete User' onClick='return confirmUserDelete();'>
+<fieldset>
+<div class='control-group'>
+	<label class='control-label' for='inputNetId'>NetID:</label>
+	<label class='control-label'> 
+	<?php echo $user->get_username(); ?>
+	</label>
+</div>
+<div class='control-group'>
+	<label class='checkbox inline' for='inputAdmin'>	
+	<input type='checkbox' id='inputAdmin' name='admin' <?php if ($user->is_admin()) { echo "checked=checked"; } ?> onClick='enableUserForm();'>
+	Is Admin</label>
+</div>
+<div class='contorl-group'>
+	<label class='control-label' for='inputClass'>Class:</label>
+	<div class='controls'>
+		<input type='text' name='school_class' value='<?php echo $user->get_school_class(); ?>'>
+	</div>
+</div>
+<div class='control-group'>
+	<label class='control-label' for='inputSection'>Section:</label>
+	<div class='controls'>
+		<input type='text' name='section' value='<?php echo $user->get_section(); ?>'>
+	</div>
+</div>
+<div class='control-group'>
+	<label class='control-label'>TA (netID):</label>
+	<div class='controls'>
+		<input type='text' name='ta' value='<?php echo $user->get_ta(); ?>'>
+	</div>
+</div>
+<div class='control-group'>
+	<label class='control-label'>Time Added: </label>
+	<div class='controls'>
+		<?php echo $user->get_time_created(); ?>
+	</div>
+</div>
+<div class='control-group'>
+	<div class='controls'>
+		<input class='btn btn-primary' type='submit' name='update' value='Update User'>
+		<input class='btn btn-danger' type='submit' name='delete' value='Delete User' onClick='return confirmUserDelete();'>
+	</div>
+</div>
+</fieldset>
 </form>
 
 <script type='text/javascript'>
@@ -97,7 +127,6 @@ enableUserForm();
                 <th>Source</th>
                 <th>Program</th>
                 <th>Time Uploaded</th>
-                <th>Create By</th>
                 <th>Quality</th>
                 <th>Edit</th>
         </tr>

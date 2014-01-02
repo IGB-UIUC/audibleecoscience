@@ -60,7 +60,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 	echo "<a href='../download.php?id=" . $id . "'>Download Podcast</a></td></tr>";
 } ?>
 <tr>
-	<td><input type='button' value='Edit' 
+	<td><input class='btn btn-primary' type='button' value='Edit' 
 	onClick="window.location.href='editPodcast.php?id=<?php echo $id; ?>'"></td>
 	<td></td>
 </tr>

@@ -32,10 +32,10 @@ define("__LDAP_SSL__",TRUE);
 define("__LDAP_PORT__",636);
 define("__LDAP_BIND_USER__","CN=igb-ad,OU=IGB,OU=Urbana,DC=ad,DC=uillinois,DC=edu");
 define("__LDAP_BIND_PASS__","ha2a8aveqazE7rUW");
-define("__PODCAST_DIR__","/var/www/audibleecoscience/html/podcasts");
+define("__PODCAST_DIR__","/var/www/eclipse/audibleecoscience/html/podcasts");
 define("__PODCAST_WEB_DIR__","/podcasts");
-define("__PICTURE_DIR__","/var/www/audibleecoscience/html/images/categories");
-define("__PICTURE_WEB_DIR__","/images/categories");
+define("__PICTURE_DIR__","/var/www/eclipse/audibleecoscience/html/images/categories");
+define("__PICTURE_WEB_DIR__","images/categories");
 ///////Various Program Settings///////////
 define("__FILETYPES__","mp3");
 define("__COUNT__",10);

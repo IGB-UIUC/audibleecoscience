@@ -31,7 +31,7 @@ if ($numPodcasts) {
 			$unapprovedHtml .= "<td>" . $podcasts[$i]['podcast_programName'] . "</td>";
 			$unapprovedHtml .= "<td>" . $podcasts[$i]['podcast_time'] . "</td>";
 			$unapprovedHtml .= "<td>" . $podcasts[$i]['user_name'] . "</td>";
-			$unapprovedHtml .= "<td><input type='button' value='Edit' ";
+			$unapprovedHtml .= "<td><input type='button' value='Edit' class='btn btn-primary btn-small' ";
 			$unapprovedHtml .= "onClick=\"window.location.href='editPodcast.php?id=" . $podcasts[$i]['podcast_id'] . "'\"></td>";
 			$unapprovedHtml .= "</tr>";
 

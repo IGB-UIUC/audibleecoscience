@@ -52,9 +52,10 @@ if (isset($_POST['addPodcast'])) {
 		$error++;
 		$yearMsg = "<b style='color:red;font-size:large'>Please fill in the broadcast year</b>";
 	}
-	if ($url == "") {
+	$url_result = verify_url($db,$url);
+	if (!$url_result['RESULT']) {
 		$error++;
-		$urlMsg = "<b style='color:red;font-size:large'>Please fill in the original web address</b>";
+		$urlMsg = "<b style='color:red;font-size:large'>" . $url_result['MESSAGE'] . "</b>";
 
 	}
 	if ($summary == "") {
@@ -144,26 +145,61 @@ include_once 'includes/header.inc.php';
 <form method='post' enctype='multipart/form-data' action='<?php echo $_SERVER['PHP_SELF']; ?>' name='addPodcastForm'>
 <input type='hidden' name='MAX_FILE_SIZE' value='<?php echo get_max_upload_size('bytes'); ?>'>
 <fieldset>
-<br>Media Source: (ie National Public Radio, Nature Podcast, Scientific America)<?php if (isset($sourceMsg)) { echo $sourceMsg; } ?> 
-<br><input class='span12' type='text' name='source' maxlength='100' value='<?php if (isset($source)) { echo $source; } ?>'>
-<br>Program Name: (ie Science Friday, Nature Podcast, Living on Earth) <?php if (isset($programMsg)) { echo $programMsg; } ?>
-<br><input class='span12' type='text' name='programName' maxlength='100' value='<?php if (isset($programName)) { echo $programName; } ?>'>
-<br>Show Name: (ie With climate change, no happy clams; Show 191 - Tree death in a warming western U.S.) <?php if (isset($showMsg)) { echo $showMsg; } ?>
-<br><input class='span12' type='text' name='showName' maxlength='100' value='<?php if (isset($showName)) { echo $showName; }?>'>
-<br>Broadcast Year: <?php if (isset($yearMsg)) { echo $yearMsg; } ?>
-<br><input class='span12' type='text' name='year' maxlength='4' value='<?php if (isset($year)) { echo $year; } ?>'>
-<br>URL: <?php if (isset($urlMsg)) { echo $urlMsg; } ?>
-<br><input class='span12' type='text' name='url' maxlength='100' value='<?php if (isset($url)) { echo $url; } ?>'>
-<br>Short Summary (Max <?php echo __MAX_SHORT_SUMMARY_CHARS__; ?> Characters): 
-<br><?php if (isset($short_summary_msg)) { echo $short_summary_msg; } ?>
-<br><textarea name='short_summary' rows='2' spellcheck='true' class='filed span12'><?php if (isset($short_summary)) { echo $short_summary; } ?></textarea>
-<br>Summary (Max <?php echo __MAX_SUMMARY_WORDS__; ?> Words): <?php if (isset($summaryMsg)) { echo $summaryMsg; } ?>
-<br><textarea name='summary' rows='10' spellcheck='true' class='field span12'>
-<?php if (isset($summary)) { echo $summary; } ?></textarea>
-<br>Category: <?php if (isset($categoryMsg)) { echo $categoryMsg; } ?>
-<br><select name='category'>
-<?php echo $categoriesHtml; ?>
-</select>
+<div class='control-group <?php if (isset($sourceMsg)) { echo "error"; } ?>'>
+        <label class='control-label' for='inputSource'>Media Source: (ie National Public Radio, Nature Podcast, Scientific America) <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?><label>
+        <div class='controls'>
+                <input class='span12' id='inputSource' type='text' name='source' value='<?php echo $source; ?>'>
+        </div>
+</div>
+<div class='control-group <?php if (isset($programMsg)) { echo "error"; }  ?>'>
+        <label class='control-label' for='inputProgram'>Program Name: (ie Science Friday, Nature Podcast, Living on Earth) <?php if (isset($programMsg)) { echo $programMsg; } ?></label>
+        <div class='controls'>
+                <input class='span12' id='inputProgram' type='text' name='programName' value='<?php echo $programName; ?>'>
+        </div>
+</div>
+<div class='control-group <?php if (isset($showMsg)) { echo "error"; } ?>'>
+        <label class='control-label' for='inputShow'>Show Name: (ie With climate change, no happy clams; Show 191 - Tree death in a warming western U.S.) <?php if (isset($showMsg)) { echo $showMsg; } ?></label>
+        <div class='controls'>
+                <input class='span12' id='inputShow' type='text' name='showName' value='<?php echo $showName; ?>'>
+        </div>
+</div>
+<div class='control-group <?php if (isset($yearMsg)) { echo "error"; } ?>'>
+        <label class='control-label' for='inputYear'>Broadcast Year: <?php if (isset($yearMsg)) { echo $yearMsg; } ?></label>
+        <div class='controls'>
+                <input class='span12' id='inputYear' type='text' name='year' maxlength='4' value='<?php echo $year; ?>'>
+        </div>
+
+</div>
+<div class='control-group <?php if (isset($urlMsg)) { echo "error"; } ?>'>
+        <label class='control-label' for='inputUrl'>URL: (ie http://www.audibleecoscience.org)<?php if (isset($urlMsg)) { echo $urlMsg; } ?></label>
+        <div class='controls'>
+                <input class='span12' id='inputUrl' type='text' name='url' value='<?php echo $url; ?>'>
+        </div>
+</div>
+<div class='control-group <?php if (isset($short_summary_msg)) { echo "error"; } ?>'>
+        <label class='control-label' for='inputShortSummary'>Short Summary (Max <?php echo __MAX_SHORT_SUMMARY_CHARS__; ?> Characters):
+        <?php if (isset($short_summary_msg)) { echo $short_summary_msg; } ?>
+        </label>
+        <div class='controls'>
+                <textarea lang='en' name='short_summary' id='inputShortSummary' rows='2' spellcheck='true' class='filed span12'><?php
+                if (isset($short_summary)) { echo $short_summary; } ?></textarea>
+        </div>
+</div>
+<div class='control-group <?php if (isset($summaryMsg)) { echo "error"; } ?>'>
+        <label class='control-label' for='inputSummary'>Summary (Max <?php echo __MAX_SUMMARY_WORDS__; ?> Words): <?php if (isset($summaryMsg)) { echo $summaryMsg; } ?></label>
+        <div class='controls'>
+                <textarea lang='en' spellcheck='true' name='summary' id='inputSummary' rows='10' class='field span12'><?php if (isset($summary)) { echo $summary; } ?></textarea>
+        </div>
+</div>
+
+<div class='control-group <?php if (isset($categoryMsg)) { echo "error"; } ?>'>
+        <label class='control-label' for='inputCategory'>Category: <?php if (isset($categoryMsg)) { echo $categoryMsg; } ?></label>
+        <div class='controls'>
+                <select name='category' id='inputCategory'>
+                <?php echo $categoriesHtml; ?>
+                </select>
+        </div>
+</div>
 
 <div class='control-group'>
 	<div class='controls'>

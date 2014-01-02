@@ -370,6 +370,92 @@ function get_categories($db) {
 
 }
 
+function get_rating_label($rating) {
+
+	if ($rating <= 3) {
+		return "badge-important";
+	}
+	elseif (($rating > 3) && ($rating <= 7)) {
+		return "badge-warning";
+	}
+	elseif ($rating > 7) {
+		return "badge-success";
+	}
+
+}
 
 
+function verify_url($db,$url) {
+	$url = trim(rtrim($url));
+	$success = true;
+	$message = "";
+	if ($url == "") {
+		$success = false;
+		$message = "Please enter a URL";
+	}
+	elseif (filter_var($url,FILTER_VALIDATE_URL) === FALSE) {
+		$success = false;
+		$message = "Please enter a properly formatted URL";
+	}
+	elseif (!verify_url_curl($url)) {
+		$success = false;
+		$message = "URL does not exist.  Please verify URL";
+	}
+	elseif (!unique_url($db,$url)) {
+		$success = false;
+		$message = "URL already exists in database.   Please use another podcast.";
+	}
+	return array('RESULT'=>$success,'MESSAGE'=>$message);
+	
+
+}
+
+function verify_url_curl($url) {
+
+                $handle   = curl_init($url);
+                if (false === $handle)
+                {
+                        return false;
+                }
+                curl_setopt($handle, CURLOPT_HEADER, false);
+                curl_setopt($handle, CURLOPT_FAILONERROR, true);  // this works
+                curl_setopt($handle, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15") ); // request as if Firefox
+                curl_setopt($handle, CURLOPT_NOBODY, true);
+                curl_setopt($handle, CURLOPT_RETURNTRANSFER, false);
+		curl_setopt($handle, CURLOPT_FOLLOWLOCATION,true);
+                $connectable = curl_exec($handle);
+                ##print $connectable;
+                curl_close($handle);
+                return $connectable;
+
+
+}
+
+function unique_url($db,$url) {
+
+	$sql = "SELECT count(1) as count ";
+	$sql .= "FROM podcasts ";
+	$sql .= "WHERE podcast_url='" . $url . "'";
+	echo $sql;
+	$result = $db->query($sql);
+	if ($result[0]['count']) {
+		return false;
+	}
+	return true;
+
+
+}
+
+function verify_spelling($input_string) {
+
+	$string_array = explode(" ",$input_string);
+	//preg_match_all("/[A-Z\']{1,16}/i", $input_string,$string_array);
+	$pspell_link = pspell_new("en");
+	foreach ($string_array as $word) {
+		if (!pspell_check($pspell_link,$word)) {
+			return false;
+		}
+	}
+	return true;
+}
 ?>

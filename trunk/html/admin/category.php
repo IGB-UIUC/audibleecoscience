@@ -85,7 +85,7 @@ include_once 'includes/header.inc.php';
                 </div>
 		<div class='control-group'>
 			<label class='control-label' for='current_pic_input'>Current Picture:</label>
-				<img width='400' height='400' src='<?php echo __PICTURE_WEB_DIR__ . "/" . $category->get_picture(); ?>'>
+				<img width='400' height='400' src='../<?php echo __PICTURE_WEB_DIR__ . "/" . $category->get_picture(); ?>'>
 		</div>
                 <div class='control-group'>
                         <label class='control-label' for='picture_input'>New Picture:</label>
@@ -95,7 +95,7 @@ include_once 'includes/header.inc.php';
                 </div>
 		<div class='control-group'>
 			<label class='control-label' for='current_nav_input'>Current Navigation Picture:</label>
-			<img src='<?php echo __PICTURE_WEB_DIR__ . "/" . $category->get_nav_picture(); ?>'>
+			<img src='../<?php echo __PICTURE_WEB_DIR__ . "/" . $category->get_nav_picture(); ?>'>
 
 		</div>
 		<div class='control-group'>

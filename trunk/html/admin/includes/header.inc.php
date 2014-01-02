@@ -35,10 +35,9 @@
 	<div class='span3 well'>
 		<div class='sidebar-nav'>
 			<ul class='nav nav-list'>
-				<li><a href='../../index.php'>&laquo; Back to Homepage</a></li>
+				<li class='nav-header'><i class='icon-music'></i>Podcasts</li>
 				<li><a href='index.php'>My Podcasts</a></li>
 				<li><a href='addPodcast.php'>Add Podcast</a></li>
-	                        <li><a href='instructions.php'>Instructions</a></li>
 				<?php if ($login_user->is_admin()) {
 
 				echo "<li><a href='approve.php'>All Unapproved Podcasts</a></li>
@@ -46,10 +45,11 @@
 					<li><a href='ta_approve.php'>TA's Unapproved Podcasts</a></li>
 					
 					<li><a href='listPodcasts.php'>List All Podcasts</a></li>
-					<li class='nav-header'>Categories</li>
+					<li><a href='statistics.php'>Statistics</a></li>
+					<li class='nav-header'><i class='icon-tasks'></i>Categories</li>
 					<li><a href='addCategory.php'>Add Category</a></li>
 					<li><a href='listCategories.php'>List Categories</a></li>
-					<li class='nav-header'>Users</li
+					<li class='nav-header'><i class='icon-user'></i>Users</li>
 					<li><a href='addUser.php'>Add User Account</a></li>
 					<li><a href='listUsers.php'>List Accounts</a></li>
 					<li><a href='importUsers.php'>Import Users</a></li>";

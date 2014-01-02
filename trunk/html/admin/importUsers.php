@@ -47,17 +47,29 @@ include_once 'includes/header.inc.php';
 <h3>Import Users</h3>
 <p>Create a text file which lists the information in the following format with one per line
 <br><b>netID,admin,class,section,ta</b>
-<p>netID - netID (username) of the user
-<br>admin - 1 if the user needs to be an admin, 0 for regular user, if admin is 1, the other fields are ignored
-<br>class - name of the class
-<br>section - section of the class
-<br>ta - netID (username) of the TA
-<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' enctype='multipart/form-data'>
+<ul>
+<li>netID - netID (username) of the user</li>
+<li>admin - 1 if the user needs to be an admin, 0 for regular user, if admin is 1, the other fields are ignored</li>
+<li>class - name of the class</li>
+<li>section - section of the class</li>
+<li>ta - netID (username) of the TA</li>
+</ul>
+<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>' enctype='multipart/form-data' class='form-vertical'>
 <input type='hidden' name='MAX_FILE_SIZE' value='5242880'>
-<br>Users File:
-<p><input class='btn btn-file' type='file' name='usersFile' size='40'>
-<p><input class='btn btn-primary' type='submit' name='importUsers' value='Import Users'>
-<input class='btn btn-warning' type='submit' name='cancel' value='Cancel'></p>
+<fieldset>
+<div class='control-group'>
+	<label class='control-label' for='inputFile'>Users File: </label>
+	<div class='controls'>
+		<input class='btn btn-file' id='inputFile' type='file' name='usersFile' size='40'>
+	</div>
+</div>
+<div class='control-group'>
+	<div class='controls'>
+		<input class='btn btn-primary' type='submit' name='importUsers' value='Import Users'>
+		<input class='btn btn-warning' type='submit' name='cancel' value='Cancel'></p>
+	</div>
+</fieldset>
+</form>
 <br><?php if (isset($importMsg)) { echo $importMsg; } ?>
 
 <?php 
@@ -70,10 +82,6 @@ if (isset($result['RESULT'])) {
 
 
 }
-?>
-</form>
 
-<?php
-
-include 'includes/footer.inc.php';
+include_once 'includes/footer.inc.php';
 ?>
