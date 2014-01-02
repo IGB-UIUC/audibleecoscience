@@ -14,7 +14,7 @@
 
 ////////System Settings///////////
 define("__TITLE__","Audibleecoscience - University of Illinois at Urbana-Champaign");
-define("__VERSION__","1.01");
+define("__VERSION__","1.02");
 define("__SESSION_NAME__","audibleecoscience");
 define("__SESSION_TIMEOUT__",3000);
 define("__TIMEZONE__","America/Chicago");
