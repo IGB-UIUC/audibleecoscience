@@ -16,7 +16,8 @@ $count = __COUNT__;
 $podcasts = getUnapprovedPodcasts($db);
 $numPodcasts = count($podcasts);
 $currentPage = $start / $count +1;
-$pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query(array('start_date'=>$start_date,'end_date'=>$end_date));
+//$pages_url = $_SERVER['PHP_SELF'] . "?" . http_build_query(array('start_date'=>$start_date,'end_date'=>$end_date));
+$pages_url = $_SERVER['PHP_SELF'] . "?";
 $pages_html = get_pages_html($pages_url,$numPodcasts,$start,$count);
 
 

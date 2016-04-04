@@ -50,14 +50,18 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 	</td>
 		
 </tr>
-<?php if ($podcast->getFile() != "") {
+<?php if (($podcast->getFile() != "") && $podcast->getContainVideo()) {
+	echo "<tr><td>Play Podcast: </td>";
+        echo "<td><video width='320' height='240'>";
+	echo "<source src='" . $relFile . "' type='video/mp4'></video>";
+        echo "<br><a href='../download.php?id=" . $id . "'>Download Podcast</a></td></tr>";
+
+
+}
+elseif (($podcast->getFile() != "") && (!$podcast->getContainVideo())) {
 	echo "<tr><td>Play Podcast: </td>";
 	echo "<td><audio id='player' type='audio/mp3' controls='controls' src='" . $relFile . "'></audio>";
-
-	echo "<script>";
-	echo "$('audio,video').mediaelementplayer();";
-	echo "</script>";
-	echo "<a href='../download.php?id=" . $id . "'>Download Podcast</a></td></tr>";
+	echo "<br><a href='../download.php?id=" . $id . "'>Download Podcast</a></td></tr>";
 } ?>
 <tr>
 	<td><input class='btn btn-primary' type='button' value='Edit' 

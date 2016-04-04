@@ -36,7 +36,7 @@ class user {
 		$message_array = array();
 		$error = false;
 		$ldap_info = $this->get_user_ldap();
-
+		$result = false;
 		//Check username	
 		if ($this->get_username() == "") {
                         $error = true;
@@ -76,7 +76,6 @@ class user {
 				$sql .= "user_section='" . $section . "',";
 				$sql .= "user_ta='" . $ta . "' ";
 				$sql .= "WHERE user_name='" . $this->get_username() . "' LIMIT 1";
-				echo $sql;
 				$result = $this->db->non_select_query($sql);		
 	                }
 			//User not in database, get ldap info and add to database
@@ -170,7 +169,6 @@ class user {
         public function enable() {
                 $sql = "UPDATE users SET user_enabled='1' ";
                 $sql .= "WHERE user_id='" . $this->get_user_id() . "' LIMIT 1";
-		echo $sql;
 		$result = $this->db->non_select_query($sql);
                 $this->get_user();
                 return $result;
@@ -180,7 +178,7 @@ class user {
 
 
 	public function is_ta() {
-		$sql = "COUNT(1) as count FROM users ";
+		$sql = "SELECT COUNT(1) as count FROM users ";
 		$sql .= "WHERE user_ta='" . $this->get_username() . "'";
 		$result = $this->db->query($sql);
 		if ($result[0]['count']) {

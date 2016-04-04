@@ -86,7 +86,7 @@ elseif (isset($_POST['editPodcast'])) {
 		$error++;
 		$yearMsg = "<b style='color:red;font-size:large'>Please fill in the broadcast year.</b>";
 	}
-	$url_result = verify_url($db,$url);
+	$url_result = verify_url($db,$url,$id);
 	if (!$url_result['RESULT']) {
 		$error++;
 		$urlMsg = "<b style='color:red;font-size:large'>" . $url_result['MESSAGE'] . "</b>";
@@ -110,9 +110,9 @@ elseif (isset($_POST['editPodcast'])) {
                 $short_summary_msg .= "Maximum length is " . __MAX_SHORT_SUMMARY_CHARS__ . " characters.</b>";
 
         }
-	if (!verify_spelling($short_summary)) {
+	elseif (!verify_spelling($short_summary)) {
 		$error++;
-		$short_summary_msg .= "<b style='color:red;font-size:large'>Please verify the spelling of the short summary.</b>";
+		$short_summary_msg = "<b style='color:red;font-size:large'>Please verify the spelling of the short summary.</b>";
 	}
 	
 	if ($error == 0) {
@@ -188,6 +188,12 @@ include_once 'includes/header.inc.php';
 	}
 ?>
 </ul>
+
+<?php if (isset($message)) {
+        echo "<div class='alert'>" . $message . "</div>";
+}
+?>
+
 <form class='form-vertical' method='post' enctype='multipart/form-data' action='<?php echo $_SERVER['PHP_SELF'] . "?id=" . $id; ?>'>
 <input type='hidden' name='id' value='<?php echo $id; ?>'>
 <fieldset>
@@ -219,7 +225,7 @@ include_once 'includes/header.inc.php';
 <div class='control-group <?php if (isset($urlMsg)) { echo "error"; } ?>'>
 	<label class='control-label' for='inputUrl'>URL: <?php if (isset($urlMsg)) { echo $urlMsg; } ?></label>
 	<div class='controls'>
-		<input class='span12' id='inputUrl' type='text' name='url' value='<?php echo $url; ?>' maxlength='100'>
+		<input class='span12' id='inputUrl' type='text' name='url' value='<?php echo $url; ?>'>
 	</div>
 </div>
 <div class='control-group <?php if (isset($short_summary_msg)) { echo "error"; } ?>'>
@@ -269,7 +275,7 @@ include_once 'includes/header.inc.php';
 }?>
 <div class='control-group'>
 	<div class='controls'>
-		<input class='btn btn-primary' type='submit' name='editPodcast' value='Edit Podcast'>
+		<input class='btn btn-primary' type='submit' name='editPodcast' value='Submit Changes'>
 		<input class='btn btn-danger' type='submit' name='removePodcast' value='Remove Podcast' onClick='return confirmRemove()'>
 		<input class='btn btn-warning' type='submit' name='cancel' value='Cancel'>
 	</div>

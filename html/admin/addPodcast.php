@@ -2,7 +2,6 @@
 include_once 'includes/main.inc.php';
 include_once 'includes/session.inc.php';
 
-
 if (isset($_POST['addPodcast'])) {
 	foreach ($_POST as $var) {
 		$var = trim(rtrim($var));
@@ -15,11 +14,14 @@ if (isset($_POST['addPodcast'])) {
 	$summary = $_POST['summary'];
 	$category = $_POST['category'];
 	$short_summary = $_POST['short_summary'];
-	$acknowledgement = false;
-	$contain_video = $_POST['contain_video'];
+	$contain_video = 0;
+	if (isset($_POST['contain_video'])) {
+		$contain_video = $_POST['contain_video'];
+	}
 	$test_short_summary = str_replace(" ","",$short_summary);
 	$allowed_file_types = explode(",",__FILETYPES__);
 
+	$acknowledgement = false;
 	if (isset($_POST['acknowledgement'])) {
 		$acknowledgement = true;
 	}
@@ -58,9 +60,9 @@ if (isset($_POST['addPodcast'])) {
 		$urlMsg = "<b style='color:red;font-size:large'>" . $url_result['MESSAGE'] . "</b>";
 
 	}
-	if ($summary == "") {
+	if (($summary == "") || (!verify_spelling($summary))) {
 		$error++;
-		$summaryMsg = "<b style='color:red;font-size:large'>Please enter a summary</b>";
+		$summaryMsg = "<b style='color:red;font-size:large'>Please verify the spelling of the summary</b>";
 
 	}
 	elseif (count(explode(" ",$summary)) > __MAX_SUMMARY_WORDS__) {
@@ -74,6 +76,10 @@ if (isset($_POST['addPodcast'])) {
 		$short_summary_msg .= "Maximum length is " . __MAX_SHORT_SUMMARY_CHARS__ . " characters</b>";
 
 	}
+        elseif (!verify_spelling($short_summary)) {
+                $error++;
+                $short_summary_msg = "<b style='color:red;font-size:large'>Please verify the spelling of the short summary.</b>";
+        }
 
 	if ((isset($_POST['upload_file'])) && (!in_array($filetype,$allowed_file_types))) {
 		$error++;
@@ -148,32 +154,32 @@ include_once 'includes/header.inc.php';
 <div class='control-group <?php if (isset($sourceMsg)) { echo "error"; } ?>'>
         <label class='control-label' for='inputSource'>Media Source: (ie National Public Radio, Nature Podcast, Scientific America) <?php if (isset($sourceMsg)) { echo $sourceMsg; } ?><label>
         <div class='controls'>
-                <input class='span12' id='inputSource' type='text' name='source' value='<?php echo $source; ?>'>
+                <input class='span12' id='inputSource' type='text' name='source' value='<?php if (isset($source)) { echo $source; } ?>'>
         </div>
 </div>
 <div class='control-group <?php if (isset($programMsg)) { echo "error"; }  ?>'>
         <label class='control-label' for='inputProgram'>Program Name: (ie Science Friday, Nature Podcast, Living on Earth) <?php if (isset($programMsg)) { echo $programMsg; } ?></label>
         <div class='controls'>
-                <input class='span12' id='inputProgram' type='text' name='programName' value='<?php echo $programName; ?>'>
+                <input class='span12' id='inputProgram' type='text' name='programName' value='<?php if (isset($programName)) { echo $programName; } ?>'>
         </div>
 </div>
 <div class='control-group <?php if (isset($showMsg)) { echo "error"; } ?>'>
         <label class='control-label' for='inputShow'>Show Name: (ie With climate change, no happy clams; Show 191 - Tree death in a warming western U.S.) <?php if (isset($showMsg)) { echo $showMsg; } ?></label>
         <div class='controls'>
-                <input class='span12' id='inputShow' type='text' name='showName' value='<?php echo $showName; ?>'>
+                <input class='span12' id='inputShow' type='text' name='showName' value='<?php if (isset($showName)) { echo $showName; } ?>'>
         </div>
 </div>
 <div class='control-group <?php if (isset($yearMsg)) { echo "error"; } ?>'>
         <label class='control-label' for='inputYear'>Broadcast Year: <?php if (isset($yearMsg)) { echo $yearMsg; } ?></label>
         <div class='controls'>
-                <input class='span12' id='inputYear' type='text' name='year' maxlength='4' value='<?php echo $year; ?>'>
+                <input class='span12' id='inputYear' type='text' name='year' maxlength='4' value='<?php if (isset($year)) { echo $year; } ?>'>
         </div>
 
 </div>
 <div class='control-group <?php if (isset($urlMsg)) { echo "error"; } ?>'>
         <label class='control-label' for='inputUrl'>URL: (ie http://www.audibleecoscience.org)<?php if (isset($urlMsg)) { echo $urlMsg; } ?></label>
         <div class='controls'>
-                <input class='span12' id='inputUrl' type='text' name='url' value='<?php echo $url; ?>'>
+                <input class='span12' id='inputUrl' type='text' name='url' value='<?php if (isset($url)) { echo $url; } ?>'>
         </div>
 </div>
 <div class='control-group <?php if (isset($short_summary_msg)) { echo "error"; } ?>'>
@@ -204,10 +210,10 @@ include_once 'includes/header.inc.php';
 <div class='control-group'>
 	<div class='controls'>
 		<label class='radio'>
-		<input type='radio' name='contain_video' value='0'>Audio Only
+		<input type='radio' name='contain_video' value='0' <?php if (isset($contain_video) && (!$contain_video)) { echo "checked='checked'"; } ?>>Audio Only
 		</label>
 		<label class='radio'>
-		<input type='radio' name='contain_video' value='1'>Audio and Video
+		<input type='radio' name='contain_video' value='1' <?php if (isset($contain_video) && ($contain_video)) { echo "checked='checked'"; } ?>>Audio and Video
 		</label>
 	</div>
 </div>
@@ -228,12 +234,12 @@ include_once 'includes/header.inc.php';
 </div>
 <div class='control-group'>
 	<label class='checkbox'>
-	<input type='checkbox' name='acknowledgment'>Should review be acknowledged by you </label>
+	<input type='checkbox' name='acknowledgement' <?php if (isset($acknowledgement) && ($acknowledgement)) { echo "checked='checked'"; } ?>>Should review be acknowledged by you </label>
 </div>
 
 <div class='control-group'>
         <label class='checkbox'>
-        <input type='checkbox' name='review_permission'>Allow your review to be used publicly</label>
+        <input type='checkbox' name='review_permission' <?php if (isset($review_permission) && ($review_permission)) { echo "checked='checked'"; } ?>>Allow your review to be used publicly</label>
 </div>
 <div class='control-group'>
 

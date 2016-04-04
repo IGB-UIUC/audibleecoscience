@@ -6,7 +6,7 @@ include_once 'includes/header.inc.php';
 if (!($login_user->is_admin())){
         header('Location: invalid.php');
 }
-$message;
+$message = "";
 if (isset($_POST['delete_users'])) {
 	foreach ($_POST as $key=>$var) {
 		if (strpos($key,'user_id_') !== FALSE) {

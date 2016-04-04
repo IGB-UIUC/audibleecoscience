@@ -135,6 +135,7 @@ function getUnapprovedPodcasts($db,$ta = "") {
 
 	}
 	$sql .= "ORDER BY podcasts.podcast_time DESC";
+	echo $sql;
 	return $db->query($sql);
 
 
@@ -385,7 +386,7 @@ function get_rating_label($rating) {
 }
 
 
-function verify_url($db,$url) {
+function verify_url($db,$url,$id = 0) {
 	$url = trim(rtrim($url));
 	$success = true;
 	$message = "";
@@ -401,7 +402,7 @@ function verify_url($db,$url) {
 		$success = false;
 		$message = "URL does not exist.  Please verify URL";
 	}
-	elseif (!unique_url($db,$url)) {
+	elseif (!unique_url($db,$url,$id)) {
 		$success = false;
 		$message = "URL already exists in database.   Please use another podcast.";
 	}
@@ -431,12 +432,14 @@ function verify_url_curl($url) {
 
 }
 
-function unique_url($db,$url) {
+function unique_url($db,$url,$id = 0) {
 
 	$sql = "SELECT count(1) as count ";
 	$sql .= "FROM podcasts ";
-	$sql .= "WHERE podcast_url='" . $url . "'";
-	echo $sql;
+	$sql .= "WHERE podcast_url='" . $url . "' ";
+	if ($id) {
+		$sql .= "AND podcast_id!='" . $id . "'";
+	}
 	$result = $db->query($sql);
 	if ($result[0]['count']) {
 		return false;
@@ -447,7 +450,8 @@ function unique_url($db,$url) {
 }
 
 function verify_spelling($input_string) {
-
+	return true;
+	$input_string = trim(rtrim($input_string));
 	$string_array = explode(" ",$input_string);
 	//preg_match_all("/[A-Z\']{1,16}/i", $input_string,$string_array);
 	$pspell_link = pspell_new("en");
