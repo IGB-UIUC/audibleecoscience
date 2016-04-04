@@ -129,13 +129,11 @@ function getUnapprovedPodcasts($db,$ta = "") {
 	$sql .= "LEFT JOIN categories ON podcasts.podcast_categoryId=categories.category_id ";
 	$sql .= "LEFT JOIN users ON podcasts.podcast_createBy=users.user_id ";
 	$sql .= "WHERE podcasts.podcast_approved=0 AND podcasts.podcast_enabled=1 ";
-	
 	if ($ta != "") {
-		$sql = " AND users.user_ta='" . $ta . "' ";
+		$sql .= " AND users.user_ta='" . $ta . "' ";
 
 	}
 	$sql .= "ORDER BY podcasts.podcast_time DESC";
-	echo $sql;
 	return $db->query($sql);
 
 

@@ -1,7 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
-include_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 if (!($login_user->is_admin())){
         header('Location: invalid.php');
@@ -71,6 +70,7 @@ for ($i=$start;$i<$start+$count;$i++) {
 
 
 
+require_once 'includes/header.inc.php';
 
 ?>
 <form class='form-search' method='get' action='<?php echo $_SERVER['PHP_SELF'];?>'>
@@ -109,5 +109,5 @@ for ($i=$start;$i<$start+$count;$i++) {
 echo $pages_html;
 
 if (isset($message)) { echo $message; }
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

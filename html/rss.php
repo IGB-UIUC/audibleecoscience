@@ -1,7 +1,7 @@
 <?php
 
-include_once 'includes/main.inc.php';
-include_once 'rss.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'rss.inc.php';
 
 $webaddress = "http://" . $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']);
 $rssData = getRss($db,$webaddress);

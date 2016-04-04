@@ -1,7 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
-include_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 if (!($login_user->is_admin())){
         header('Location: invalid.php');
@@ -67,6 +66,8 @@ for ($i=$start;$i<$start+$count;$i++) {
 }
 
 
+require_once 'includes/header.inc.php';
+
 ?>
 
 <h3>All Podcasts: <?php echo $month_name . " - " . $year; ?></h3>
@@ -113,5 +114,5 @@ for ($i=$start;$i<$start+$count;$i++) {
 
 echo $pages_html;
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

@@ -1,7 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
-include_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 $podcasts = getYourPodcasts($login_user->get_username(),$db);
 
@@ -36,6 +35,7 @@ foreach ($podcasts as $podcast) {
 	$podcastsHtml .= "</tr>";
 }
 
+require_once 'includes/header.inc.php';
 ?>
 <h3>My Podcasts</h3>
 

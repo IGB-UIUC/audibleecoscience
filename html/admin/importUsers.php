@@ -1,7 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
-include_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 $valid_file_types = array('txt','csv');
 
@@ -40,7 +39,7 @@ elseif (isset($_POST['cancel'])) {
 
 }
 
-include_once 'includes/header.inc.php';
+require_once 'includes/header.inc.php';
 
 ?>
 
@@ -83,5 +82,5 @@ if (isset($result['RESULT'])) {
 
 }
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

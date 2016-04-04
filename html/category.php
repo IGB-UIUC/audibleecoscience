@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta charset='UTF-8'>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="alternate" type="application/rss+xml" title="Podcast Website - University of Illinois at Urbana-Champaign RSS Feed" href="rss.php">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 <script src="js/tinynav.js" type="text/javascript"></script>
-<link rel="stylesheet" href="css/mediaelementplayer.css">
 <link href="css/audible.css" rel="stylesheet" type="text/css">
 <title>Podcast Website - University of Illinois at Urbana-Champaign</title>
 </head>
@@ -75,4 +74,4 @@
 ?>
 <!-- end of top 10 -->
 
-<?php include_once 'includes/footer.inc.php'; ?>
+<?php require_once 'includes/footer.inc.php'; ?>

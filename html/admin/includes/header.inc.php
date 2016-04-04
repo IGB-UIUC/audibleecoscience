@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
 <script language='JavaScript' src='includes/main.inc.js'></script>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta charset="UTF-8">
 <link rel="alternate" type="application/rss+xml" title="<?php echo __TITLE__; ?> RSS Feed" href="rss.php">
-<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
         href="../includes/bootstrap/css/bootstrap.min.css">
-<script src="../includes/johndyer-mediaelement-2601db5/build/jquery.js"></script>
-<script src="../includes/johndyer-mediaelement-2601db5/build/mediaelement-and-player.min.js"></script>
-<link rel="stylesheet" href="../includes/johndyer-mediaelement-2601db5/build/mediaelementplayer.css" />
 <TITLE><?php echo __TITLE__; ?></TITLE>
 
 </head>

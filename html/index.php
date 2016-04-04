@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/header.inc.php';
 
 $num_podcasts = 3;
 $recent_podcasts = getRecentPodcasts($db,3);
@@ -41,8 +41,8 @@ foreach ($recent_podcasts as $podcast) {
 
 <!-- top 10 podcasts -->
 <?php
-	include_once('includes/top10_podcasts.inc.php');
+	require_once('includes/top10_podcasts.inc.php');
 ?>
 <!-- end of top 10 -->
 
-<?php include_once 'includes/footer.inc.php'; ?>
+<?php require_once 'includes/footer.inc.php'; ?>

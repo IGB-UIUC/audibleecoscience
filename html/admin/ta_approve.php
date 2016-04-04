@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 if (!($login_user->is_admin())){
         header('Location: invalid.php');
@@ -28,7 +28,7 @@ else {
 	$unapprovedHtml = "<tr><td colspan='6'>None</td></tr>";
 }
 
-include_once 'includes/header.inc.php';
+require_once 'includes/header.inc.php';
 ?>
 <h3>TA's Unapproved Podcasts</h3>
 <table class='table table-bordered'>
@@ -48,5 +48,5 @@ include_once 'includes/header.inc.php';
 </table>
 
 <?php
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

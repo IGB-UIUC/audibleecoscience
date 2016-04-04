@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/header.inc.php';
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $id = $_GET['id'];
@@ -51,4 +51,4 @@ else {
 <!-- end: class="container_category_podcastlist -->
 </div><div class="clear"></div>
 
-<?php include_once 'includes/footer.inc.php'; ?>
+<?php require_once 'includes/footer.inc.php'; ?>

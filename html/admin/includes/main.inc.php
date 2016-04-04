@@ -1,11 +1,13 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 //Sets include path
 set_include_path(get_include_path() . ':../../libs');
 //Load Settings file
-include_once '../../conf/settings.inc.php';
-include_once 'functions.inc.php';
+require_once '../../conf/settings.inc.php';
+require_once 'functions.inc.php';
 
 //Sets Timezone
 date_default_timezone_set(__TIMEZONE__);

@@ -23,7 +23,7 @@ foreach ($categories as $category) {
 ?>
 <!DOCTYPE html>
 <html lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="alternate" type="application/rss+xml" title="<?php echo __TITLE__; ?>" href="rss.php">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -31,7 +31,6 @@ foreach ($categories as $category) {
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <script src="includes/jquery-latest.min.js" type="text/javascript"></script>
 <script src="js/tinynav.js" type="text/javascript"></script> 
-<script src="includes/johndyer-mediaelement-2601db5/build/mediaelement-and-player.min.js"></script>
 <link rel="stylesheet" href="css/mediaelementplayer.css">
 <link href="css/audible.css" rel="stylesheet" type="text/css">
 <TITLE><?php echo __TITLE__; ?></TITLE>

@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/header.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/header.inc.php';
 $count = __COUNT__;
 $start = 0;
 $get_array = array();
@@ -63,5 +63,5 @@ for ($i=$start;$i<$start+$count;$i++) {
 </div><div class="clear"></div>
 <?php
 
-include_once 'includes/footer.inc.php';
+require_once 'includes/footer.inc.php';
 ?>

@@ -1,7 +1,7 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
-include_once 'reports.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
+require_once 'reports.inc.php';
 
 
 if (isset($_POST['podcast_report'])) {

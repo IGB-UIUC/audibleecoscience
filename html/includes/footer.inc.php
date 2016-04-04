@@ -34,7 +34,7 @@ Dr. Andrew Leakey<br>
  <!-- end: class="footer" -->
 </div>
 <div class="bot">
-                <em>&copy; 2013 University of Illinois Board of Trustees</em>
+                <em>&copy; 2013 - <?php echo date('Y'); ?> University of Illinois Board of Trustees</em>
 </div>
 </body></html>
 

@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 if (isset($_POST['addPodcast'])) {
 	foreach ($_POST as $var) {
@@ -144,7 +144,7 @@ foreach ($categories as $category) {
 
 }
 
-include_once 'includes/header.inc.php';
+require_once 'includes/header.inc.php';
 ?>
 
 <h3>Add Podcast</h3>

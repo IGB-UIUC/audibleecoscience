@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 if (!($login_user->is_admin())){
         header('Location: invalid.php');
@@ -42,7 +42,7 @@ elseif (isset($_POST['cancel'])) {
 
 
 
-include_once 'includes/header.inc.php';
+require_once 'includes/header.inc.php';
 ?>
 
 <form action='<?php echo $_SERVER['PHP_SELF']; ?>' 

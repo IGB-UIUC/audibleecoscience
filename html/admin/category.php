@@ -1,6 +1,6 @@
 <?php
-include_once 'includes/main.inc.php';
-include_once 'includes/session.inc.php';
+require_once 'includes/main.inc.php';
+require_once 'includes/session.inc.php';
 
 $message = "";
 if (!($login_user->is_admin())){
@@ -69,7 +69,7 @@ if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
 
 }
 
-include_once 'includes/header.inc.php';
+require_once 'includes/header.inc.php';
 ?>
 
 <form method='post' class='form-horizontal' action='<?php echo $_SERVER['PHP_SELF'] . "?" . http_build_query($url_data); ?>' enctype='multipart/form-data'>
@@ -121,4 +121,4 @@ include_once 'includes/header.inc.php';
 }
 
 ?>
-<?php include_once 'includes/footer.inc.php'; ?>
+<?php require_once 'includes/footer.inc.php'; ?>
