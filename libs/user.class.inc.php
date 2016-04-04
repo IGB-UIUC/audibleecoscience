@@ -119,7 +119,6 @@ class user {
 	public function is_in_database() { return $this->in_database; }
 	public function get_time_created() { return $this->time_created; }
 	public function authenticate($password) {
-		return true;
 		$result = false;
 		$rdn = $this->get_user_rdn();
 		if (($this->ldap->bind($rdn,$password)) && ($this->is_enabled())) {
