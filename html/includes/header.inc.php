@@ -31,7 +31,6 @@ foreach ($categories as $category) {
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <script src="includes/jquery-latest.min.js" type="text/javascript"></script>
 <script src="js/tinynav.js" type="text/javascript"></script> 
-<link rel="stylesheet" href="css/mediaelementplayer.css">
 <link href="css/audible.css" rel="stylesheet" type="text/css">
 <TITLE><?php echo __TITLE__; ?></TITLE>
 </head>

@@ -44,7 +44,6 @@ else {
 	echo "<div class='podcast_media_links'><a href='#'>Play Podcast</a> | <a href='download.php?id=" . $id . "'>Download Podcast</a>";
 	echo "<div class='clear'></div>";
 	echo "<audio id='player' type='audio/mp3' controls='controls' src='" . $relFile . "'></audio>";
-	//echo "<script>$('audio,video').mediaelementplayer();</script>";
 	echo "</div><div class='clear'></div></div></div>";
 
 } ?>
