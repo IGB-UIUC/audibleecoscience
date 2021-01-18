@@ -1,13 +1,13 @@
 <?php
 require_once 'includes/main.inc.php';
-$session = new session(__SESSION_NAME__);
+$session = new \IGBIllinois\session(__SESSION_NAME__);
 $session->destroy_session();
 ?>
 <html lang="en">
 <head>
 <meta charset='UTF-8'>
 <link rel="stylesheet" type="text/css"
-        href="../includes/bootstrap/css/bootstrap.min.css">
+        href="../vendor/components/bootstrap/css/bootstrap.min.css">
 <TITLE><?php echo __TITLE__; ?></TITLE>
 
 </head>

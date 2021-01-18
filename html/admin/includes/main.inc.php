@@ -7,8 +7,9 @@ ini_set('display_errors', 1);
 set_include_path(get_include_path() . ':../../libs');
 //Load Settings file
 require_once '../../conf/settings.inc.php';
+require_once '../../conf/app.inc.php';
 require_once 'functions.inc.php';
-
+require_once '../../vendor/autoload.php';
 //Sets Timezone
 date_default_timezone_set(__TIMEZONE__);
 
@@ -20,7 +21,7 @@ function __autoload($class_name) {
         }
 }
 
-$db = new db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
-$ldap = new ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
+$db = new \IGBIllinois\db(__MYSQL_HOST__,__MYSQL_DATABASE__,__MYSQL_USER__,__MYSQL_PASSWORD__);
+$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
 $ldap->bind(__LDAP_BIND_USER__,__LDAP_BIND_PASS__);
 ?>

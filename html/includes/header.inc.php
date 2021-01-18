@@ -28,8 +28,8 @@ foreach ($categories as $category) {
 <link rel="alternate" type="application/rss+xml" title="<?php echo __TITLE__; ?>" href="rss.php">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="icon" type="image/ico" href="favicon.ico">
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-<script src="includes/jquery-latest.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="vendor/components/bootstrap/css/bootstrap.css">
+<script src="vendor/components/jquery/jquery.min.js" type="text/javascript"></script>
 <script src="js/tinynav.js" type="text/javascript"></script> 
 <link href="css/audible.css" rel="stylesheet" type="text/css">
 <TITLE><?php echo __TITLE__; ?></TITLE>
@@ -73,7 +73,7 @@ foreach ($categories as $category) {
 
       
    <!-- Left side Navigation -->
-  <?php include_once('category_navigation.inc.php'); ?>
+  <?php require_once('category_navigation.inc.php'); ?>
    <!-- end Left side Navigation -->
     
     

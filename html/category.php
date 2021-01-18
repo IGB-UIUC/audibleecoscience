@@ -16,12 +16,12 @@
 <h1><a href="index.php"><span class="color1">audible</span><span class="color2">eco</span><span class="color3">science</span></a></h1>
 
 	<!-- Header Bar -->
-	 <?php include('headerbar.php'); ?>
+	 <?php require_once('headerbar.php'); ?>
    <!-- end Header Bar -->
       
     
    <!-- Left side Navigation -->
-	 <?php include('category_navigation.php'); ?>
+	 <?php require_once('category_navigation.php'); ?>
    <!-- end Left side Navigation -->
     
     
@@ -70,7 +70,7 @@
     
 <!-- top 10 podcasts -->
 <?php
-	include('top10_podcasts.php');
+	require_once('top10_podcasts.php');
 ?>
 <!-- end of top 10 -->
 
