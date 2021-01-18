@@ -27,8 +27,9 @@ define("__MYSQL_DATABASE__","");
 //////LDAP settings//////////
 define("__LDAP_HOST__","");
 define("__LDAP_BASE_DN__","");
-define("__LDAP_SSL__",TRUE);
-define("__LDAP_PORT__",);
+define("__LDAP_SSL__",FALSE);
+define("__LDAP_TLS__",FALSE);
+define("__LDAP_PORT__","389");
 define("__LDAP_BIND_USER__","");
 define("__LDAP_BIND_PASS__","");
 define("__PODCAST_DIR__","");
