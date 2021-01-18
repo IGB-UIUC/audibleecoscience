@@ -104,7 +104,6 @@ require_once 'includes/header.inc.php';
 <input type='hidden' name='year' value='<?php echo $year; ?>'> 
 <input type='hidden' name='month' value='<?php echo $month; ?>'> 
 <select name='report_type' class='input-medium'>
-	<option value='excel2003'>Excel 2003</option>
 	<option value='excel2007'>Excel 2007</option>
 	<option value='csv'>CSV</option>
 </select>

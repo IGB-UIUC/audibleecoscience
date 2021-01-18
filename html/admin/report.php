@@ -1,8 +1,6 @@
 <?php
 require_once 'includes/main.inc.php';
 require_once 'includes/session.inc.php';
-require_once 'reports.inc.php';
-
 
 if (isset($_POST['podcast_report'])) {
 
@@ -13,17 +11,17 @@ if (isset($_POST['podcast_report'])) {
 	if ($_POST['report_type'] == 'csv') {
 		$ext = 'csv';
 		$filename .= "." . $ext;
-		create_csv_report($podcast_report,$filename);
+		\IGBIllinois\report::create_csv_report($podcast_report,$filename);
 	}
 	elseif ($_POST['report_type'] == 'excel2003') {
 		$ext = 'xls';
 		$filename .= "." . $ext;
-		create_excel_2003_report($podcast_report,$filename);
+		\IGBIllinois\report::create_excel_2003_report($podcast_report,$filename);
 	}
 	elseif ($_POST['report_type'] == 'excel2007') {
 		$ext = 'xlsx';
 		$filename .= "." . $ext;
-		create_excel_2007_report($podcast_report,$filename);
+		\IGBIllinois\report::create_excel_2007_report($podcast_report,$filename);
 	}
 }
 
