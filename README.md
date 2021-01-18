@@ -12,10 +12,6 @@ Audibleecoscience is a database of podcasts on subjects related to global change
 * PHP MYSQL
 * MySQL/MariaDB >= 5.5
 
-
-
-## Installation
-
 ## Installation
 * Git clone repository or download a tag release
 ```
