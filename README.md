@@ -9,7 +9,6 @@ Audibleecoscience is a database of podcasts on subjects related to global change
 ## Requirements
 * Apache
 * PHP
-* PHP JSON
 * PHP MYSQL
 * MySQL/MariaDB >= 5.5
 
@@ -44,6 +43,7 @@ Alias /audibleecoscience /var/www/audibleecoscience/html
 	AllowOverride All
 	Require all granted
 </Directory>
+```
 * Copy conf/settings.inc.php.dist to conf/settings.inc.php
 ```
 cp conf/settings.inc.php.dist conf/settings.inc.php
