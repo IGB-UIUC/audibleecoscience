@@ -1,0 +1,23 @@
+{
+	"repositories" : [
+	{
+		"type": "vcs",
+		"url": "https://www.github.com/IGBIllinois/IGBIllinois-php"
+	}
+	],
+	"require": {
+		"php":	">=7.2",
+		"components/bootstrap-default": "2.3.2",
+		"components/bootstrap": "2.3.2",
+		"igbillinois/igbillinois-php": "0.1"
+	},
+	"scripts": {
+		"post-update-cmd": [
+		"mkdir -p html/vendor/components",
+		"cp -R vendor/components/bootstrap html/vendor/components/"
+
+		]
+
+	}
+}
+

@@ -1,4 +1,5 @@
 /conf/settings.inc.php
 /html/podcasts/*.mp3
 /html/images/categories/*
-
+/vendor
+/html/vendor
