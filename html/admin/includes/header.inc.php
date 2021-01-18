@@ -6,7 +6,7 @@
 <link rel="alternate" type="application/rss+xml" title="<?php echo __TITLE__; ?> RSS Feed" href="rss.php">
 <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" type="text/css"
-        href="../includes/bootstrap/css/bootstrap.min.css">
+        href="../vendor/components/bootstrap/css/bootstrap.min.css">
 <TITLE><?php echo __TITLE__; ?></TITLE>
 
 </head>

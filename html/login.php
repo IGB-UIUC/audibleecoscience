@@ -27,7 +27,7 @@ else {
 if (isset($_POST['login'])) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
-	$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_SSL__,__LDAP_PORT__,__LDAP_BASE_DN__);
+	$ldap = new \IGBIllinois\ldap(__LDAP_HOST__,__LDAP_BASE_DN__,__LDAP_PORT__,__LDAP_SSL__,__LDAP_TLS__);
 	$ldap->bind(__LDAP_BIND_USER__,__LDAP_BIND_PASS__);
 	$user = new user($db,$ldap,$username);	
 	$success = $user->authenticate($password);
