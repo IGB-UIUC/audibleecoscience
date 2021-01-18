@@ -24,7 +24,7 @@ CREATE DATABASE audiblecoscience CHARACTER SET utf8;
 * Create Mysql user with insert,update,select,delete privileges on the database
 ```
 CREATE USER 'audibleecoscience'@'localhost' IDENTIFIED BY 'STRONG_PASSWORD';
-GRANT SELECT,INSERT,DELETE,UPDATE ON posting_log.* to 'audibleecoscience'@'localhost';
+GRANT SELECT,INSERT,DELETE,UPDATE ON audibleecoscience.* to 'audibleecoscience'@'localhost';
 ```
 * Import database structure
 ```
